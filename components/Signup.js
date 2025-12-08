@@ -5,7 +5,7 @@ import { FaTimes } from "react-icons/fa";
 function Signup(props) {
 
   return (
-    <ReactModal isOpen={props.signUpVisible} 
+    <ReactModal isOpen={props.signUpVisible} closeTimeoutMS={250}
       style={{
     overlay: {
       position: 'fixed',
