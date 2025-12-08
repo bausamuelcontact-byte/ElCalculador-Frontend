@@ -1,22 +1,75 @@
 .main {
+  height: 100vh;
+  width: 100vw;
+  background-color: #F1F1F1;
+  padding: 0%;
+  margin: 0%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0%;
+  width: 100%;
+  height: 10%;
+  background-color: #370900;
+  align-items: center;
+}
+
+.elCalculador {
+  color: #FFFDFB;
+  font-family: sans-serif;
+  font-size: 30;
+  font-weight: 600;
+  margin-left: 2%;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90%
+}
+
+.cover {
+  width:35%;
+  height:100%
+}
+
+.sign {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 4rem 0;
+  width: 65%;
+  height: 100%;
 }
 
-.title {
-  line-height: 1.15;
-  font-size: 4rem;
+.slogan {
+  width: 100%;
+  height:10%;
+  justify-self: left;
+  margin-left: 7.5%;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  width:100%;
+  height:90%;
+  margin-left:15%
 }
 
-.title a:hover, .title a:focus, .title a:active {
-  text-decoration: underline;
+.signButtons {
+  font-size: 16;
+  background-color: #D4AF37;
+  color: white;
+  border: 0;
+  width: 12%;
+  height: 4%;
+  border-radius: 10px;
 }
