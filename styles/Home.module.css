@@ -2,14 +2,15 @@
   height: 100vh;
   width: 100vw;
   background-color: #F1F1F1;
-  padding: 0%;
-  margin: 0%;
+  padding: 0px;
+  margin: 0px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .header {
   display: flex;
   flex-direction: row;
-  margin-top: 0%;
   width: 100%;
   height: 10%;
   background-color: #370900;
@@ -64,7 +65,13 @@
   margin-left:15%
 }
 
-.signButtons {
+.titles {
+  font-size: 25;
+  margin-bottom: 0.9%;
+  margin-top:1.25%;
+}
+
+.signInButton {
   font-size: 16;
   background-color: #D4AF37;
   color: white;
@@ -72,4 +79,27 @@
   width: 12%;
   height: 4%;
   border-radius: 10px;
+  box-shadow: 3px 3px 3px #989898;
+  margin-bottom: 2.5%;
+}
+
+.signInButton:active {
+  transform: translateY(2px);
+  box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+}
+
+.signUpButton {
+  font-size: 16;
+  background-color: #D4AF37;
+  color: white;
+  border: 0;
+  width: 12%;
+  height: 4%;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px #989898;
+}
+
+.signUpButton:active {
+  transform: translateY(2px);
+  box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
 }

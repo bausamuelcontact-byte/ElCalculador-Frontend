@@ -1,0 +1,36 @@
+.cross {
+    justify-self: end;
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputs {
+    font-size: 16;
+    background-color: #FCF9F4;
+    border: 1px solid #6B3E2E;
+    margin: 3%;
+    width:50%;
+    height:30px
+}
+
+.buttonSignin {
+    margin-top: 5%;
+    width: 35%;
+    height: 30px;
+    color: white;
+    background-color: #D4AF37;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #989898;
+    font-weight: bold;
+}
+
+.buttonSignin:active {
+  transform: translateY(2px);
+  box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+}
