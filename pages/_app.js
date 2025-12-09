@@ -18,7 +18,8 @@ function App({ Component, pageProps }) {
           href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap"
           rel="stylesheet"
         />
-        <title>Next.js App</title>
+       
+        <title>El Calculador</title>
       </Head>
       <Component {...pageProps} />
     </Provider>

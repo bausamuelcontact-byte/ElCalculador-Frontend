@@ -1,16 +1,39 @@
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import Signin from './Signin';
+import Signup from './Signup';
+import { useState } from 'react';
 
 function Home() {
+
+  const [signInVisible, setSignInVisible] = useState(false);
+  const [signUpVisible, setSignUpVisible] = useState(false);
+
   return (
-    <div>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-         <Link href="/dashboard">Go to Dashboard</Link>
-      </main>
+    <div className={styles.main}>
+      <div className={styles.header}>
+        <span className={styles.elCalculador}>El Calculador</span>
+      </div>
+        <div className={styles.container}>
+          <img className={styles.cover} src='cook.jpg'/>
+          <div className={styles.sign}>
+            <div className={styles.slogan}>
+              <h1>Calculez. Cuisinez. Vendez.</h1>
+            </div>
+            <div className={styles.actions}>
+              <span className={styles.titles}>Déjà membre?</span>
+              <button className={styles.signInButton} onClick={()=>(setSignInVisible(true))}>Connectez vous</button>
+              <span className={styles.titles}>Première visite?</span>
+              <button className={styles.signUpButton} onClick={()=>(setSignUpVisible(true))}>S'inscrire</button>
+            </div>
+          </div>
+        </div>
+        <Signin signInVisible={signInVisible} setSignInVisible={setSignInVisible} />
+        <Signup signUpVisible={signUpVisible} setSignUpVisible={setSignUpVisible}/>
+        
+        <Link href="/dashboard">Go to Dashboard</Link>
     </div>
+
   );
 }
 
