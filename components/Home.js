@@ -1,4 +1,5 @@
 import styles from '../styles/Home.module.css';
+import Link from 'next/link';
 import Signin from './Signin';
 import Signup from './Signup';
 import { useState } from 'react';
@@ -29,7 +30,10 @@ function Home() {
         </div>
         <Signin signInVisible={signInVisible} setSignInVisible={setSignInVisible} />
         <Signup signUpVisible={signUpVisible} setSignUpVisible={setSignUpVisible}/>
+        
+        <Link href="/dashboard">Go to Dashboard</Link>
     </div>
+
   );
 }
 
