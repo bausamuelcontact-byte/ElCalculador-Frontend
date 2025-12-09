@@ -5,7 +5,7 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Next.js App</title>
+        <title>El Calculador</title>
       </Head>
       <Component {...pageProps} />
     </>
