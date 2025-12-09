@@ -83,6 +83,19 @@
   margin-bottom: 2.5%;
 }
 
+.signInButton:hover {
+  font-size: 16;
+  background-color: #D4AF37;
+  color: white;
+  border: 0;
+  width: 12%;
+  height: 4%;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px #989898;
+  margin-bottom: 2.5%;
+  cursor: pointer;
+}
+
 .signInButton:active {
   transform: translateY(2px);
   box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
@@ -97,6 +110,18 @@
   height: 4%;
   border-radius: 10px;
   box-shadow: 3px 3px 3px #989898;
+}
+
+.signUpButton:hover {
+  font-size: 16;
+  background-color: #D4AF37;
+  color: white;
+  border: 0;
+  width: 12%;
+  height: 4%;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px #989898;
+  cursor: pointer;
 }
 
 .signUpButton:active {

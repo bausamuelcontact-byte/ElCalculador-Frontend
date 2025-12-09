@@ -2,6 +2,15 @@
     justify-self: end;
 }
 
+.crossColor {
+    color: black;
+}
+
+.crossColor:hover {
+    cursor: pointer;
+    color: grey;
+}
+
 .modalContent {
     display: flex;
     flex-direction: column;
@@ -13,9 +22,36 @@
     font-size: 16;
     background-color: #FCF9F4;
     border: 1px solid #6B3E2E;
-    margin: 3%;
+    margin: 2%;
     width:50%;
     height:30px
+}
+
+.inputsPasswordsWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 16;
+    background-color: #FCF9F4;
+    border: 1px solid #6B3E2E;
+    margin: 2%;
+    width:50%;
+    height:30px
+}
+
+.inputsPasswords {
+    font-size: 16;
+    background-color: #FCF9F4;
+    border: 0px;
+    padding: 0;
+    margin: 0;
+    margin-left:2px;
+    width:90%;
+    height:28px
+}
+
+.eyeIcon {
+    margin-left:3%
 }
 
 .buttonSignin {
@@ -28,6 +64,19 @@
     border-radius: 10px;
     box-shadow: 3px 3px 3px #989898;
     font-weight: bold;
+}
+
+.buttonSignin:hover {
+    margin-top: 5%;
+    width: 35%;
+    height: 30px;
+    color: white;
+    background-color: #D4AF37;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px #989898;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .buttonSignin:active {

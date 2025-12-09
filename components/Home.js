@@ -9,7 +9,7 @@ function Home() {
   const [signUpVisible, setSignUpVisible] = useState(false);
 
   return (
-    <div className={styles.main}>
+    <div className={styles.main} >
       <div className={styles.header}>
         <span className={styles.elCalculador}>El Calculador</span>
       </div>
