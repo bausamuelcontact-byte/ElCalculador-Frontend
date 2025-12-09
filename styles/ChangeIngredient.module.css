@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  align-items: center;
+  background-color: blue;
+}
+
+.inputs {
+  margin-top: 3vh;
+}

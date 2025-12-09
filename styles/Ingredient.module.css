@@ -1,0 +1,71 @@
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(31, fr);
+  grid-template-rows: repeat(31, fr);
+}
+
+.search {
+  display: flex;
+  grid-row-start: 4;
+  grid-row-end: 6;
+  grid-column-start: 1;
+  grid-column-end: 32;
+  background-color: red;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  grid-row-start: 6;
+  grid-row-end: 32;
+  grid-column-start: 1;
+  grid-column-end: 15;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.add {
+  grid-row-start: 6;
+  grid-row-end: 32;
+  grid-column-start: 15;
+  grid-column-end: 32;
+  background-color: pink;
+}
+
+.searchBar {
+  height: 70%;
+  width: 25%;
+}
+
+.btnIA {
+  height: 70%;
+  width: 15%;
+}
+
+.btnAddTop {
+  height: 70%;
+  width: 15%;
+}
+
+.ingredient {
+  border: 1px solid black;
+  height: 8vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: space-around;
+  padding: 10px;
+  margin: 5px 15px 5px 15px;
+  border-radius: 10px;
+}
+
+.NameIngredient {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
