@@ -1,13 +1,14 @@
 import Header from '../components/Header';
 import Dashboard from '../components/Dashboard';
+import styles from "../styles/Dashboard.module.css";
 
-function Dashboard() {
+function DashboardPage() {
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <Header />
-      <Dashboard className={styles.dashboardContent}/>
+      <Dashboard />
     </div>
   );
 }
 
-export default Dashboard;
+export default DashboardPage;

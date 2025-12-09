@@ -1,0 +1,22 @@
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background-color: #2F0801;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.headerText {
+  color: #f5eadfde;
+  font-family: 'Poiret One', cursive;
+  font-weight: lighter;
+}
+.headerIcons{
+  color: #cfb86dbd;
+}
+.headerSection{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+}
