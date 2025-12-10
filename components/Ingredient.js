@@ -3,8 +3,14 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
+import Header from '../components/Header';
+import Menu from '../components/Menu';
 
 function Ingredient() {
+  const[visibleMenu, setVisibleMenu] = useState(false);
+  const toggleMenu = () => {
+    setVisibleMenu(!visibleMenu);
+  };
   const [ingredients, setIngredients] = useState([]);
   const [searchIngredient, setSearchIngredient] = useState([]);
   const [isCreation, setIsCreation] = useState(true);
@@ -35,6 +41,7 @@ function Ingredient() {
     .filter((e) => e.name.includes(searchIngredient))
     .map((data, i) => {
       return (
+        
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
             <div className={styles.name}>Ingrédient : {data.name}</div>
@@ -61,7 +68,8 @@ function Ingredient() {
 
   return (
     <div className={styles.container}>
-      header
+      <Header onToggleMenu={toggleMenu}/>
+         {visibleMenu && <Menu/>}
       <div className={styles.search}>
         <input
           className={styles.searchBar}

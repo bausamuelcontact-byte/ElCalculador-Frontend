@@ -27,6 +27,7 @@ function Signin(props) {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data.result) {
       dispatch(login({ token: data.token, id: data.id }));
       router.push("/dashboard");

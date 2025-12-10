@@ -23,7 +23,7 @@ function Menu() {
         {
            title: "Ingredients",
            icon: <MdLocalGroceryStore />,
-           link: "/ingredients"
+           link: "/ingredient"
         },
         {
            title: "Recipes Cards",
