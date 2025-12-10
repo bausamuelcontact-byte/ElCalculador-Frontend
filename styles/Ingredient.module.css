@@ -1,8 +1,8 @@
 .container {
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(31, fr);
-  grid-template-rows: repeat(31, fr);
+  grid-template-columns: repeat(30, fr);
+  grid-template-rows: repeat(30, fr);
 }
 
 .search {
@@ -10,7 +10,7 @@
   grid-row-start: 4;
   grid-row-end: 6;
   grid-column-start: 1;
-  grid-column-end: 32;
+  grid-column-end: 31;
   background-color: red;
   flex-direction: row;
   justify-content: space-around;
@@ -21,18 +21,18 @@
   display: flex;
   flex-direction: column;
   grid-row-start: 6;
-  grid-row-end: 32;
+  grid-row-end: 31;
   grid-column-start: 1;
-  grid-column-end: 15;
+  grid-column-end: 16;
   width: 100%;
   overflow-y: scroll;
 }
 
 .add {
   grid-row-start: 6;
-  grid-row-end: 32;
-  grid-column-start: 15;
-  grid-column-end: 32;
+  grid-row-end: 31;
+  grid-column-start: 16;
+  grid-column-end: 31;
   background-color: pink;
 }
 

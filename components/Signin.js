@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 
-
 function Signin(props) {
   const dispatch = useDispatch();
   const [userEmail, setUserEmail] = useState("");
@@ -25,16 +24,17 @@ function Signin(props) {
         password: userPassword,
       }),
     })
-    .then(response => response.json())
-    .then(data => {
-      if (data.result) {
-      dispatch(login({ token: data.token, id: data.id }));
-      router.push("/dashboard");
-    } else {
-      alert(data.error);
-      console.error("Error:", data.error);
-    }});
-  } 
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          dispatch(login({ token: data.token, id: data.id }));
+          router.push("/recipe");
+        } else {
+          alert(data.error);
+          console.error("Error:", data.error);
+        }
+      });
+  };
 
   return (
     <ReactModal
