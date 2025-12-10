@@ -1,0 +1,39 @@
+.container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: repeat(30, fr);
+  grid-template-rows: repeat(30, fr);
+}
+
+.left {
+  display: flex;
+  grid-row-start: 4;
+  grid-row-end: 31;
+  grid-column-start: 1;
+  grid-column-end: 16;
+  flex-direction: column;
+  align-items: center;
+  background-color: blue;
+}
+
+.inputs {
+  margin-top: 3vh;
+}
+
+.ingredients {
+  display: flex;
+  grid-row-start: 4;
+  grid-row-end: 18;
+  grid-column-start: 16;
+  grid-column-end: 31;
+  background-color: red;
+}
+
+.stat {
+  display: flex;
+  grid-row-start: 18;
+  grid-row-end: 31;
+  grid-column-start: 16;
+  grid-column-end: 31;
+  background-color: purple;
+}
