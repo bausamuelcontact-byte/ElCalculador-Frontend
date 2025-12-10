@@ -8,48 +8,62 @@ import { useRouter } from "next/router";
 import { Popover, Button } from 'antd';
 import { logout } from "../reducers/user";
 
-function Header(){
+
+function Header(props){
   const dispatch = useDispatch();
-  // récupérer les infos utilisateur dans le store
+
   const userInfo = useSelector((state) => state.user.value);
-  // récupérer le nom d'utilisateur pour la session en cours 
+
+  // récupérer les infos utilisateur pour la session en cours 
   const [fistNameDisplay, setFirstNameDisplay] = useState("");
-  // récupérer le nom du restaurant
   const [restaurantName, setRestaurantName] = useState("");
+
   // état pour afficher ou non le popover
   const [visiblePopover, setVisiblePopover] = useState(false);
+
   // router pour redirection
   const router = useRouter();
+
   // fetch des infos utilisateur au chargement du composant
   useEffect(() => {
-    fetch("http://localhost:3000/users/isConnected/" + userInfo.token)
+    if (!userInfo.token) return;
+
+    fetch(`http://localhost:3000/users/isConnected/${userInfo.token}`)
       .then((response) => response.json())
       .then((data) => {
-        setFirstNameDisplay(data.firstname);
-        setRestaurantName(data.restaurantName);
+        console.log("data user info", data.userInfo);
+        setFirstNameDisplay(data.userInfo.firstname);
+        setRestaurantName(data.userInfo.restaurantName);
       });
   }, [userInfo.token]);
+
   // fonction de déconnexion
   const LogOutBtn = () => {
     dispatch(logout());
-    //   router.push("/Login");
-  }
+    router.push("/Signin");
+  };
+
   // contenu du popover
   const popoverContent = (
     <div className={styles.popoverContent}>
       <Button onClick={LogOutBtn}>Log out</Button>
     </div>
   );
+
   // gestion de l'affichage du popover
-  const handlePopoverChange = (visible) => {
-    setVisiblePopover(visible);
+  const handlePopoverChange = () => {
+    setVisiblePopover(prev => !prev);
+  }
+
+  const handleMenuChange = () => {
+    props.onToggleMenu();
   }
 
   return (
     <div className={styles.headerContainer}>
        <div className={styles.headerSection}>
-          <IoMenuOutline className={styles.headerIcons} size={50}/>
-          <h1 className={styles.headerText}>El Calculador</h1>
+          <IoMenuOutline className={styles.headerIcons} size={50} onClick={handleMenuChange}/>
+                    <h1 className={styles.headerText}>El Calculador</h1>
        </div>
        <div className={styles.headerSection}>
           <PiChefHatThin className={styles.headerIcons} size={50}/>
@@ -57,15 +71,14 @@ function Header(){
        </div>    
        <div className={styles.headerSection}>
           <h4 className={styles.headerText}>{fistNameDisplay}</h4>
-          <RxAvatar className={styles.headerIcons} size={50} onClick={()=>{}}/>
+          
           <Popover 
              content={popoverContent} 
              className={styles.popover} 
-             trigger="click" 
              placement="bottomRight" 
              open={visiblePopover} 
-             onOpenChange={handlePopoverChange}>
-            
+             onOpenChange={(open) => setVisiblePopover(open)} >
+            <RxAvatar className={styles.headerIcons} size={50} onClick={handlePopoverChange} />
           </Popover>
        </div>    
     </div>

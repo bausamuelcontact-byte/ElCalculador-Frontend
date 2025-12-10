@@ -1,0 +1,68 @@
+[33mcommit 6176ded8bc0daa213b6291bdea8188881eacb35e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mHouyam/Header[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 402feb2 b494984
+Author: Thomas Morini <thomas.morini@icloud.com>
+Date:   Tue Dec 9 12:19:41 2025 +0100
+
+    Merge branch 'main' of https://github.com/bausamuelcontact-byte/ElCalculador-Frontend
+
+[33mcommit 402feb2632d0c42450eb4cd79c8397620e973ca1[m
+Author: Thomas Morini <thomas.morini@icloud.com>
+Date:   Tue Dec 9 12:18:51 2025 +0100
+
+    modales sign-in et sign-up reliées au back end
+
+[33mcommit b49498431357d4deb29e7de65a6c000621d2dcd9[m
+Merge: 42f6051 d0c6acf
+Author: Houyam <houyamsed@gmail.com>
+Date:   Tue Dec 9 12:15:47 2025 +0100
+
+    front3
+
+[33mcommit 42f6051c6559604b3b499db8cd0b5db20afacfca[m
+Author: Houyam <houyamsed@gmail.com>
+Date:   Tue Dec 9 12:05:12 2025 +0100
+
+    front3
+
+[33mcommit d0c6acf515eeb5dd8a570f8e311a1e86eb06dc5d[m
+Merge: f735138 3638ddc
+Author: Sam <bau.samuel.contact@gmail.com>
+Date:   Tue Dec 9 12:00:39 2025 +0100
+
+    test
+
+[33mcommit f73513817a58da4382e37330b609b25d9159de0c[m
+Author: Sam <bau.samuel.contact@gmail.com>
+Date:   Tue Dec 9 11:57:27 2025 +0100
+
+    test
+
+[33mcommit 3638ddc1ada148381db471d6a6f133a15007849d[m
+Author: Thomas Morini <thomas.morini@icloud.com>
+Date:   Mon Dec 8 19:30:45 2025 +0100
+
+    ajout animations modales open/closee
+
+[33mcommit 35b72771c4f88658e98ab00f9512bac97ea5d57b[m
+Author: Thomas Morini <thomas.morini@icloud.com>
+Date:   Mon Dec 8 19:10:14 2025 +0100
+
+    En cours : ajout des modales de inscription/connexion
+
+[33mcommit b1cb65729e6ee5877fb70d1ab9e531b7bcd3e227[m
+Author: Thomas Morini <thomas.morini@icloud.com>
+Date:   Mon Dec 8 15:35:15 2025 +0100
+
+    first draft Homepage
+
+[33mcommit eda720c605136abeb6008db76a9f18dfa6cc7bfc[m
+Author: Houyam <houyamsed@gmail.com>
+Date:   Mon Dec 8 15:27:24 2025 +0100
+
+    front1
+
+[33mcommit 1e79624aca4e3e7b0a2bffa3d6da637163485f3c[m
+Author: Sam <bau.samuel.contact@gmail.com>
+Date:   Mon Dec 8 09:24:41 2025 +0100
+
+    test
