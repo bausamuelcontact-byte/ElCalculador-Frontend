@@ -18,7 +18,7 @@ function Menu() {
     {
       title: "Recipes",
       icon: <MdOutlineRestaurant />,
-      link: "/recipes",
+      link: "/recipe",
     },
     {
       title: "Ingredients",
