@@ -3,7 +3,7 @@
     height: 100vh; /* hauteur de la page sous le header */
     background-color: #f5f4e1;
     position: fixed;
-    top: 112px;
+    top: 70px;
     left: 0;
     z-index: 1000;      /* passe au-dessus du contenu */
     box-shadow: 2px 0 5px rgba(0,0,0,0.2);

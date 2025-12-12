@@ -31,7 +31,7 @@ function Header(props){
     fetch(`http://localhost:3000/users/isConnected/${userInfo.token}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("data user info", data.userInfo);
+        // console.log("data user info", data.userInfo);
         setFirstNameDisplay(data.userInfo.firstname);
         setRestaurantName(data.userInfo.restaurantName);
       });

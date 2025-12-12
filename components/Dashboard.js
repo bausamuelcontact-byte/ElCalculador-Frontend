@@ -2,36 +2,146 @@ import styles from "../styles/Dashboard.module.css";
 import Header from '../components/Header';
 import Menu from '../components/Menu';
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Cell, Pie, PieChart, PieLabelRenderProps } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 function Dashboard(){
   const[visibleMenu, setVisibleMenu] = useState(false);
-  const toggleMenu = () => {
-    setVisibleMenu(!visibleMenu);
-  };
-  const userInfo = useSelector((state) => state.user.value);
-  const[recipeList, setRecipeList] = useState([]);
+  const toggleMenu = () => { setVisibleMenu(!visibleMenu)};
 
+  const userInfo = useSelector((state) => state.user.value);
+
+  const [selectedOption, setSelectedOption] = useState('');
+  const [recipeList, setRecipeList] = useState([]);
+  const [selectedRecipe, setSelectedRecipe] = useState(null);
+  const [selectedRecipeName, setSelectedRecipeName] = useState('');
+  const [selectedRecipePrice, setSelectedRecipePrice] = useState(null);
+  const [selectedRecipeTVA, setSelectedRecipeTVA] = useState(null);
+  
+  const [ingredientList, setIngredientList] = useState([]);
+  const [recipeIngredients, setRecipeIngredients] = useState([]); 
+  // Etat pour stockage des données du coût de la recette
+  const [recipeCostData, setRecipeCostData] = useState([]);
+ 
   useEffect(() => {
-    console.log("userInfo dans dashboard:", userInfo.id);
-    fetch(`http://localhost:3000/recipes/6936e4807da7893fdf4791e9`)
+    fetch(`http://localhost:3000/recipes/${userInfo.id}`)
       .then((response) => response.json())
         .then((data) => {
-            console.log(data)
             setRecipeList(data.recipe);
         });
   }, []);
 
-  const dropOptions =  
-    { Overview: [] ,
-      Recipes: recipeList } 
-;
-  
-  const [selectedOption, setSelectedOption] = useState('');
+  const dropOptions = { Overview: [] , Recipes: recipeList };
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
+  // données pour le Bar Chart
+  const averageCatPrice = [
+      { category: 'Boisson', averagePrice: 10, TVA: 2, },
+      { category: 'Entrée', averagePrice: 12, TVA: 3,},
+      { category: 'Plat', averagePrice: 15, TVA: 4 },
+      { category: 'Dessert', averagePrice: 10, TVA: 2 },
+    ];
+  
+  const handleOptionChange = (e) => { setSelectedOption(e.target.value);};
+
+  const handleRecipeClick = (recipe) => {
+    setSelectedRecipe(recipe);
+    setSelectedRecipeName(recipe.name);
+    setSelectedRecipePrice(recipe.price);
+    setSelectedRecipeTVA(recipe.TVA);
+    setRecipeIngredients(recipe.ingredients);
+    // fetch des ingrédients pour la recette sélectionnée
+    fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
+      .then((response) => response.json())
+        .then((data) => {
+            const allIngredients = data.ingredient;// console.log("IDs de la recette :", recipe.ingredients.map(i => i.ingredient)); // console.log("IDs des ingrédients récupérés :", allIngredients.map(i => i._id));
+            // filtrage des ingrédients utilisés dans la recette
+            const filteredIngredients = allIngredients.filter(ing => 
+              recipe.ingredients.some(recIng => recIng.ingredient.toString() === ing._id.toString())
+            );
+            setIngredientList(filteredIngredients);// console.log("filteredIngredients", filteredIngredients);
+            // calcul du prix des ingrédients pour la recette sélectionnée
+            const cost = ingredientPriceCalcul(recipe.ingredients, filteredIngredients);
+            setRecipeCostData(cost);
+        });
+  }
+  
+  // Conversion des unités de mesure
+  const unitConvertion = (ingrUnit, recipeUnit, quantity) => {
+    if (ingrUnit === recipeUnit) {
+      return quantity;
+    } else if (ingrUnit === 'kg' && recipeUnit === 'gr') {
+      return quantity / 1000;
+    }else if( ingrUnit === 'gr' && recipeUnit === 'kg'){
+      return quantity * 1000;
+    }else if( ingrUnit === 'L' && recipeUnit === 'cL'){
+      return quantity / 100;
+    } else if( ingrUnit === 'mL' && recipeUnit === 'cL'){
+      return quantity * 10;
+    } else if( ingrUnit === 'cL' && recipeUnit === 'L'){
+      return quantity * 100;
+    } else if( ingrUnit === 'cL' && recipeUnit === 'mL'){
+      return quantity / 10;
+    } else if( ingrUnit === 'L' && recipeUnit === 'mL'){
+      return quantity * 1000;
+    } else if( ingrUnit === 'mL' && recipeUnit === 'L'){
+      return quantity / 1000;
+    }else if( ingrUnit === 'Kg' && recipeUnit === 'mg'){
+      return quantity * 1e6;
+    } else if( ingrUnit === 'mg' && recipeUnit === 'Kg'){
+      return quantity / 1e6;
+    } else if( ingrUnit === 'gr' && recipeUnit === 'mg'){
+      return quantity * 1000;
+    } else if( ingrUnit === 'mg' && recipeUnit === 'gr'){
+      return quantity / 1000;
+    } else {
+      console.log("Pas de conversion disponible", ingrUnit, quantity); 
+      return quantity;
+    }
+  }
+  
+  // Calcul du prix des ingrédients pour la recette sélectionnée
+  const ingredientPriceCalcul = (recipeIngredients, ingredientList)=>{
+    const recipeCost = [];
+
+    recipeIngredients.forEach((recIng) => {
+      const ingrDetail = ingredientList.find(ing => ing._id.toString() === recIng.ingredient.toString());
+      if (!ingrDetail) { console.warn("Ingredient introuvable pour", recIng);
+        return;
+      }
+      // Conversion de l'unité de mesure de l'ingrédient si nécessaire
+      const adjustedQuantity = unitConvertion(ingrDetail.unit, recIng.unit, recIng.quantity);
+      // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
+      const price = ( ingrDetail.price * adjustedQuantity ) / ingrDetail.quantity;
+      // calcul de la TVA pour cet ingrédient
+      const TVA = ( ingrDetail.TVA * adjustedQuantity ) / ingrDetail.quantity;
+      const ingrCost = price + TVA;
+      recipeCost.push({ name: ingrDetail.name, value: ingrCost }); 
+    })
+    return recipeCost; 
+  }
+
+  // Données pour le PieChart
+  const pieData = recipeCostData.map(e => ({ name: e.name, value: e.value }));
+  
+  const RADIAN = Math.PI / 180;
+  const COLORS = ['#e2d6adb5', '#2f0801a8', '#f9d27eff', '#70643bb5'];
+  // Afficher les labels personnalisés
+  const renderCustomizedLabel = (props) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
+  if (cx == null || cy == null || innerRadius == null || outerRadius == null) {
+    return null;
+  }
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  return (
+    <text x={x} y={y} fill="#222" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central"
+          style={{ fontSize: "13px", fontWeight: "500", }}>
+        {`${name} —${(percent * 100).toFixed(2)}%`}
+    </text>
+  );
+};
 
   return (
       <div className={styles.pageContainer}>
@@ -45,16 +155,57 @@ function Dashboard(){
               style={{ fontStyle: selectedOption === "" ? 'italic' : 'normal' }}>
               <option value="">Select an option</option>
               {Object.keys(dropOptions).map((n)=>{ return (<option key={n} value={n} >{n}</option>); })}
-               </select>
-               <div>
-                 {selectedOption==="Recipes" && recipeList.map((data, i) =>( 
-                        <li key={i} className={styles.recipesDisplay}>{data.name}</li>))}
-                 {selectedOption==="Overview" && <div className={styles.overviewDisplay}>No data available</div>}
-           </div>
-
+            </select>
+            <div>
+              {selectedOption==="Overview" && 
+                 <div className={styles.overviewDisplay}>
+                   <div className={styles.categoryAverage}>
+                     <h3> Moyenne des prix par catégorie </h3>
+                        <BarChart
+                           style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
+                           responsive
+                           data={averageCatPrice}
+                           margin={{ top: 20, right: 0, left: 0, bottom: 5 }} >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="category" />
+                          <YAxis width="auto" />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="averagePrice" stackId="a" fill="#2f0801a8" background />
+                          <Bar dataKey="TVA" stackId="a" fill="#cebd84c3" background />
+                        </BarChart>
+                   </div>
+                 </div>}
+              {selectedOption==="Recipes" && recipeList.map((data, i) =>( 
+                <li key={i} className={styles.recipesDisplay} onClick={()=>handleRecipeClick(data)} value={data}>{data.name}</li>))
+              }
+            </div>
           </div>
+          {selectedRecipe &&
+            <div className={styles.recipePrice}>
+            <h3> Composition du prix de {selectedRecipeName} </h3>
+              <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1, }} responsive>
+                 <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label={renderCustomizedLabel}
+                    labelLine={false}
+                  >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]}/>
+                  ))}
+                </Pie>
+              </PieChart>
+            </div>}
+
         </div>
-      </div>)
+      </div>
+  )
 }
 
 export default Dashboard;

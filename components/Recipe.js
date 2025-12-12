@@ -48,7 +48,7 @@ function Recipe() {
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
     return (
-      <option key={i} value={data.name}>
+      <option key={i} value={data._id}>
         {data.name}
       </option>
     );
@@ -64,7 +64,12 @@ function Recipe() {
   });
 
   function handleAddIngredient() {
-    setIngredientTotal([...ingredientTotal, ingredient]);
+    const newIngredient = {
+      ingredient: ingredient,
+      quantity: quantity,
+      unit: unit,
+    };
+    setIngredientTotal([...ingredientTotal, newIngredient]);
     console.log(ingredientTotal);
   }
 
@@ -146,6 +151,13 @@ function Recipe() {
           >
             Ajouter un ingrédient
           </button>
+          
+            {ingredientTotal.map((data, i) => (
+              <div key={i}>
+                {data.ingredient} - {data.quantity} {data.unit}
+              </div>
+            ))}
+          
           <select
             className={styles.inputs}
             onChange={(e) => {
