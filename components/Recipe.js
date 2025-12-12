@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
+import { Dropdown } from "semantic-ui-react";
+import Header from "./Header";
+import Menu from "./Menu";
+import { FaRegEdit } from "react-icons/fa";
+import { IconBase } from "react-icons/lib";
 
 function Recipe() {
   const [categories, setCategories] = useState([]);
@@ -17,8 +22,16 @@ function Recipe() {
   const [tva, setTva] = useState();
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("");
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [selected, setSelected] = useState([]);
+  const [visibleMenu, setVisibleMenu] = useState(false);
+  const [ingredientRecipe, setIngredientRecipe] = useState([]);
 
   const user = useSelector((state) => state.user.value);
+
+  const toggleMenu = () => {
+    setVisibleMenu(!visibleMenu);
+  };
 
   // recuperation des ingrédients
   useEffect(() => {
@@ -42,6 +55,7 @@ function Recipe() {
       .then((response) => response.json())
       .then((data) => {
         console.log("ingredient =>", data);
+        setIngredientRecipe(data.recipe);
       });
   }, []);
 
@@ -63,16 +77,7 @@ function Recipe() {
     );
   });
 
-  function handleAddIngredient() {
-    const newIngredient = {
-      ingredient: ingredient,
-      quantity: quantity,
-      unit: unit,
-    };
-    setIngredientTotal([...ingredientTotal, newIngredient]);
-    console.log(ingredientTotal);
-  }
-
+  //Création de la recette
   function handleAddRecipe() {
     fetch("http://localhost:3000/recipes", {
       method: "POST",
@@ -82,18 +87,66 @@ function Recipe() {
         price: price,
         allergens: allergen,
         ingredients: ingredientTotal,
-        user: user.id,
-        TVA: tva,
+        id: user.id,
+        tva: tva,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("data", data);
       });
+    console.log("valeur", selectedValues);
   }
+
+  function handleAddIngredient() {
+    const newIngredient = {
+      ingredient: ingredient,
+      quantity: quantity,
+      unit: unit,
+    };
+    setIngredientTotal([...ingredientTotal, newIngredient]);
+    console.log("total", ingredientTotal);
+  }
+  console.log("ingredientRecipe =>", ingredientRecipe);
+
+  //Affichage des ingrédient de la recette à droite
+  const ingredientDisplay = ingredientTotal.map((data, i) => {
+    return (
+      <div className={styles.ingredient} key={i}>
+        <div className={styles.NameIngredient}>
+          <div className={styles.name}>
+            <span className={styles.description}>Ingrédient : </span>
+            {data.name}
+          </div>
+          <div>
+            <span className={styles.description}>Prix : </span>
+            {data.price}€
+          </div>
+        </div>
+        <div className={styles.bottom}>
+          <div>
+            <span className={styles.description}>Quantité : </span>
+            {data.quantity}
+            <span> </span>
+            {data.unit}
+          </div>
+          <div>
+            <FaRegEdit
+              className={styles.modify}
+              onClick={() => {
+                handleCreationFalse(data);
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  });
 
   return (
     <div className={styles.container}>
+      <Header onToggleMenu={toggleMenu} />
+      {visibleMenu && <Menu />}
       {isBob ? (
         <div className={styles.left}>
           <input
@@ -142,12 +195,13 @@ function Recipe() {
             <option value="L">L</option>
             <option value="cL">cL</option>
             <option value="mL">mL</option>
-            <option value="Piece">Pièce</option>
+            <option value="Piece">Pièce(s)</option>
           </select>
           <button
             onClick={() => {
               handleAddIngredient();
             }}
+            className={styles.btn}
           >
             Ajouter un ingrédient
           </button>
@@ -180,6 +234,7 @@ function Recipe() {
             <option value={"Lupin"}>Lupin</option>
             <option value={"Mollusques"}>Mollusques</option>
           </select>
+
           <input
             placeholder="Prix"
             className={styles.inputs}
@@ -201,6 +256,7 @@ function Recipe() {
             onClick={() => {
               handleAddRecipe();
             }}
+            className={styles.btn}
           >
             Créer une recette
           </button>
@@ -208,7 +264,7 @@ function Recipe() {
       ) : (
         <div></div>
       )}
-      <div className={styles.ingredients}>Hello</div>
+      <div className={styles.ingredients}>{ingredientDisplay}</div>
       <div className={styles.stat}>Hi there</div>
     </div>
   );

@@ -3,6 +3,7 @@
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 1;
+<<<<<<< HEAD
   grid-column-end: 32;
   align-items: center;
   justify-content: space-between;
@@ -10,18 +11,25 @@
   background-color: #2F0801;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   height:70px;
+=======
+  grid-column-end: 31;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #2f0801;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+>>>>>>> 839e1fb36a39a4b85e28e0ad84ebbc55efe00df4
 }
+
 .headerText {
   color: #f5eadfde;
-  font-family: 'Poiret One', cursive;
+  font-family: "Poiret One", cursive;
   font-weight: lighter;
 }
-.headerIcons{
+.headerIcons {
   color: #cfb86dbd;
 }
-.headerSection{
+.headerSection {
   display: flex;
   align-items: center;
   gap: 1rem;
-
 }
