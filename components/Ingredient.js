@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import Header from "./Header";
 import Menu from "./Menu";
 import { FaRegEdit } from "react-icons/fa";
@@ -10,6 +11,13 @@ import { IconBase } from "react-icons/lib";
 
 function Ingredient() {
   const [visibleMenu, setVisibleMenu] = useState(false);
+=======
+import Header from '../components/Header';
+import Menu from '../components/Menu';
+
+function Ingredient() {
+  const[visibleMenu, setVisibleMenu] = useState(false);
+>>>>>>> a075d7ebefa38d7cc8bde4c6464e66d54ed0a424
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
   };
@@ -43,6 +51,7 @@ function Ingredient() {
     .filter((e) => e.name.includes(searchIngredient))
     .map((data, i) => {
       return (
+        
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
             <div className={styles.name}>
@@ -76,9 +85,8 @@ function Ingredient() {
 
   return (
     <div className={styles.container}>
-      <Header onToggleMenu={toggleMenu} />
-      {visibleMenu && <Menu />}
-
+      <Header onToggleMenu={toggleMenu}/>
+         {visibleMenu && <Menu/>}
       <div className={styles.search}>
         <input
           className={styles.searchBar}

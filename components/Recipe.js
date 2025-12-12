@@ -205,6 +205,13 @@ function Recipe() {
           >
             Ajouter un ingrédient
           </button>
+          
+            {ingredientTotal.map((data, i) => (
+              <div key={i}>
+                {data.ingredient} - {data.quantity} {data.unit}
+              </div>
+            ))}
+          
           <select
             className={styles.inputs}
             onChange={(e) => {
