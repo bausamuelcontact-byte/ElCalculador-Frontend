@@ -3,8 +3,16 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
+import Header from "./Header";
+import Menu from "./Menu";
+import { FaRegEdit } from "react-icons/fa";
+import { IconBase } from "react-icons/lib";
 
 function Ingredient() {
+  const [visibleMenu, setVisibleMenu] = useState(false);
+  const toggleMenu = () => {
+    setVisibleMenu(!visibleMenu);
+  };
   const [ingredients, setIngredients] = useState([]);
   const [searchIngredient, setSearchIngredient] = useState([]);
   const [isCreation, setIsCreation] = useState(true);
@@ -37,22 +45,29 @@ function Ingredient() {
       return (
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
-            <div className={styles.name}>Ingrédient : {data.name}</div>
-            <div>Prix : {data.price}€</div>
+            <div className={styles.name}>
+              <span className={styles.description}>Ingrédient : </span>
+              {data.name}
+            </div>
+            <div>
+              <span className={styles.description}>Prix : </span>
+              {data.price}€
+            </div>
           </div>
           <div className={styles.bottom}>
             <div>
-              Quantité : {data.quantity}
+              <span className={styles.description}>Quantité : </span>
+              {data.quantity}
+              <span> </span>
               {data.unit}
             </div>
             <div>
-              <button
+              <FaRegEdit
+                className={styles.modify}
                 onClick={() => {
                   handleCreationFalse(data);
                 }}
-              >
-                Modifier
-              </button>
+              />
             </div>
           </div>
         </div>
@@ -61,7 +76,9 @@ function Ingredient() {
 
   return (
     <div className={styles.container}>
-      header
+      <Header onToggleMenu={toggleMenu} />
+      {visibleMenu && <Menu />}
+
       <div className={styles.search}>
         <input
           className={styles.searchBar}
@@ -71,11 +88,11 @@ function Ingredient() {
           }}
           value={searchIngredient}
         ></input>
-        <button className={styles.btnIA} onClick={() => {}}>
+        <button className={styles.btn} onClick={() => {}}>
           Ajouter ingrédient grâce à l'IA
         </button>
         <button
-          className={styles.btnAddTop}
+          className={styles.btn}
           onClick={() => {
             handleCreationTrue();
           }}
