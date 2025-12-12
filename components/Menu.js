@@ -23,12 +23,12 @@ function Menu() {
         {
            title: "Ingredients",
            icon: <MdLocalGroceryStore />,
-           link: "/ingredients"
+           link: "/ingredient"
         },
         {
            title: "Recipes Cards",
            icon: <MdOutlineCardMembership />,
-           link: "/cards"
+           link: "/recipecard"
         },
         {
            title: "Price evolution",

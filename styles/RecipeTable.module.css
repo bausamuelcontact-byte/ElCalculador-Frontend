@@ -1,0 +1,31 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.row {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid color-mix(in srgb, #463F32 50%, white);
+}
+
+.header {
+  font-weight: bold;
+  border-bottom: 2px solid #463F32;
+}
+
+.col {
+  flex: 1;
+}
+
+.total {
+  margin-top: 12px;
+  font-weight: bold;
+  text-align: right;
+  font-size: 1.1rem;
+  margin-right: 5%;
+}

@@ -1,0 +1,231 @@
+.pageContainer {
+  display: grid;
+  grid-template-rows: auto 1fr; 
+  height: 100vh; 
+  overflow: hidden
+}
+
+.recipeCardWrapper{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.recipeCardPageFull{
+    width: 100vw; /* largeur de la page sans le menu latéral */
+    height : calc(100vh - 100px); /* hauteur de la page sous le header */
+}
+
+.recipeCardPageMenu{ 
+    width: calc(100vw - 300px); /* largeur de la page avec le menu latéral */
+    height : calc(100vh - 100px); /* hauteur de la page sous le header */
+}
+
+.recipeCardContainer {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: repeat(11, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.searchBar {
+    grid-row: 1 / 2;
+    grid-column: 1 / 13;
+    border-bottom: 1px solid #463F32;
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+    background-color: #fff9ef;
+    width:100%;
+    height:100%;
+}
+
+.searchWrapper {
+    width: 70%;
+    height: 70%;
+    border-radius: 20px;
+    background-color: #ffffff;
+    border: 1px solid #463F32;
+    font-size: 16;
+    padding-left: 1%;
+    padding-right: 1%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.searchInput {
+    border: 0px;
+    width: 95%;
+    height: 98%;
+    font-size: 16;
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+.recipeCardDisplayer {
+    grid-row: 2 / 12;
+    grid-column: 1 / 5;
+    border-right: #463F32 2px solid;
+    background-color: #fff9ef;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1%;
+}
+
+.recipeCardDisplayed {
+    width: 90%;
+    height: 10%;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #463F32;
+    font-size: 16;
+    margin: 1%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 2%;
+    padding-right: 2%
+}
+
+.editIcons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width:10%;
+}
+
+.editPencil{
+    color: #463F32;
+}
+
+.editPencil:hover {
+    color: color-mix(in srgb, #463F32 70%, white);
+    cursor: pointer;
+}
+
+.editTrash{
+    color: #463F32;
+}
+
+.editTrash:hover {
+    color: color-mix(in srgb, #463F32 70%, white);
+    cursor: pointer;
+}
+
+.recipeCardEditor {
+    grid-row: 2 / 12;
+    grid-column: 5 / 13;
+    background-color: #fff9ef;
+    display: grid;
+    grid-template-rows: repeat(15, 1fr);
+    grid-template-columns: repeat(16, 1fr);
+    padding: 1%;
+    gap: 1%;
+}
+
+.selectRecipe {
+    grid-row: 1 / 2;
+    grid-column: 1 / 6;
+    border: 1px solid #463F32;
+}
+
+.selectRecipeDropdown {
+    width: 100%;
+    height: 100%;
+    font-size: 16;
+    border: 0px;
+    padding-left: 1%;
+}
+
+.selectRecipeDropdown:focus {
+    outline: none;
+}
+
+.priceFrame {
+    grid-row: 1/4;
+    grid-column: 6/14;
+    border: 1px solid #463F32;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    padding:1%;
+}
+
+.priceRecipe {
+    font-size: 18;
+    margin-top: 1.5%;
+    margin-bottom: 5%;
+    font-weight: bold;
+}
+
+.priceSale {
+    font-size: 16;
+}
+
+.photoFrame {
+    grid-row: 1/4;
+    grid-column: 14/17;
+    border: 1px solid #463F32;
+    background-color: #ffffff;
+}
+
+.stepsFrame {
+    grid-row: 4/15;
+    grid-column: 1/9;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px #d3d3d3;
+    margin-top: 3%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%
+}
+
+.adaptableButtonContainer {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.adaptableButton {
+    font-size: 16;
+    border-radius: 10px;
+    background-color: #D4AF37;
+    color: white;
+    width: 20%;
+    border:1px solid #463F32;
+    align-self: end;
+    margin-bottom: 2%
+}
+
+.adaptableButton:hover {
+    cursor: pointer
+}
+
+.adaptableButton:active {
+    background-color: color-mix(in srgb, #D4AF37 70%, rgb(0, 0, 0));
+}
+
+.ingredientsFrame {
+    grid-row: 4/15;
+    grid-column: 9/17;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px #d3d3d3;
+    margin-top: 3%;
+    width: 100%;
+    height: 100%
+}
+
