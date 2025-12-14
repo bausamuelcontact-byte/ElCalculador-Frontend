@@ -1,8 +1,8 @@
 .container {
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(30, fr);
-  grid-template-rows: repeat(30, fr);
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(30, 1fr);
   background-color: #fffffb;
 }
 
@@ -95,4 +95,26 @@
 .bottom {
   display: flex;
   justify-content: space-between;
+}
+ .category {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* border: 2px solid red;  */
+  padding: 5px 10px;     
+  border-radius: 5px;    
+  gap: 10px; 
+  
+ }
+
+ .category select {
+  height: 20px;                    
+    margin-top:12px
+}
+
+.category svg {
+  vertical-align: bottom;
+  cursor: pointer;
+  color: #b39530e9;                 
 }

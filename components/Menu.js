@@ -8,7 +8,7 @@ import { MdOutlineCardMembership } from "react-icons/md";
 
 import { MdEuro } from "react-icons/md";
 
-function Menu() {
+function Menu({}) {
   const MenuData = [
     {
       title: "Dashboard",

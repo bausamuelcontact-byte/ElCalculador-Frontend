@@ -29,7 +29,7 @@ function Signin(props) {
       console.log(data)
       if (data.result) {
       dispatch(login({ token: data.token, id: data.id }));
-      router.push("/dashboard");
+      router.push("/recipe");
     } else {
       alert(data.error);
       console.error("Error:", data.error);
