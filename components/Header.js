@@ -17,6 +17,7 @@ function Header(props){
   // récupérer les infos utilisateur pour la session en cours 
   const [fistNameDisplay, setFirstNameDisplay] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   // état pour afficher ou non le popover
   const [visiblePopover, setVisiblePopover] = useState(false);
@@ -34,6 +35,7 @@ function Header(props){
         console.log("data user info", data.userInfo);
         setFirstNameDisplay(data.userInfo.firstname);
         setRestaurantName(data.userInfo.restaurantName);
+        setAvatarUrl(data.userInfo.avatar);
       });
   }, [userInfo.token]);
 
@@ -78,7 +80,14 @@ function Header(props){
              placement="bottomRight" 
              open={visiblePopover} 
              onOpenChange={(open) => setVisiblePopover(open)} >
-            <RxAvatar className={styles.headerIcons} size={50} onClick={handlePopoverChange} />
+            {!avatarUrl ? (<RxAvatar className={styles.headerIcons} size={50} onClick={handlePopoverChange} />) : (
+              <img 
+                src={avatarUrl} 
+                alt="User Avatar" 
+                className={styles.avatarImage} 
+                onClick={handlePopoverChange}
+              />
+             )}
           </Popover>
        </div>    
     </div>

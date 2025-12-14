@@ -62,6 +62,11 @@
     margin-left:3%
 }
 
+.eyeIcon:hover {
+    cursor: pointer;
+    color : grey
+}
+
 .buttonSignin {
     margin-top: 5%;
     width: 35%;
@@ -90,4 +95,15 @@
 .buttonSignin:active {
   transform: translateY(2px);
   box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }

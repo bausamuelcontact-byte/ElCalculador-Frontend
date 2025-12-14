@@ -2,7 +2,7 @@ import styles from "../styles/RecipeCard.module.css";
 import Header from './Header';
 import Menu from './Menu';
 import { useState } from "react";
-import { FaPencilAlt, FaTrashAlt, FaSearch } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt, FaSearch, FaImage } from "react-icons/fa";
 import RecipeTable from "./RecipeTable";
 import RecipeSteps from "./RecipeSteps";
 
@@ -44,13 +44,13 @@ function RecipeCard() {
 
   // gérer la création / Update de fiche recette :
  const handleRecipeCard = () => {
-
+  
   // on entre en mode édition quand on est en mode affichage
   if (!editMode) {
-    setNewSteps(() => {
+    setNewSteps(() => { // setNewSteps pré-remplit les 10 inputs avec les étapes existantes
       const padded = Array(10).fill("");
       recipeCardSteps.forEach((step, index) => {
-        if (index < 10) padded[index] = step;
+        if (index < 10) padded[index] = step; // on copie les étapes (si existantes) dans padded jusqu'à 10 étapes maximum
       });
       return padded;
     });
@@ -64,15 +64,15 @@ function RecipeCard() {
   // nettoyer les étapes vides ou par défaut
   const cleanedSteps = newSteps.filter(step => step.trim() !== "" && step.trim() !== "Pas de fiche recette existante.");
 
-  // si les étapes sont toutes vides, on ne touche à rien
+  // si les étapes sont toutes vides, on n'envoie rien au backend
   if (cleanedSteps.length === 0) {
     setEditMode(false);
     return;
   }
 
-  setRecipeCardSteps(cleanedSteps)
+  setRecipeCardSteps(cleanedSteps) 
   setEditMode(false);
-  const method = existingRecipeCard ? "PUT" : "POST";
+  const method = existingRecipeCard ? "PUT" : "POST"; // si fiche recette existe, on modifie (PUT), sinon on crée (POST)
   fetch(`http://localhost:3000/recipeCards`, {
     method,
     headers: { "Content-Type": "application/json" },
@@ -91,6 +91,17 @@ function RecipeCard() {
       // re-render central
       setExistingRecipeCard(true);
 
+      // upload image si sélectionnée
+      const recipeCardId = data.recipeCard?._id || data.recipeCard?.id;
+      if (recipeImageFile && recipeCardId) {
+      const formData = new FormData();
+      formData.append("image", recipeImageFile);
+      fetch(`http://localhost:3000/recipeCards/${recipeCardId}/image`, {
+      method: "PUT",
+      body: formData,
+       });
+      }
+
       // re-render liste gauche
       fetch(`http://localhost:3000/recipeCards/${userInfo.id}`)
         .then(res => res.json())
@@ -105,39 +116,38 @@ function RecipeCard() {
 // et la recette associée est sélectionnée dans le menu déroulant
 
 const handleEditRecipeCard = (recipeFromCard) => {
-  if (editMode) return; // éviter les conflits en mode édition
+  if (editMode) return; // sécurité : éviter les conflits en mode édition
 
-  const fullRecipe = recipesUser.find(r => r._id === recipeFromCard._id);
-  if (!fullRecipe) return;
+  const fullRecipe = recipesUser.find(r => r._id === recipeFromCard._id); // retrouver la recette complète associée à la fiche recette
+  if (!fullRecipe) return; // sécurité : si la recette n'est pas trouvée, on sort (ne devrait pas arriver)
 
-  // sync prix/TVA + recette (comme la dropdown)
+  // synchroniser prix/TVA + recette (comme la dropdown)
   setRecipeSalePrice(fullRecipe.price);
   setRecipeTVA(fullRecipe.TVA);
 
   // récupérer la fiche recette (steps) depuis la liste gauche
   const recipeCard = recipeCardsUser.find(rc => rc.recipe._id === fullRecipe._id);
 
+  // si on trouve la fiche recette, on pré-remplit avec les étapes existantes, sinon on retourne le message par défaut
   const steps = recipeCard?.description?.length
     ? recipeCard.description
     : ["Pas de fiche recette existante."];
 
-  setExistingRecipeCard(!!recipeCard);
+  setExistingRecipeCard(!!recipeCard); // !! → transforme recipeCard en booléen || undefined → false, object → true
   setRecipeCardSteps(steps);
 
   // pré-remplir les 10 inputs AVANT d’activer editMode
   const padded = Array(10).fill("");
   steps
-    .filter(s => s !== "Pas de fiche recette existante.")
-    .slice(0, 10)
-    .forEach((s, i) => (padded[i] = s));
+    .filter(s => s !== "Pas de fiche recette existante.") // on ignore cette valeur par défaut
+    .slice(0, 10) // sécurité : max 10 étapes 
+    .forEach((s, i) => (padded[i] = s)); // On copie les étapes existantes une par une dans padded -> padded[0] = "Étape 1", padded[1] = "Étape 2", etc. 
 
-  setNewSteps(padded);
-
-  setSelectedRecipe(fullRecipe);
+  setNewSteps(padded); 
+  setSelectedRecipe(fullRecipe); 
   setEditMode(true);
 };
 
-  
 const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
 
   fetch(`http://localhost:3000/recipeCards/${recipeCardId}`, {
@@ -152,7 +162,7 @@ const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
       }
 
       // NE TOUCHE AU CENTRE QUE SI
-      // la fiche supprimée concerne la recette affichée
+      // la fiche recette supprimée concerne la recette affichée
       if (selectedRecipe && selectedRecipe._id === recipeId) {
         setExistingRecipeCard(false);
         setRecipeCardSteps(['Pas de fiche recette existante.']);
@@ -192,6 +202,19 @@ const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
 // Récupération des recettes de l'utilisateur connecté (affichage dans le menu déroulant)
   const [recipesUser, setRecipesUser] = useState([]);
   
+// gestion de l'upload photo pour une fiche recette 
+const [recipeImageFile, setRecipeImageFile] = useState(null);
+
+// message de confirmation d'upload
+const [photoUploaded, setPhotoUploaded] = useState(false);
+
+// reset du message de confirmation après 2 secondes
+useEffect(() => {
+  if (!photoUploaded) return;
+  const timer = setTimeout(() => setPhotoUploaded(false), 2000);
+  return () => clearTimeout(timer);
+}, [photoUploaded]);
+
 // Récupération des fiches recettes de l'utilisateur connecté (affichage dans la liste des fiches recettes à gauche)
   useEffect(() => {
     fetch(`http://localhost:3000/recipeCards/${userInfo.id}`, {
@@ -226,7 +249,7 @@ useEffect(() => {
 useEffect(() => {
   if (!selectedRecipe) return;
 
-  const recipeCard = recipeCardsUser.find(
+  const recipeCard = recipeCardsUser.find( 
     rc => rc.recipe._id === selectedRecipe._id
   );
 
@@ -239,7 +262,13 @@ useEffect(() => {
   }
 
 }, [selectedRecipe, recipeCardsUser]);
+// dépendance 1 : selectedRecipe pour charger les étapes lors du changement de recette dans le menu déroulant
+// dépendance 2 : recipeCardsUser pour recharger les étapes après création/modification/suppression de la fiche recette
 
+// fiche recette associée à la recette sélectionnée?
+const currentRecipeCard = selectedRecipe
+  ? recipeCardsUser.find(rc => rc.recipe._id === selectedRecipe._id)
+  : null;
 
     return (
       <div>
@@ -309,7 +338,96 @@ useEffect(() => {
                 <div className={styles.priceSale}>Prix de revient total : <span>{recipeCostPrice}€</span> dont TVA : <span>{totalTVA}€</span></div>
               </div>
               <div className={styles.photoFrame}>
+              {/* IMAGE */}
+              <div className={styles.imageWrapper}>
+                {currentRecipeCard?.image ? (
+                  <img
+                    src={currentRecipeCard.image}
+                    alt="Photo recette"
+                    className={styles.recipeImage}
+                  />
+                ) : (
+                  <div className={styles.imagePlaceholder}>
+                    Aucune photo
+                  </div>
+                )}
               </div>
+              {/* UPLOAD */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  borderTop: "1px solid #463F32",
+                  padding: "4px",
+                }}
+              >
+                <label
+                  htmlFor="recipe-image-input"
+                  style={{ fontSize: 15, cursor: "pointer" }}
+                >
+                  Photo recette
+                </label>
+
+                <input
+                  key={currentRecipeCard?._id}   // 👈 IMPORTANT
+                  id="recipe-image-input"
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={async (e) => {
+                    const file = e.target.files[0];
+                    if (!file || !currentRecipeCard?._id) return;
+
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    console.log("🔥 onChange fired");
+                    const res = await fetch(
+                      `http://localhost:3000/recipeCards/${currentRecipeCard._id}/image`,
+                      {
+                        method: "PUT",
+                        body: formData,
+                      }
+                    );
+                    e.target.value = ""; // reset input (important)
+                    const data = await res.json();
+                    console.log("✅ backend data");
+
+                    if (data.result) {
+                      setRecipeCardsUser((prev) =>
+                        prev.map((rc) =>
+                          rc._id === currentRecipeCard._id
+                            ? { ...rc, image: data.image }
+                            : rc
+                        )
+                      );
+                    console.log("🧠 state update requested");
+                    setPhotoUploaded(true); 
+                    }
+                  }}
+                />
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", marginRight: "20px", marginBottom: "4px"}}>
+                  {photoUploaded && (<div className={styles.fadeIn} style={{ color: "green", fontSize: 13, width:"20px", height:"10px"}}>photo✅</div>)}
+                </div>
+                <FaImage
+                  size={16}
+                  style={{
+                    cursor: currentRecipeCard ? "pointer" : "not-allowed",
+                    opacity: currentRecipeCard ? 1 : 0.4,
+                  }}
+                  onClick={() => {
+                    if (!currentRecipeCard) {
+                      alert("Veuillez créer une fiche recette avant d’ajouter une photo");
+                      return;
+                    }
+                    document.getElementById("recipe-image-input")?.click();
+                  }}
+                />
+              </div>
+            </div>
+            
               <div className={styles.stepsFrame}>
                 <h3 style={{marginLeft: "4%"}}>Étapes de préparation</h3>
                 <RecipeSteps steps={recipeCardSteps} editMode={editMode} newSteps={newSteps} setNewSteps={setNewSteps}/>

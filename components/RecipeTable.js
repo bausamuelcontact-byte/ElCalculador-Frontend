@@ -21,7 +21,6 @@ function RecipeTable({ ingredients, setRecipeCostPrice, setTotalTVA}) {
     setTotalTVA(totalTVA.toFixed(2))
   }, [ingredients]);
 
-
   return (
 
     <div className={styles.container}>
