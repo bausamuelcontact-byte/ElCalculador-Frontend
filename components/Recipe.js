@@ -1,31 +1,36 @@
 import styles from "../styles/Recipe.module.css";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
-import { Dropdown } from "semantic-ui-react";
 import Header from "./Header";
 import Menu from "./Menu";
 import { FaRegEdit } from "react-icons/fa";
 import { IconBase } from "react-icons/lib";
+import ReactModal from "react-modal";
 
 function Recipe() {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState();
+  //Booleen pour visuel création ou modification
   const [isBob, setIsBob] = useState(true);
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [nameRecipe, setNameRecipe] = useState("");
   const [price, setPrice] = useState();
   const [allergen, setAllergen] = useState([]);
+  //entièreté des ingredients dans le menu deroulant
   const [ingredients, setIngredients] = useState([]);
-  const [ingredient, setIngredient] = useState("");
+  //liste des ingrédient qui vont etre dans la recette
   const [ingredientTotal, setIngredientTotal] = useState([]);
   const [tva, setTva] = useState();
-  const [quantity, setQuantity] = useState("");
-  const [unit, setUnit] = useState("");
-  const [selectedValues, setSelectedValues] = useState([]);
-  const [selected, setSelected] = useState([]);
   const [visibleMenu, setVisibleMenu] = useState(false);
   const [ingredientRecipe, setIngredientRecipe] = useState([]);
+  const [ingredient, setIngredient] = useState({
+    name: "",
+    quantity: 0,
+    price: 0,
+    unit: "Kg",
+    tva: 0,
+  });
 
   const user = useSelector((state) => state.user.value);
 
@@ -38,16 +43,16 @@ function Recipe() {
     fetch(`http://localhost:3000/ingredients/search/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.ingredient);
+        console.log("dataIngredeint", data.ingredient);
         setIngredients(data.ingredient);
       });
 
-    //recupération des catégorie
+    //recupération des catégories
     fetch(`http://localhost:3000/categories/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        setCategories(data);
+        setCategories(data.categories);
       });
 
     //recupération des ingrédients dans la recette
@@ -62,7 +67,7 @@ function Recipe() {
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
     return (
-      <option key={i} value={data._id}>
+      <option key={i} value={data.name} price={data.price}>
         {data.name}
       </option>
     );
@@ -92,22 +97,31 @@ function Recipe() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("data", data);
-      });
-    console.log("valeur", selectedValues);
+      .then((data) => {});
+  }
+
+  //Modification d'une recette
+  function handleModificationRecipe() {
+    fetch("http://localhost:3000/recipes", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nameRecipe,
+        price: price,
+        allergens: allergen,
+        ingredients: ingredientTotal,
+        id: user.id,
+        tva: tva,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {});
   }
 
   function handleAddIngredient() {
-    const newIngredient = {
-      ingredient: ingredient,
-      quantity: quantity,
-      unit: unit,
-    };
-    setIngredientTotal([...ingredientTotal, newIngredient]);
-    console.log("total", ingredientTotal);
+    setIngredientTotal([...ingredientTotal, ingredient]);
+    console.log("total", ingredient);
   }
-  console.log("ingredientRecipe =>", ingredientRecipe);
 
   //Affichage des ingrédient de la recette à droite
   const ingredientDisplay = ingredientTotal.map((data, i) => {
@@ -117,10 +131,6 @@ function Recipe() {
           <div className={styles.name}>
             <span className={styles.description}>Ingrédient : </span>
             {data.name}
-          </div>
-          <div>
-            <span className={styles.description}>Prix : </span>
-            {data.price}€
           </div>
         </div>
         <div className={styles.bottom}>
@@ -134,12 +144,30 @@ function Recipe() {
             <FaRegEdit
               className={styles.modify}
               onClick={() => {
-                handleCreationFalse(data);
+                setIsVisibleModal(!isVisibleModal);
               }}
             />
           </div>
         </div>
       </div>
+    );
+  });
+
+  // Change la valeur d'une propriété pour la Création
+  const handleChangeCreation = (field, value) => {
+    setIngredient((prev) => ({ ...prev, [field]: value }));
+  };
+
+  //Affichage du tableau bas gauche
+  const ingredientArray = ingredientTotal.map((data, i) => {
+    let priceUse = data.price / data.quantity;
+    console.log("ingredient array =>", data);
+    return (
+      <tr className={styles.ligne}>
+        <td className={styles.ligne}>{data.name}</td>
+        <td className={styles.ligne}>{priceUse}</td>
+        <td className={styles.ligne}>{data.name}</td>
+      </tr>
     );
   });
 
@@ -166,28 +194,65 @@ function Recipe() {
             <option value={null}>Categorie</option>
             {categ}
           </select>
-          <select
-            className={styles.inputs}
-            onChange={(e) => {
-              setIngredient(e.target.value);
-            }}
-          >
-            <option value={null}>Ingrédient</option>
-            {ingr}
-          </select>
+          <div>
+            <select
+              className={styles.inputs}
+              onChange={(e) => {
+                handleChangeCreation("name", e.target.value),
+                  handleChangeCreation("price", e.target.price);
+              }}
+              value={ingredient?.name || ""}
+              price={ingredient?.price || ""}
+            >
+              <option value={null}>Ingrédient</option>
+              {ingr}
+            </select>
+            <FaRegEdit
+              className={styles.modify}
+              onClick={() => {
+                setIsVisibleModal(!isVisibleModal);
+              }}
+            />
+            <ReactModal
+              isOpen={isVisibleModal}
+              closeTimeoutMS={250}
+              shouldCloseOnEsc={true}
+              shouldCloseOnOverlayClick={true}
+              onRequestClose={() => setIsVisibleModal(false)}
+              style={{
+                overlay: {
+                  position: "fixed",
+                },
+                content: {
+                  position: "absolute",
+                  top: "17%",
+                  left: "35%",
+                  right: "35%",
+                  bottom: "17%",
+                  border: "1px solid #ccc",
+                  background: "#fff",
+                  overflow: "auto",
+                  WebkitOverflowScrolling: "touch",
+                  borderRadius: "4px",
+                  outline: "none",
+                  padding: "20px",
+                },
+              }}
+            >
+              <ChangeIngredient Creation={isVisibleModal} />
+              <button onClick={() => setIsVisibleModal(false)}>Close</button>
+            </ReactModal>
+          </div>
           <input
             placeholder="Quantité"
             className={styles.inputs}
-            onChange={(e) => {
-              setQuantity(e.target.value);
-            }}
-            value={quantity}
+            onChange={(e) => handleChangeCreation("quantity", e.target.value)}
+            value={ingredient?.quantity || ""}
           ></input>
           <select
             className={styles.inputs}
-            onChange={(e) => {
-              setUnit(e.target.value);
-            }}
+            onChange={(e) => handleChangeCreation("unit", e.target.value)}
+            value={ingredient?.unit || ""}
           >
             <option value="Kg">Kg</option>
             <option value="gr">gr</option>
@@ -205,13 +270,7 @@ function Recipe() {
           >
             Ajouter un ingrédient
           </button>
-          
-            {ingredientTotal.map((data, i) => (
-              <div key={i}>
-                {data.ingredient} - {data.quantity} {data.unit}
-              </div>
-            ))}
-          
+
           <select
             className={styles.inputs}
             onChange={(e) => {
@@ -234,7 +293,6 @@ function Recipe() {
             <option value={"Lupin"}>Lupin</option>
             <option value={"Mollusques"}>Mollusques</option>
           </select>
-
           <input
             placeholder="Prix"
             className={styles.inputs}
@@ -251,7 +309,6 @@ function Recipe() {
             }}
             value={tva}
           ></input>
-
           <button
             onClick={() => {
               handleAddRecipe();
@@ -262,10 +319,156 @@ function Recipe() {
           </button>
         </div>
       ) : (
-        <div></div>
+        <div className={styles.left}>
+          <input
+            placeholder="Nom de la recette"
+            className={styles.inputs}
+            onChange={(e) => {
+              setNameRecipe(e.target.value);
+            }}
+            value={nameRecipe}
+          ></input>
+          <select
+            className={styles.inputs}
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+          >
+            <option value={null}>Categorie</option>
+            {categ}
+          </select>
+          <div>
+            <select
+              className={styles.inputs}
+              onChange={(e) => handleChangeCreation("name", e.target.value)}
+              value={ingredient?.name || ""}
+            >
+              <option value={null}>Ingrédient</option>
+              {ingr}
+            </select>
+            <FaRegEdit
+              className={styles.modify}
+              onClick={() => {
+                setIsVisibleModal(!isVisibleModal);
+              }}
+            />
+            <ReactModal
+              isOpen={isVisibleModal}
+              closeTimeoutMS={250}
+              shouldCloseOnEsc={true}
+              shouldCloseOnOverlayClick={true}
+              onRequestClose={() => setIsVisibleModal(false)}
+              style={{
+                overlay: {
+                  position: "fixed",
+                },
+                content: {
+                  position: "absolute",
+                  top: "17%",
+                  left: "35%",
+                  right: "35%",
+                  bottom: "17%",
+                  border: "1px solid #ccc",
+                  background: "#fff",
+                  overflow: "auto",
+                  WebkitOverflowScrolling: "touch",
+                  borderRadius: "4px",
+                  outline: "none",
+                  padding: "20px",
+                },
+              }}
+            >
+              <ChangeIngredient Creation={isVisibleModal} />
+              <button onClick={() => setIsVisibleModal(false)}>Close</button>
+            </ReactModal>
+          </div>
+          <input
+            placeholder="Quantité"
+            className={styles.inputs}
+            onChange={(e) => handleChangeCreation("quantity", e.target.value)}
+            value={ingredient?.quantity || ""}
+          ></input>
+          <select
+            className={styles.inputs}
+            onChange={(e) => handleChangeCreation("unit", e.target.value)}
+            value={ingredient?.unit || ""}
+          >
+            <option value="Kg">Kg</option>
+            <option value="gr">gr</option>
+            <option value="mg">mg</option>
+            <option value="L">L</option>
+            <option value="cL">cL</option>
+            <option value="mL">mL</option>
+            <option value="Piece">Pièce(s)</option>
+          </select>
+          <button
+            onClick={() => {
+              handleAddIngredient();
+            }}
+            className={styles.btn}
+          >
+            Ajouter un ingrédient
+          </button>
+
+          <select
+            className={styles.inputs}
+            onChange={(e) => {
+              setAllergen(e.target.value);
+            }}
+          >
+            <option value={null}>Allergènes</option>
+            <input value={"Gluten"} type="checkbox" title="Gluten" />
+            <option value={"Crustacé"}>Crustacé</option>
+            <option value={"Oeuf"}>Oeuf</option>
+            <option value={"Poisson"}>Poisson</option>
+            <option value={"Soja"}>Soja</option>
+            <option value={"Céleri"}>Céleri</option>
+            <option value={"Arachides"}>Arachides</option>
+            <option value={"Lactose"}>Lactose</option>
+            <option value={"Fruits à coques"}>Fruits à coques</option>
+            <option value={"Moutarde"}>Moutarde</option>
+            <option value={"Sésame"}>Sésame</option>
+            <option value={"Sulfite"}>Sulfite</option>
+            <option value={"Lupin"}>Lupin</option>
+            <option value={"Mollusques"}>Mollusques</option>
+          </select>
+          <input
+            placeholder="Prix"
+            className={styles.inputs}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
+            value={price}
+          ></input>
+          <input
+            placeholder="TVA"
+            className={styles.inputs}
+            onChange={(e) => {
+              setTva(e.target.value);
+            }}
+            value={tva}
+          ></input>
+          <button
+            onClick={() => {
+              handleModificationRecipe();
+            }}
+            className={styles.btn}
+          >
+            Modifier la recette
+          </button>
+        </div>
       )}
       <div className={styles.ingredients}>{ingredientDisplay}</div>
-      <div className={styles.stat}>Hi there</div>
+      <div className={styles.stat}>
+        <table className={styles.array}>
+          <tr className={styles.ligne}>
+            <td className={styles.ligne}>Nom de l'ingrédient</td>
+            <td className={styles.ligne}>Prix quantité utilisée</td>
+            <td className={styles.ligne}>Total</td>
+          </tr>
+          {ingredientArray}
+        </table>
+      </div>
     </div>
   );
 }
