@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .Menu {
   width: 300px;
   height: 100vh; /* hauteur de la page sous le header */
@@ -9,26 +10,40 @@
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
+=======
+.Menu{
+    width: 300px;
+    height: 100vh; /* hauteur de la page sous le header */
+    background-color: #f5f4e1;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    z-index: 1000;      /* passe au-dessus du contenu */
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+   
+>>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
 }
 
 .pageName {
-    font-family: 'Poiret One', cursive;
-    font-size: 1.5rem;
-    text-align: left;
-    padding: 1rem 0;
-    margin-left: 30px;
-    margin-top: 20px;
-    color: #2F0801;
-    display: flex;   
+  font-family: "Poiret One", cursive;
+  font-size: 1.5rem;
+  text-align: left;
+  padding: 1rem 0;
+  margin-left: 30px;
+  margin-top: 20px;
+  color: #2f0801;
+  display: flex;
 }
 
-.icon { 
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 20px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
+.icon {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 20px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
 .pageName {

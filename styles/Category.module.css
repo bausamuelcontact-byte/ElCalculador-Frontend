@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Aboreto&display=swap');
+
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  background-color: #b3943028;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  font-family: "Poiret One", cursive;
+}
+
+.modalContent h1 {
+  color: #2f0801;
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.crossColor {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #b39530e9;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.crossColor:hover {
+  transform: rotate(90deg);
+}
+
+.catName {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  background-color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e6dcc3;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.catLabel {
+  color: #2f0801;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.catActions {
+  display: flex;
+  align-items: center;
+  gap: 12px; 
+}
+
+.catActions svg {
+  cursor: pointer;
+  color: #b39530e9;
+  font-size: 20px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.catActions svg:hover {
+  color: #d0aa43;
+  transform: scale(1.15);
+}
+
+.catName:hover {
+  background-color: #f5eadfde;
+}
+
+.catName span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: #2f0801;
+}
+
+.inputs {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e0d7b5;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputs:focus {
+  border-color: #b39530e9;
+  box-shadow: 0 0 5px #b39530e9;
+}
+
+/* Bouton principal AntD */
+:global(.ant-btn-primary) {
+  background-color: #2f0801;
+  border-color: #b39530e9;
+  color: #f5eadfde;
+  font-weight: 300;
+  border-radius: 8px;
+}
+
+:global(.ant-btn-primary:hover) {
+  background-color: #d0aa43;
+  border-color: #d0aa43;
+  color: #2f0801;
+}
+
+/* Bouton secondaire */
+:global(.ant-btn) {
+  border-radius: 8px;
+}
+
+.catName svg {
+  cursor: pointer;
+  color: #b39530e9;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.catName svg:hover {
+  color: #d0aa43;
+  transform: scale(1.1);
+}
+

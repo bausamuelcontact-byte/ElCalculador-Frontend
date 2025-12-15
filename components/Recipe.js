@@ -7,11 +7,14 @@ import Menu from "./Menu";
 import { FaRegEdit } from "react-icons/fa";
 import { IconBase } from "react-icons/lib";
 import ReactModal from "react-modal";
+import Category from "./Category";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 function Recipe() {
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState();
-  //Booleen pour visuel création ou modification
+  const [category, setCategory] = useState("");
+
+  const [catModalVisible, setCatModalVisible] = useState(false);
   const [isBob, setIsBob] = useState(true);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [nameRecipe, setNameRecipe] = useState("");
@@ -51,7 +54,7 @@ function Recipe() {
     fetch(`http://localhost:3000/categories/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("categories", data);
         setCategories(data.categories);
       });
 
@@ -76,7 +79,7 @@ function Recipe() {
   //Affichage des categorie dans le menu deroulant
   const categ = categories.map((data, i) => {
     return (
-      <option key={i} value={data.name}>
+      <option key={i} value={data._id}>
         {data.name}
       </option>
     );
@@ -97,7 +100,27 @@ function Recipe() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {});
+      .then((data) => {
+        console.log("data", data);
+
+        console.log("valeur", selectedValues);
+        console.log("categoryId:", category);
+        console.log("recipeId:", data.recipeId);
+
+        return fetch("http://localhost:3000/categories/addRecipeToCategory", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            categoryId: category,
+            recipeId: data.recipeId,
+          }),
+        });
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("cat", data);
+        alert(data.message);
+      });
   }
 
   //Modification d'une recette
@@ -117,6 +140,17 @@ function Recipe() {
       .then((response) => response.json())
       .then((data) => {});
   }
+  const handleRemoveRecipe = () => {
+    fetch(
+      `http://localhost:3000/categories/removeRecipeFromCategory`,
+      { method: "DELETE" }
+
+        .then((response) => response.json())
+        .then((data) => {
+          //    console.log(data);
+        })
+    );
+  };
 
   function handleAddIngredient() {
     setIngredientTotal([...ingredientTotal, ingredient]);
@@ -185,15 +219,25 @@ function Recipe() {
             }}
             value={nameRecipe}
           ></input>
-          <select
-            className={styles.inputs}
-            onChange={(e) => {
-              setCategory(e.target.value);
-            }}
-          >
-            <option value={null}>Categorie</option>
-            {categ}
-          </select>
+          <div className={styles.category}>
+            <select
+              className={styles.inputs}
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+            >
+              <option value={null}>Categorie</option>
+              {categ}
+            </select>
+            <BiSolidMessageSquareEdit
+              size={25}
+              onClick={() => setCatModalVisible(true)}
+            />
+            <Category
+              catModalVisible={catModalVisible}
+              setCatModalVisible={setCatModalVisible}
+            />
+          </div>
           <div>
             <select
               className={styles.inputs}
@@ -243,6 +287,16 @@ function Recipe() {
               <button onClick={() => setIsVisibleModal(false)}>Close</button>
             </ReactModal>
           </div>
+
+          <select
+            className={styles.inputs}
+            onChange={(e) => {
+              setIngredient(e.target.value);
+            }}
+          >
+            <option value={null}>Ingrédient</option>
+            {ingr}
+          </select>
           <input
             placeholder="Quantité"
             className={styles.inputs}

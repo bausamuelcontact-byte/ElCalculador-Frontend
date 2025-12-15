@@ -10,6 +10,7 @@ import { IconBase } from "react-icons/lib";
 
 function Ingredient() {
   const [visibleMenu, setVisibleMenu] = useState(false);
+
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
   };
@@ -43,7 +44,6 @@ function Ingredient() {
     .filter((e) => e.name.includes(searchIngredient))
     .map((data, i) => {
       return (
-        
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
             <div className={styles.name}>
@@ -77,8 +77,9 @@ function Ingredient() {
 
   return (
     <div className={styles.container}>
-      <Header onToggleMenu={toggleMenu}/>
-         {visibleMenu && <Menu/>}
+      <Header onToggleMenu={toggleMenu} />
+      {visibleMenu && <Menu />}
+
       <div className={styles.search}>
         <input
           className={styles.searchBar}

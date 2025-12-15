@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Menu from "../components/Menu";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+<<<<<<< HEAD
 import { Cell, Pie, PieChart, PieLabelRenderProps } from "recharts";
 import {
   BarChart,
@@ -19,11 +20,23 @@ function Dashboard() {
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
   };
+=======
+import { Cell, Pie, PieChart, PieLabelRenderProps } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import Category from "./Category";
+import { MdOutlineRestaurant  } from "react-icons/md";
+
+function Dashboard(){
+  const[visibleMenu, setVisibleMenu] = useState(false);
+  const toggleMenu = () => { setVisibleMenu(!visibleMenu)};
+  const [catModalVisible, setCatModalVisible] = useState(false);
+>>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
 
   const userInfo = useSelector((state) => state.user.value);
 
   const [selectedOption, setSelectedOption] = useState("");
   const [recipeList, setRecipeList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [selectedRecipeName, setSelectedRecipeName] = useState("");
   const [selectedRecipePrice, setSelectedRecipePrice] = useState(null);
@@ -37,15 +50,39 @@ function Dashboard() {
   useEffect(() => {
     fetch(`http://localhost:3000/recipes/search/${userInfo.id}`)
       .then((response) => response.json())
+<<<<<<< HEAD
       .then((data) => {
         setRecipeList(data.recipe);
       });
   }, []);
 
   const dropOptions = { Overview: [], Recipes: recipeList };
+=======
+        .then((data) => {
+            setRecipeList(data.recipe);
+        });
+    fetch(`http://localhost:3000/categories/${userInfo.id}`)
+      .then((response) => response.json())
+        .then((data) => {
+            setCategoryList(data.categories);
+            console.log("Categories =>", data.categories);
+        });
+  }, [userInfo.id]);
+>>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
 
+  const dropOptions = { Overview: categoryList , Recipes: recipeList };
+  // calcul des prix des recettes par catégorie
+    const categoryPrices = categoryList.map(cat => {
+      const recipesInCategory = recipeList.filter(rec => 
+        cat.recipes.some(catRecId => catRecId === rec._id)
+      );
+      const totalPrices = recipesInCategory.reduce((sum, rec) => sum + rec.price + rec.TVA, 0);
+      const averagePrice =  totalPrices / recipesInCategory.length;
+      return { category: cat.name, averagePrice: averagePrice.toFixed(2), TVA: (averagePrice * 0.2).toFixed(2) };
+    });
   // données pour le Bar Chart
   const averageCatPrice = [
+<<<<<<< HEAD
     { category: "Boisson", averagePrice: 10, TVA: 2 },
     { category: "Entrée", averagePrice: 12, TVA: 3 },
     { category: "Plat", averagePrice: 15, TVA: 4 },
@@ -54,6 +91,20 @@ function Dashboard() {
 
   const handleOptionChange = (e) => {
     setSelectedOption(e.target.value);
+=======
+      { category: 'Boisson', averagePrice: 10, TVA: 2, },
+      { category: 'Entrée', averagePrice: 12, TVA: 3,},
+      { category: 'Plat', averagePrice: 15, TVA: 4 },
+      { category: 'Dessert', averagePrice: 10, TVA: 2 },
+    ];
+  
+  const handleOptionChange = (e) => { setSelectedOption(e.target.value);
+    // Eviter l'affichage d'un pieChart à la sélection d'un autre champ
+    if (e.target.value !== "Recipes") {
+    setSelectedRecipe(null);
+    setSelectedRecipeName("");
+  }
+>>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
   };
 
   const handleRecipeClick = (recipe) => {
@@ -179,6 +230,7 @@ function Dashboard() {
   };
 
   return (
+<<<<<<< HEAD
     <div className={styles.pageContainer}>
       <Header onToggleMenu={toggleMenu} />
       {visibleMenu && <Menu />}
@@ -249,6 +301,80 @@ function Dashboard() {
                   {data.name}
                 </li>
               ))}
+=======
+      <div className={styles.pageContainer}>
+        <Header onToggleMenu={toggleMenu}/>
+         {visibleMenu && <Menu/>}
+         
+        <div className={styles.dashboardContent}>
+          
+          <div className={styles.dashboardLeft}>
+           <h1 className={styles.dashboardTitle}>DASHBOARD</h1>
+            <select className={styles.selectRecipe} onChange={handleOptionChange} value={selectedOption}
+              style={{ fontStyle: selectedOption === "" ? 'italic' : 'normal' }}>
+              <option value="">Select an option</option>
+              {Object.keys(dropOptions).map((n)=>{ return (<option key={n} value={n} >{n}</option>); })}
+            </select>
+            {selectedOption==="Overview" && (
+              <><h4 className={styles.h4} onClick={()=>(setCatModalVisible(true))}> Modifier ou ajouter une catégorie </h4>
+            <Category catModalVisible={catModalVisible} setCatModalVisible={setCatModalVisible}/></>)}
+
+            {selectedOption==="Recipes" && recipeList.map((data, i) =>( 
+                <div key={i} className={styles.listItem} onClick={()=>handleRecipeClick(data)} value={data}>
+                 <span className={styles.listLabel}> {data.name}</span>
+                 <div className={styles.listActions}>
+              <MdOutlineRestaurant />
+            </div>
+            </div>
+                ))}
+            </div> 
+          
+       <div className={styles.verticalSeparator}></div>
+
+            <div className={styles.dashboardRight}>
+              {selectedOption==="Overview" && 
+                 <div className={styles.overviewDisplay}>
+                   
+                     <h3> Moyenne des prix par catégorie </h3>
+                        <BarChart
+                           style={{ width: '100%', maxWidth: '500px', maxHeight: '70vh', aspectRatio: 1.618 }}
+                           responsive
+                           data={categoryPrices}
+                           margin={{ top: 20, right: 0, left: 0, bottom: 5 }} >
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="category" />
+                          <YAxis width="auto" />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="averagePrice" stackId="a" fill="#2f0801a8" background />
+                          <Bar dataKey="TVA" stackId="a" fill="#cebd84c3" background />
+                        </BarChart>
+                   
+                 </div>}
+              
+            
+          {selectedOption==="Recipes" && selectedRecipe && (
+            <div className={styles.recipePrice}>
+            <h3> Composition du prix de {selectedRecipeName} </h3>
+              <PieChart style={{ width: '100%', maxWidth: '500px', maxHeight: '80vh', aspectRatio: 1, }} responsive>
+                 <Pie
+                    data={pieData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    label={renderCustomizedLabel}
+                    labelLine={false}
+                  >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]}/>
+                  ))}
+                </Pie>
+              </PieChart>
+            </div>)}
+>>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
           </div>
         </div>
         {selectedRecipe && (
