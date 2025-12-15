@@ -4,15 +4,12 @@
   display: grid;
   grid-template-columns: repeat(30, fr);
   grid-template-rows: repeat(30, fr);
-<<<<<<< HEAD
   height: 100vh;
-=======
 
 }
 
 .pageContainer.menuOpen {
     margin-left: 300px; /* espace pour le menu */
->>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
 }
 
 .dashboardTitle {
@@ -44,14 +41,11 @@
   grid-column-end: 30;
 }
 
-<<<<<<< HEAD
 .recipesDisplay {
   display: flex;
 
-=======
 .dashboardLeft {
   display: flex;
->>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
   flex-direction: column;
   gap: 20px;
   margin-top:50px;
@@ -125,11 +119,8 @@
 .overviewDisplay, .recipePrice {
   display: flex;
   justify-content: center;
-<<<<<<< HEAD
   height: 100%;
   margin: 50px;
-}
-=======
   align-items: center;
   flex-direction:column;
   margin-top:170px;
@@ -142,4 +133,3 @@
   box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
   margin: 0 auto;
 }
->>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
