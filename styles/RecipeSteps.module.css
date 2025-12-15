@@ -1,0 +1,39 @@
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.step {
+  width: 130px;
+  padding: 10px;
+  font-weight: bold;
+  background: #f7f7f7;
+  border-right: 1px solid #ddd;
+}
+
+.description {
+  flex: 1;
+  padding: 10px;
+}
+
+.inputs {
+  width: 100%;
+  height: 100%;
+  font-size: 14;
+  outline: none;
+  border: none;
+  justify-self: end;
+  align-self: start;
+}

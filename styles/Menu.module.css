@@ -12,6 +12,26 @@
 }
 
 .pageName {
+    font-family: 'Poiret One', cursive;
+    font-size: 1.5rem;
+    text-align: left;
+    padding: 1rem 0;
+    margin-left: 30px;
+    margin-top: 20px;
+    color: #2F0801;
+    display: flex;   
+}
+
+.icon { 
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 20px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.pageName {
   font-family: "Poiret One", cursive;
   font-size: 1.5rem;
   text-align: left;
