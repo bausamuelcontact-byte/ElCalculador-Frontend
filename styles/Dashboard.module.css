@@ -3,6 +3,7 @@
   grid-template-columns: repeat(31, fr);
   grid-template-rows: repeat(31, fr);
   height: 100vh; 
+  overflow: hidden;
 }
 
 .dashboardTitle {

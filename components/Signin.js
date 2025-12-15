@@ -28,7 +28,7 @@ function Signin(props) {
     .then(data => {
       console.log(data)
       if (data.result) {
-      dispatch(login({ token: data.token, id: data.id }));
+      dispatch(login({ token: data.token, id: data.id, avatar: data.avatar ?? null}));
       router.push("/dashboard");
     } else {
       alert(data.error);

@@ -3,13 +3,6 @@
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 1;
-<<<<<<< HEAD
-  grid-column-end: 31;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #2f0801;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-=======
   grid-column-end: 32;
   align-items: center;
   justify-content: space-between;
@@ -17,7 +10,6 @@
   background-color: #2F0801;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   height:70px;
->>>>>>> a075d7ebefa38d7cc8bde4c6464e66d54ed0a424
 }
 
 .headerText {
@@ -32,4 +24,11 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+.avatarImage {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
 }

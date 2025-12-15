@@ -27,6 +27,10 @@
     height:30px
 }
 
+.inputs:focus {
+    outline: none;
+}
+
 .inputsPasswordsWrapper {
     display: flex;
     flex-direction: row;
@@ -50,8 +54,17 @@
     height:28px
 }
 
+.inputsPasswords:focus {
+    outline: none;
+}
+
 .eyeIcon {
     margin-left:3%
+}
+
+.eyeIcon:hover {
+    cursor: pointer;
+    color : grey
 }
 
 .buttonSignin {
@@ -82,4 +95,15 @@
 .buttonSignin:active {
   transform: translateY(2px);
   box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
