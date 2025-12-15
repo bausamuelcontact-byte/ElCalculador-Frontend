@@ -54,7 +54,7 @@ function Dashboard() {
 
   const dropOptions = { Overview: categoryList, Recipes: recipeList };
   // calcul des prix des recettes par catégorie
-  const categoryPrices = categoryList.map((cat) => {
+  const categoryPrices = categoryList?.map((cat) => {
     const recipesInCategory = recipeList.filter((rec) =>
       cat.recipes.some((catRecId) => catRecId === rec._id)
     );

@@ -1,5 +1,4 @@
 import Dashboard from '../components/Dashboard';
-import styles from "../styles/Dashboard.module.css";
 
 function DashboardPage() {
   return (

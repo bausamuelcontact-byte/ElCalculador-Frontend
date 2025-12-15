@@ -77,7 +77,7 @@ function Recipe() {
   });
 
   //Affichage des categorie dans le menu deroulant
-  const categ = categories.map((data, i) => {
+  const categ = categories?.map((data, i) => {
     return (
       <option key={i} value={data._id}>
         {data.name}

@@ -1,6 +1,7 @@
 .table {
   display: flex;
   flex-direction: column;
+  height: 70%;
   width: 100%;
   border: 1px solid #ccc;
   overflow-y: scroll;
@@ -12,7 +13,7 @@
 }
 
 .row:last-child {
-  border-bottom: none;
+  border-bottom: 1px solid #ddd;
 }
 
 .step {

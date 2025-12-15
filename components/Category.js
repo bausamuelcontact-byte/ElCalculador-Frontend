@@ -14,7 +14,6 @@ const userInfo = useSelector((state) => state.user.value);
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
  
-
      useEffect(() => {
        fetch(`http://localhost:3000/categories/${userInfo.id}`)
          .then((response) => response.json())
@@ -103,11 +102,10 @@ const userInfo = useSelector((state) => state.user.value);
         },
       }}
     >
-
              <div className={styles.modalContent}>
                 <FaTimes size={20} className={styles.crossColor} onClick={() => props.setCatModalVisible(false)} />
                 <h1>Catégories</h1>
-                {categoryList.map((cat) => (
+                {categoryList?.map((cat) => (
                     <div key={cat._id} className={styles.catItem}>
                         <div key={cat._id} className={styles.catName}>
                         <span className={styles.catLabel}>{cat.name} </span>

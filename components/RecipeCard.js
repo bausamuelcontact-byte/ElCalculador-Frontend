@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FaPencilAlt, FaTrashAlt, FaSearch, FaImage } from "react-icons/fa";
 import RecipeTable from "./RecipeTable";
 import RecipeSteps from "./RecipeSteps";
+import { exportRecipePdf } from "../modules/exportPDF";
 
 // import { useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -17,6 +18,9 @@ function RecipeCard() {
   // utilisation d'un userId fixe pour le moment
   // A modifier lorsque le store sera persistant
   const userInfo = {id: "6936ab0cee14c830750e2bea", token: "pt0oyg44CsVgLGck-74jVju5Ts2fxiRL"};
+
+  // user with more data 
+  //const userInfo = {id : "6937f28fb4d4f0be72695c79", token: "DnRWUMfDOW7elz0y3gtAOrF1VBM9UcYw"};
 
   // recherche de fiche recette via la barre de recherche
   const [searchRecipe, setSearchRecipe] = useState("");
@@ -270,10 +274,24 @@ const currentRecipeCard = selectedRecipe
   ? recipeCardsUser.find(rc => rc.recipe._id === selectedRecipe._id)
   : null;
 
+// gestion de l'export PDF
+const handleExportPDF = () => {
+  exportRecipePdf({
+    recipeName: selectedRecipe.name,
+    recipeImage: currentRecipeCard?.image, 
+    ingredients: selectedRecipe.ingredients,
+    steps: recipeCardSteps,
+    costPrice: recipeCostPrice,
+    totalTVA: totalTVA,
+    salePrice: recipeSalePrice, 
+    saleTVA: recipeTVA,           
+  });
+};
+
     return (
       <div>
         <div className={styles.pageContainer}>
-            <Header onToggleMenu={toggleMenu}/>
+          <Header onToggleMenu={toggleMenu}/>
           <div className={styles.recipeCardWrapper}>
             {visibleMenu && <Menu/>}
             <div className={visibleMenu ? styles.recipeCardPageMenu : styles.recipeCardPageFull}>
@@ -427,12 +445,12 @@ const currentRecipeCard = selectedRecipe
                 />
               </div>
             </div>
-            
               <div className={styles.stepsFrame}>
                 <h3 style={{marginLeft: "4%"}}>Étapes de préparation</h3>
                 <RecipeSteps steps={recipeCardSteps} editMode={editMode} newSteps={newSteps} setNewSteps={setNewSteps}/>
                 <div className={styles.adaptableButtonContainer}>
                   <button className={styles.adaptableButton} onClick={handleRecipeCard}>{buttonContent}</button>
+                  {existingRecipeCard && !editMode && (<button className={styles.adaptableButton} onClick={handleExportPDF}>Export PDF</button>)}
                 </div>
               </div>
               <div className={styles.ingredientsFrame} >

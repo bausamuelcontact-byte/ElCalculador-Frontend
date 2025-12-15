@@ -33,3 +33,9 @@ yarn-error.log*
 
 # fakedata
 *.txt
+
+# ignore yarn lock file
+yarn.lock  
+
+# ignore package.json file 
+package.json

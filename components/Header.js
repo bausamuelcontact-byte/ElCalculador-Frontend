@@ -42,7 +42,7 @@ function Header(props){
   // fonction de déconnexion
   const LogOutBtn = () => {
     dispatch(logout());
-    router.push("/Signin");
+    router.push("/home");
   };
 
   // contenu du popover

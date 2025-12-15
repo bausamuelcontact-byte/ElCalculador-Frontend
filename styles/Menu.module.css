@@ -1,29 +1,14 @@
-<<<<<<< HEAD
-.Menu {
-  width: 300px;
-  height: 100vh; /* hauteur de la page sous le header */
-  background-color: #f5f4e1;
-  position: fixed;
-  top: 70px;
-  left: 0;
-  z-index: 1000; /* passe au-dessus du contenu */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-=======
 .Menu{
     width: 300px;
-    height: 100vh; /* hauteur de la page sous le header */
+    height: 100vh; 
     background-color: #f5f4e1;
     position: fixed;
-    top: 85px;
+    /*top: 85px*/
     left: 0;
     z-index: 1000;      /* passe au-dessus du contenu */
     box-shadow: 2px 0 5px rgba(0,0,0,0.2);
     display: flex;
     flex-direction: column;
-   
->>>>>>> 1d57e4a18d426b6d666c3a6eaf55006ef822fe9a
 }
 
 .pageName {

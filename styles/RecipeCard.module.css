@@ -13,13 +13,13 @@
 }
 
 .recipeCardPageFull{
-    width: 100vw; /* largeur de la page sans le menu latéral */
-    height : calc(100vh - 100px); /* hauteur de la page sous le header */
+    width: 100vw;
+    height : 100vh
 }
 
 .recipeCardPageMenu{ 
-    width: calc(100vw - 300px); /* largeur de la page avec le menu latéral */
-    height : calc(100vh - 100px); /* hauteur de la page sous le header */
+    width: 100vw;
+    height : 100vh
 }
 
 .recipeCardContainer {
@@ -77,6 +77,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 1%;
+    overflow-y: scroll;
 }
 
 .recipeCardDisplayed {
@@ -92,7 +93,7 @@
     align-items: center;
     justify-content: space-between;
     padding-left: 2%;
-    padding-right: 2%
+    padding-right: 2%;
 }
 
 .editIcons {
@@ -217,7 +218,7 @@
     height: 10%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 0;
 }
