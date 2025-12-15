@@ -1,54 +1,45 @@
 .container {
   height: 100vh;
   display: grid;
-  grid-template-columns: repeat(31, fr);
-  grid-template-rows: repeat(31, fr);
+  grid-template-columns: repeat(30, fr);
+  grid-template-rows: repeat(30, fr);
+  background-color: #fffffb;
 }
 
 .search {
   display: flex;
-  grid-row-start: 4;
-  grid-row-end: 6;
+  grid-row-start: 2;
+  grid-row-end: 3;
   grid-column-start: 1;
-  grid-column-end: 32;
-  background-color: red;
+  grid-column-end: 31;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  border-bottom: 1px solid #d4af37;
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  grid-row-start: 6;
-  grid-row-end: 32;
+  grid-row-start: 3;
+  grid-row-end: 31;
   grid-column-start: 1;
-  grid-column-end: 15;
+  grid-column-end: 10;
   width: 100%;
   overflow-y: scroll;
+  border-right: 2px solid #d4af37;
 }
 
 .add {
-  grid-row-start: 6;
-  grid-row-end: 32;
-  grid-column-start: 15;
-  grid-column-end: 32;
-  background-color: pink;
+  grid-row-start: 3;
+  grid-row-end: 31;
+  grid-column-start: 10;
+  grid-column-end: 31;
 }
 
 .searchBar {
   height: 70%;
   width: 25%;
-}
-
-.btnIA {
-  height: 70%;
-  width: 15%;
-}
-
-.btnAddTop {
-  height: 70%;
-  width: 15%;
 }
 
 .ingredient {
@@ -61,6 +52,8 @@
   padding: 10px;
   margin: 5px 15px 5px 15px;
   border-radius: 10px;
+  box-shadow: 2px 4px rgba(0 0 0 / 20%);
+  background-color: #fffffb;
 }
 
 .NameIngredient {
@@ -73,4 +66,36 @@
 .bottom {
   display: flex;
   justify-content: space-between;
+}
+
+.modify {
+  color: #d4af37;
+}
+
+.ingredient:hover {
+  transform: scale(1.01);
+}
+
+.btn {
+  border-radius: 7px;
+  min-height: 3vh;
+  min-width: 12vw;
+  border: 1px solid #341302b1;
+  background-color: rgba(225, 213, 173, 26);
+  color: #000000;
+  box-shadow: 1px 2px rgb(0 0 0 / 20%);
+}
+
+.searchBar {
+  border-radius: 7px;
+  min-height: 3vh;
+  min-width: 12vw;
+  border: 1px solid #341302b1;
+  background-color: rgba(225, 213, 173, 26);
+  color: #000000;
+  box-shadow: 1px 2px rgb(0 0 0 / 20%);
+}
+
+.description {
+  font-size: 12;
 }

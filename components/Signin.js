@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user";
 
-
 function Signin(props) {
   const dispatch = useDispatch();
   const [userEmail, setUserEmail] = useState("");
@@ -27,6 +26,7 @@ function Signin(props) {
     })
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data.result) {
       dispatch(login({ token: data.token, id: data.id, avatar: data.avatar ?? null}));
       router.push("/dashboard");
