@@ -3,13 +3,11 @@
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 1;
-  grid-column-end: 32;
+  grid-column-end: 31;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  background-color: #2F0801;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  height:70px;
+  background-color: #2f0801;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .headerText {
