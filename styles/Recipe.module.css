@@ -96,3 +96,11 @@
   display: flex;
   justify-content: space-between;
 }
+
+.array {
+  border: 1px solid black;
+}
+
+.ligne {
+  border: 1px solid black;
+}

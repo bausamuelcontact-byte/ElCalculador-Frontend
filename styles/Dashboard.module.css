@@ -1,25 +1,31 @@
 .pageContainer {
   display: grid;
-  grid-template-columns: repeat(31, fr);
-  grid-template-rows: repeat(31, fr);
-  height: 100vh; 
+  grid-template-columns: repeat(30, fr);
+  grid-template-rows: repeat(30, fr);
+  height: 100vh;
 }
 
 .dashboardTitle {
   grid-row-start: 2;
   grid-row-end: 3;
   grid-column-start: 1;
-  grid-column-end: 32;
+  grid-column-end: 31;
   text-align: center;
   margin-top: 20px;
 }
+.dashboardContent {
+  grid-row-start: 2;
+  grid-row-end: 30;
+  grid-column-start: 1;
+  grid-column-end: 30;
+}
 
-.recipesDisplay{
+.recipesDisplay {
   display: flex;
-  
+
   flex-direction: column;
   align-items: left;
   justify-content: center;
   height: 100%;
-  margin:50px;
+  margin: 50px;
 }

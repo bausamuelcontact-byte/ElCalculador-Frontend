@@ -101,6 +101,12 @@ function ChangeIngredient(props) {
   const handleChangeCreation = (field, value) => {
     setIngredientCreation((prev) => ({ ...prev, [field]: value }));
   };
+
+  //Envoie ingrédient créé à composant recipe
+  function IngredientCreateToRecipe() {
+    return;
+  }
+
   return (
     <div>
       {props.Creation ? (
