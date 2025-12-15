@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import ChangeIngredient from "./ChangeIngredient";
 import { useSelector } from "react-redux";
+import { Dropdown } from "semantic-ui-react";
 import Header from "./Header";
 import Menu from "./Menu";
 import { FaRegEdit } from "react-icons/fa";
@@ -57,7 +58,7 @@ function Recipe() {
     fetch(`http://localhost:3000/recipes/search/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log("ingredient =>", data);
+        console.log("ingredient =>", data);
         setIngredientRecipe(data.recipe);
       });
   }, []);
@@ -136,7 +137,7 @@ function Recipe() {
     setIngredientTotal([...ingredientTotal, newIngredient]);
     console.log("total", ingredientTotal);
   }
-  // console.log("ingredientRecipe =>", ingredientRecipe);
+  console.log("ingredientRecipe =>", ingredientRecipe);
 
   //Affichage des ingrédient de la recette à droite
   const ingredientDisplay = ingredientTotal.map((data, i) => {

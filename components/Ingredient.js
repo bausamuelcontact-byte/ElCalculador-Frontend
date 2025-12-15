@@ -10,6 +10,7 @@ import { IconBase } from "react-icons/lib";
 
 function Ingredient() {
   const [visibleMenu, setVisibleMenu] = useState(false);
+
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
   };
