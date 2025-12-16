@@ -11,6 +11,7 @@ function Signin(props) {
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+
   const router = useRouter();
 
   const handleSignin = () => {
@@ -24,17 +25,24 @@ function Signin(props) {
         password: userPassword,
       }),
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      if (data.result) {
-      dispatch(login({ token: data.token, id: data.id, avatar: data.avatar ?? null}));
-      router.push("/dashboard");
-    } else {
-      alert(data.error);
-      console.error("Error:", data.error);
-    }});
-  } 
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.result) {
+          dispatch(
+            login({
+              token: data.token,
+              id: data.id,
+              avatar: data.avatar ?? null,
+            })
+          );
+          router.push("/dashboard");
+        } else {
+          alert(data.error);
+          console.error("Error:", data.error);
+        }
+      });
+  };
 
   return (
     <ReactModal

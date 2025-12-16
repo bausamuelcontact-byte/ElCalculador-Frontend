@@ -8,7 +8,7 @@
 
 .left {
   display: flex;
-  grid-row-start: 4;
+  grid-row-start: 2;
   grid-row-end: 31;
   grid-column-start: 1;
   grid-column-end: 16;
@@ -24,7 +24,7 @@
 .ingredients {
   display: flex;
   flex-direction: column;
-  grid-row-start: 4;
+  grid-row-start: 2;
   grid-row-end: 18;
   grid-column-start: 16;
   grid-column-end: 31;
@@ -39,11 +39,6 @@
   grid-row-end: 31;
   grid-column-start: 16;
   grid-column-end: 31;
-}
-
-.dropdown {
-  border: 2px solid black;
-  background-color: greenyellow;
 }
 
 .inputs {
@@ -63,8 +58,8 @@
   min-height: 3vh;
   min-width: 8vw;
   border: 1px solid #341302;
-  background-color: rgba(225, 213, 173, 26);
-  color: #000000;
+  background-color: #341302;
+  color: #fff;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
 }
 
@@ -124,4 +119,11 @@
   vertical-align: bottom;
   cursor: pointer;
   color: #b39530e9;
+}
+
+.modify {
+  vertical-align: bottom;
+  cursor: pointer;
+  color: #b39530e9;
+  margin-left: 10px;
 }

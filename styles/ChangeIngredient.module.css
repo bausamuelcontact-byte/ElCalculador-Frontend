@@ -27,8 +27,8 @@
   min-height: 3vh;
   min-width: 8vw;
   border: 1px solid #341302;
-  background-color: rgba(225, 213, 173, 26);
-  color: #000000;
+  background-color: #341302;
+  color: #fff;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
 }
 

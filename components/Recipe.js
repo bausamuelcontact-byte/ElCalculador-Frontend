@@ -11,27 +11,37 @@ import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 function Recipe() {
+  //Liste des catégories dans le menu déroulant
   const [categories, setCategories] = useState([]);
+  //Catégorie de la recette qu'on est entrain de créer
   const [category, setCategory] = useState("");
-
+  //Booléen d'affichage de la modale catégorie
   const [catModalVisible, setCatModalVisible] = useState(false);
+  //Booléen de Modification ou Création d'une recette
   const [isBob, setIsBob] = useState(true);
+  //Booléen modal de création Ingrédient
   const [isVisibleModal, setIsVisibleModal] = useState(false);
-  const [nameRecipe, setNameRecipe] = useState("");
-  const [price, setPrice] = useState();
-  const [allergen, setAllergen] = useState([]);
-  //entièreté des ingredients dans le menu deroulant
+  //Entièreté des ingredients dans le menu deroulant
   const [ingredients, setIngredients] = useState([]);
-  //liste des ingrédient qui vont etre dans la recette
+  //Liste des ingrédient qui vont etre dans la recette
   const [ingredientTotal, setIngredientTotal] = useState([]);
-  const [tva, setTva] = useState();
   const [visibleMenu, setVisibleMenu] = useState(false);
+  //Recuperation des ingrédients d'une recette si celle ci est modifié
   const [ingredientRecipe, setIngredientRecipe] = useState([]);
+  //Ingrédient qu'on ajoute 1 par 1 dans la recette
   const [ingredient, setIngredient] = useState({
     name: "",
     quantity: 0,
     price: 0,
     unit: "Kg",
+    tva: 0,
+  });
+  // Recette q'on est entrain de créer
+  const [recipe, setRecipe] = useState({
+    name: "",
+    allergen: [],
+    category: 0,
+    price: 0,
     tva: 0,
   });
 
@@ -41,12 +51,11 @@ function Recipe() {
     setVisibleMenu(!visibleMenu);
   };
 
-  // recuperation des ingrédients
+  // recuperation des ingrédients pour le menu déroulant
   useEffect(() => {
     fetch(`http://localhost:3000/ingredients/search/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("dataIngredeint", data.ingredient);
         setIngredients(data.ingredient);
       });
 
@@ -54,7 +63,6 @@ function Recipe() {
     fetch(`http://localhost:3000/categories/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("categories", data);
         setCategories(data.categories);
       });
 
@@ -62,7 +70,6 @@ function Recipe() {
     fetch(`http://localhost:3000/recipes/search/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("ingredient =>", data);
         setIngredientRecipe(data.recipe);
       });
   }, []);
@@ -91,19 +98,18 @@ function Recipe() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: nameRecipe,
-        price: price,
-        allergens: allergen,
+        name: recipe.name,
+        price: recipe.price,
+        allergens: recipe.allergen,
         ingredients: ingredientTotal,
         id: user.id,
-        tva: tva,
+        tva: recipe.tva,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("data", data);
 
-        console.log("valeur", selectedValues);
         console.log("categoryId:", category);
         console.log("recipeId:", data.recipeId);
 
@@ -111,7 +117,7 @@ function Recipe() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            categoryId: category,
+            categoryId: recipe.category,
             recipeId: data.recipeId,
           }),
         });
@@ -119,8 +125,24 @@ function Recipe() {
       .then((response) => response.json())
       .then((data) => {
         console.log("cat", data);
-        alert(data.message);
       });
+
+    //Remise à zéro des champs pour création d'une nouvelle recette
+    setRecipe({
+      name: "",
+      allergen: [],
+      category: 0,
+      price: 0,
+      tva: 0,
+    });
+    setIngredient({
+      name: "",
+      quantity: 0,
+      price: 0,
+      unit: "Kg",
+      tva: 0,
+    });
+    setIngredientTotal([]);
   }
 
   //Modification d'une recette
@@ -129,12 +151,12 @@ function Recipe() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name: nameRecipe,
-        price: price,
-        allergens: allergen,
+        name: recipe.name,
+        price: recipe.price,
+        allergens: recipe.allergen,
         ingredients: ingredientTotal,
         id: user.id,
-        tva: tva,
+        tva: recipe.tva,
       }),
     })
       .then((response) => response.json())
@@ -155,6 +177,13 @@ function Recipe() {
   function handleAddIngredient() {
     setIngredientTotal([...ingredientTotal, ingredient]);
     console.log("total", ingredient);
+    setIngredient({
+      name: "",
+      quantity: 0,
+      price: 0,
+      unit: "Kg",
+      tva: 0,
+    });
   }
 
   //Affichage des ingrédient de la recette à droite
@@ -187,9 +216,14 @@ function Recipe() {
     );
   });
 
-  // Change la valeur d'une propriété pour la Création
+  // Change la valeur d'une propriété ingredient pour la Création
   const handleChangeCreation = (field, value) => {
     setIngredient((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Change la valeur d'une propriété recettepour la Création
+  const handleChangeCreationRecipe = (field, value) => {
+    setRecipe((prev) => ({ ...prev, [field]: value }));
   };
 
   //Affichage du tableau bas gauche
@@ -215,15 +249,15 @@ function Recipe() {
             placeholder="Nom de la recette"
             className={styles.inputs}
             onChange={(e) => {
-              setNameRecipe(e.target.value);
+              handleChangeCreationRecipe("name", e.target.value);
             }}
-            value={nameRecipe}
+            value={recipe?.name || ""}
           ></input>
           <div className={styles.category}>
             <select
               className={styles.inputs}
               onChange={(e) => {
-                setCategory(e.target.value);
+                handleChangeCreationRecipe("category", e.target.value);
               }}
             >
               <option value={null}>Categorie</option>
@@ -242,17 +276,16 @@ function Recipe() {
             <select
               className={styles.inputs}
               onChange={(e) => {
-                handleChangeCreation("name", e.target.value),
-                  handleChangeCreation("price", e.target.price);
+                handleChangeCreation("name", e.target.value);
               }}
               value={ingredient?.name || ""}
-              price={ingredient?.price || ""}
             >
               <option value={null}>Ingrédient</option>
               {ingr}
             </select>
-            <FaRegEdit
+            <BiSolidMessageSquareEdit
               className={styles.modify}
+              size={25}
               onClick={() => {
                 setIsVisibleModal(!isVisibleModal);
               }}
@@ -288,15 +321,6 @@ function Recipe() {
             </ReactModal>
           </div>
 
-          <select
-            className={styles.inputs}
-            onChange={(e) => {
-              setIngredient(e.target.value);
-            }}
-          >
-            <option value={null}>Ingrédient</option>
-            {ingr}
-          </select>
           <input
             placeholder="Quantité"
             className={styles.inputs}
@@ -328,7 +352,7 @@ function Recipe() {
           <select
             className={styles.inputs}
             onChange={(e) => {
-              setAllergen(e.target.value);
+              handleChangeCreationRecipe("allergen", e.target.value);
             }}
           >
             <option value={null}>Allergènes</option>
@@ -351,17 +375,17 @@ function Recipe() {
             placeholder="Prix"
             className={styles.inputs}
             onChange={(e) => {
-              setPrice(e.target.value);
+              handleChangeCreationRecipe("price", e.target.value);
             }}
-            value={price}
+            value={recipe?.price || ""}
           ></input>
           <input
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              setTva(e.target.value);
+              handleChangeCreationRecipe("tva", e.target.value);
             }}
-            value={tva}
+            value={recipe?.tva || ""}
           ></input>
           <button
             onClick={() => {
@@ -378,30 +402,43 @@ function Recipe() {
             placeholder="Nom de la recette"
             className={styles.inputs}
             onChange={(e) => {
-              setNameRecipe(e.target.value);
+              handleChangeCreationRecipe("name", e.target.value);
             }}
-            value={nameRecipe}
+            value={recipe?.name || ""}
           ></input>
-          <select
-            className={styles.inputs}
-            onChange={(e) => {
-              setCategory(e.target.value);
-            }}
-          >
-            <option value={null}>Categorie</option>
-            {categ}
-          </select>
+          <div className={styles.category}>
+            <select
+              className={styles.inputs}
+              onChange={(e) => {
+                handleChangeCreationRecipe("category", e.target.value);
+              }}
+            >
+              <option value={null}>Categorie</option>
+              {categ}
+            </select>
+            <BiSolidMessageSquareEdit
+              size={25}
+              onClick={() => setCatModalVisible(true)}
+            />
+            <Category
+              catModalVisible={catModalVisible}
+              setCatModalVisible={setCatModalVisible}
+            />
+          </div>
           <div>
             <select
               className={styles.inputs}
-              onChange={(e) => handleChangeCreation("name", e.target.value)}
+              onChange={(e) => {
+                handleChangeCreation("name", e.target.value);
+              }}
               value={ingredient?.name || ""}
             >
               <option value={null}>Ingrédient</option>
               {ingr}
             </select>
-            <FaRegEdit
+            <BiSolidMessageSquareEdit
               className={styles.modify}
+              size={25}
               onClick={() => {
                 setIsVisibleModal(!isVisibleModal);
               }}
@@ -436,6 +473,7 @@ function Recipe() {
               <button onClick={() => setIsVisibleModal(false)}>Close</button>
             </ReactModal>
           </div>
+
           <input
             placeholder="Quantité"
             className={styles.inputs}
@@ -467,7 +505,7 @@ function Recipe() {
           <select
             className={styles.inputs}
             onChange={(e) => {
-              setAllergen(e.target.value);
+              handleChangeCreationRecipe("allergen", e.target.value);
             }}
           >
             <option value={null}>Allergènes</option>
@@ -490,21 +528,21 @@ function Recipe() {
             placeholder="Prix"
             className={styles.inputs}
             onChange={(e) => {
-              setPrice(e.target.value);
+              handleChangeCreationRecipe("price", e.target.value);
             }}
-            value={price}
+            value={recipe?.price || ""}
           ></input>
           <input
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              setTva(e.target.value);
+              handleChangeCreationRecipe("tva", e.target.value);
             }}
-            value={tva}
+            value={recipe?.tva || ""}
           ></input>
           <button
             onClick={() => {
-              handleModificationRecipe();
+              handleAddRecipe();
             }}
             className={styles.btn}
           >

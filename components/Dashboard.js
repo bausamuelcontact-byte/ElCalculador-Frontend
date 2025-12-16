@@ -246,21 +246,22 @@ function Dashboard() {
               />
             </>
           )}
-
-          {selectedOption === "Recipes" &&
-            recipeList.map((data, i) => (
-              <div
-                key={i}
-                className={styles.listItem}
-                onClick={() => handleRecipeClick(data)}
-                value={data}
-              >
-                <span className={styles.listLabel}> {data.name}</span>
-                <div className={styles.listActions}>
-                  <MdOutlineRestaurant />
+          <div className={styles.recipescroll}>
+            {selectedOption === "Recipes" &&
+              recipeList.map((data, i) => (
+                <div
+                  key={i}
+                  className={styles.listItem}
+                  onClick={() => handleRecipeClick(data)}
+                  value={data}
+                >
+                  <span className={styles.listLabel}> {data.name}</span>
+                  <div className={styles.listActions}>
+                    <MdOutlineRestaurant />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
 
         <div className={styles.verticalSeparator}></div>
@@ -331,39 +332,6 @@ function Dashboard() {
           )}
         </div>
       </div>
-      {selectedRecipe && (
-        <div className={styles.recipePrice}>
-          <h3> Composition du prix de {selectedRecipeName} </h3>
-          <PieChart
-            style={{
-              width: "100%",
-              maxWidth: "500px",
-              maxHeight: "80vh",
-              aspectRatio: 1,
-            }}
-            responsive
-          >
-            <Pie
-              data={pieData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={120}
-              fill="#8884d8"
-              label={renderCustomizedLabel}
-              labelLine={false}
-            >
-              {pieData.map((entry, index) => (
-                <Cell
-                  key={`cell-${entry.name}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </div>
-      )}
     </div>
   );
 }

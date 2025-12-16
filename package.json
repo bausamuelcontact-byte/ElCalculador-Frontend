@@ -13,6 +13,7 @@
     "antd": "^6.1.0",
     "cloudinary": "^2.8.0",
     "express-fileupload": "^1.5.2",
+    "jspdf": "^3.0.4",
     "multiselect-react-dropdown": "^2.0.25",
     "next": "^16.0.7",
     "react": "^19.2.3",
