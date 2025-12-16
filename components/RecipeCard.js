@@ -17,10 +17,10 @@ function RecipeCard() {
 
   // utilisation d'un userId fixe pour le moment
   // A modifier lorsque le store sera persistant
-  const userInfo = {id: "6936ab0cee14c830750e2bea", token: "pt0oyg44CsVgLGck-74jVju5Ts2fxiRL"};
+  // const userInfo = {id: "6936ab0cee14c830750e2bea", token: "pt0oyg44CsVgLGck-74jVju5Ts2fxiRL"};
 
   // user with more data 
-  //const userInfo = {id : "6937f28fb4d4f0be72695c79", token: "DnRWUMfDOW7elz0y3gtAOrF1VBM9UcYw"};
+  const userInfo = {id : "6937f28fb4d4f0be72695c79", token: "DnRWUMfDOW7elz0y3gtAOrF1VBM9UcYw"};
 
   // recherche de fiche recette via la barre de recherche
   const [searchRecipe, setSearchRecipe] = useState("");
@@ -127,7 +127,7 @@ const handleEditRecipeCard = (recipeFromCard) => {
 
   // synchroniser prix/TVA + recette (comme la dropdown)
   setRecipeSalePrice(fullRecipe.price);
-  setRecipeTVA(fullRecipe.TVA);
+  setRecipeTVA(fullRecipe.price * (Number(fullRecipe.TVA) / 100));
 
   // récupérer la fiche recette (steps) depuis la liste gauche
   const recipeCard = recipeCardsUser.find(rc => rc.recipe._id === fullRecipe._id);
@@ -165,7 +165,7 @@ const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
         return;
       }
 
-      // NE TOUCHE AU CENTRE QUE SI
+      // NE RAFRAICHIT LE CENTRE QUE SI
       // la fiche recette supprimée concerne la recette affichée
       if (selectedRecipe && selectedRecipe._id === recipeId) {
         setExistingRecipeCard(false);
@@ -173,7 +173,7 @@ const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
         setEditMode(false);
       }
 
-      // LISTE GAUCHE : TOUJOURS
+      // ACTUALISATION LISTE GAUCHE : TOUJOURS
       fetch(`http://localhost:3000/recipeCards/${userInfo.id}`)
         .then(res => res.json())
         .then(data => {
@@ -336,7 +336,7 @@ const handleExportPDF = () => {
                     const recipe = recipesUser.find(r => r._id === selectedId);
                     if (recipe) {
                       setRecipeSalePrice(recipe.price);
-                      setRecipeTVA(recipe.TVA);
+                      setRecipeTVA(recipe.price * (Number(recipe.TVA) / 100));
                       setSelectedRecipe(recipe);
                       setEditMode(false);
                     }
@@ -401,7 +401,7 @@ const handleExportPDF = () => {
                     const formData = new FormData();
                     formData.append("image", file);
 
-                    console.log("🔥 onChange fired");
+                    console.log("onChange fired");
                     const res = await fetch(
                       `http://localhost:3000/recipeCards/${currentRecipeCard._id}/image`,
                       {
@@ -411,7 +411,7 @@ const handleExportPDF = () => {
                     );
                     e.target.value = ""; // reset input (important)
                     const data = await res.json();
-                    console.log("✅ backend data");
+                    console.log("backend data");
 
                     if (data.result) {
                       setRecipeCardsUser((prev) =>
@@ -421,7 +421,7 @@ const handleExportPDF = () => {
                             : rc
                         )
                       );
-                    console.log("🧠 state update requested");
+                    console.log("state update requested");
                     setPhotoUploaded(true); 
                     }
                   }}

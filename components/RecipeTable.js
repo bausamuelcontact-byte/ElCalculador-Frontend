@@ -1,7 +1,7 @@
 import styles from "../styles/RecipeTable.module.css";
 import { useEffect } from "react";
 
-function RecipeTable({ ingredients, setRecipeCostPrice, setTotalTVA}) {
+function RecipeTable({ingredients, setRecipeCostPrice, setTotalTVA}) {
 
 // Conversion des unités de mesure
 const normalizeUnit = (u) =>
@@ -73,33 +73,35 @@ const totalPrice = ingredients.reduce((acc, item) => {
   return acc + ingredientCost;
 }, 0);  // valeur initiale de l'accumulateur à 0
 
-  const totalTVA = ingredients.reduce((acc, item) => {
-    const boughtQtyInRecipeUnit = unitConversion(
-      item.ingredient.unit,
-      item.unit,
-      item.ingredient.quantity
-    );
+const totalTVA = ingredients.reduce((acc, item) => {
+  const boughtQtyInRecipeUnit = unitConversion(
+    item.ingredient.unit,
+    item.unit,
+    item.ingredient.quantity
+  );
 
-    if (!boughtQtyInRecipeUnit) return acc; // éviter division par 0
+  if (!boughtQtyInRecipeUnit) return acc;
 
-    const TVAperUnit =
-      item.ingredient.TVA / boughtQtyInRecipeUnit;
+  const pricePerUnit =
+    item.ingredient.price / boughtQtyInRecipeUnit;
 
-  return acc + TVAperUnit * item.quantity;
-  }, 0);  // valeur initiale de l'accumulateur à 0
+  const ingredientCost =
+    pricePerUnit * item.quantity;
+
+  const ingredientTVA =
+    ingredientCost * (Number(item.ingredient.TVA) / 100);
+
+  return acc + ingredientTVA;
+}, 0);  // valeur initiale de l'accumulateur à 0
 
 // utiliser un useEffect sur totalPrice et totalTVA pour limiter le nombre de re-render
- 
-  useEffect(() => {
-    if (ingredients.length===0) return;
-    setRecipeCostPrice(totalPrice.toFixed(2));
-    setTotalTVA(totalTVA.toFixed(2))
-  }, [ingredients]);
+useEffect(() => {
+  setRecipeCostPrice(totalPrice.toFixed(2));
+  setTotalTVA(totalTVA.toFixed(2));
+}, [totalPrice, totalTVA]);
 
   return (
-
     <div className={styles.container}>
-
       {/* Header */}
       <div className={`${styles.row} ${styles.header}`}>
         <div className={styles.col}>Produit</div>
@@ -107,7 +109,6 @@ const totalPrice = ingredients.reduce((acc, item) => {
         <div className={styles.col}>Unité</div>
         <div className={styles.col}>Prix</div>
       </div>
-
       {/* Body */}
       {ingredients.map((item) => {
         const boughtQtyInRecipeUnit = unitConversion(
@@ -135,8 +136,6 @@ const totalPrice = ingredients.reduce((acc, item) => {
           </div>
         );
 })}
-
-
       {/* Total */}
       <div className={styles.total}>
         <div>

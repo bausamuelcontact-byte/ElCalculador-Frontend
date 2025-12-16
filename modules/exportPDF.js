@@ -1,9 +1,5 @@
 import jsPDF from "jspdf";
 
-/**
- * Génère et télécharge le PDF d'une fiche recette
- */
-
 export const exportRecipePdf = async ({
   recipeName,
   recipeImage,
@@ -17,86 +13,138 @@ export const exportRecipePdf = async ({
   if (!recipeName) return;
 
   const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
   let y = 20;
 
-  // Titre
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(18);
-  doc.text(recipeName, 20, y);
-  y += 10;
+  const BORDEAUX_BG = [245, 235, 238];
+  const GOLD = [212, 175, 55];
+  const BLACK = [0, 0, 0];
+  const DARK = [40, 40, 40];
 
-  // Image recette (si présente)
+  doc.setFont("times");
+
+  /* =========================
+     TITRE
+  ========================= */
+  doc.setFont("times", "bold");
+  doc.setFontSize(20);
+  doc.setTextColor(...BLACK);
+  doc.text(recipeName, pageWidth / 2, y, { align: "center" });
+  y += 14;
+
+  /* =========================
+     IMAGE
+  ========================= */
   if (recipeImage) {
     try {
       const img = await fetch(recipeImage)
         .then((res) => res.blob())
-        .then((blob) => {
-          return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(blob);
-          });
-        });
+        .then(
+          (blob) =>
+            new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.readAsDataURL(blob);
+            })
+        );
 
-      doc.addImage(img, "JPEG", 20, y, 60, 40);
-      y += 45;
-    } catch (err) {
-      console.warn("Image PDF non chargée", err);
-    }
+      doc.addImage(img, "JPEG", pageWidth / 2 - 30, y, 60, 40);
+      y += 50;
+    } catch {}
   }
 
-  // Prix
-  y+= 5;
-  doc.setFontSize(14);
-  doc.text("Détails des prix :", 20, y);
-  doc.setFont("helvetica", "normal");
+  /* =========================
+     HELPERS
+  ========================= */
+  const sectionTitle = (text) => {
+    doc.setFont("times", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(...BLACK);
+    doc.text(text, 20, y);
+    y += 2;
+    doc.setDrawColor(...GOLD);
+    doc.line(20, y, pageWidth - 20, y);
+    y += 10;
+    doc.setFont("times", "normal");
+    doc.setTextColor(...DARK);
+  };
+
+  const drawBlockBackground = (startY, endY) => {
+    doc.setFillColor(...BORDEAUX_BG);
+    doc.rect(18, startY - 6, pageWidth - 36, endY - startY + 10, "F");
+  };
+
+  /* =========================
+     PRIX
+  ========================= */
+  sectionTitle("Informations tarifaires");
+  const priceStartY = y;
+
+  // calcul hauteur à l’avance
+  const priceEndY = y + 26;
+  drawBlockBackground(priceStartY, priceEndY);
+
+  doc.setFontSize(11);
+  doc.text(`Prix de vente : ${salePrice} €`, 26, y);
+  y += 6;
+  doc.text(`TVA (vente) : ${saleTVA} €`, 26, y);
   y += 8;
-  doc.setFontSize(12);
-  doc.text(`Prix de vente : ${salePrice} €`, 20, y);
+  doc.text(`Prix de revient : ${costPrice} €`, 26, y);
   y += 6;
-  doc.text(`TVA (vente) : ${saleTVA} €`, 20, y);
-  y += 10;
+  doc.text(`TVA (revient) : ${totalTVA} €`, 26, y);
 
-  doc.setFontSize(12);
-  doc.text(`Prix de revient : ${costPrice} €`, 20, y);
-  y += 6;
-  doc.text(`TVA (revient) : ${totalTVA} €`, 20, y);
-  y += 6;
+  y += 18;
 
-// Ingrédients
-  y+=5;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(14);
-  doc.text("Ingrédients :", 20, y);
-  doc.setFont("helvetica", "normal");
-  y += 8;
+  /* =========================
+     INGREDIENTS
+  ========================= */
+  sectionTitle("Ingrédients");
+  const ingStartY = y;
+  const ingEndY = y + ingredients.length * 6;
 
+  drawBlockBackground(ingStartY, ingEndY);
   doc.setFontSize(11);
   ingredients.forEach((item) => {
     doc.text(
-      `- ${item.ingredient.name} : ${item.quantity} ${item.unit}`,
-      20,
+      `• ${item.ingredient.name} — ${item.quantity} ${item.unit}`,
+      26,
       y
     );
     y += 6;
-  })
+  });
 
+  y += 14;
 
-  // Étapes
-  y += 5;
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("Étapes de préparation :", 20, y);
-  doc.setFont("helvetica", "normal");
-  y += 8;
+  /* =========================
+     ETAPES
+  ========================= */
+  sectionTitle("Étapes de préparation");
+  const stepsStartY = y;
+  const stepsEndY = y + steps.length * 8;
+
+  drawBlockBackground(stepsStartY, stepsEndY);
 
   doc.setFontSize(11);
   steps.forEach((step, index) => {
-    doc.text(`${index + 1}. ${step}`, 20, y);
-    y += 6;
+    doc.setFont("times", "bold");
+    doc.text(`${index + 1}.`, 22, y);
+    doc.setFont("times", "normal");
+    doc.text(step, 30, y, { maxWidth: pageWidth - 50 });
+    y += 8;
   });
 
-  y += 6;
+  /* =========================
+     FOOTER
+  ========================= */
+  doc.setFontSize(9);
+  doc.setTextColor(150);
+  doc.text(
+    "El Calculador Fiche recette — impression cuisine",
+    pageWidth / 2,
+    pageHeight - 10,
+    { align: "center" }
+  );
 
   doc.save(`${recipeName}.pdf`);
 };
