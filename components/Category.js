@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Category.module.css";
 import ReactModal from "react-modal";
 import { FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MdEdit, MdDeleteOutline  } from "react-icons/md";
 import { Button, Input } from 'antd';
+import {  setCategories, addCategory, removeCategory  } from '../reducers/categories';
 
 function Category(props) {
-const userInfo = useSelector((state) => state.user.value);
+  const userInfo = useSelector((state) => state.user.value);
+  const categoryList = useSelector((state) => state.categories.value);
 
-  const [categoryList, setCategoryList] = useState([]);
+  const dispatch = useDispatch();
+  // const [categoryList, setCategoryList] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
@@ -19,11 +22,11 @@ const userInfo = useSelector((state) => state.user.value);
        fetch(`http://localhost:3000/categories/${userInfo.id}`)
          .then((response) => response.json())
          .then((data) => {
-           console.log(data.categories);
-           setCategoryList(data.categories);
+           dispatch(setCategories(data.categories))
+          //  setCategoryList(data.categories);
          });}, [userInfo.id, categoryName, updatedCat]);
 
- const handleAddCategory = () => {
+  const handleAddCategory = () => {
     fetch(`http://localhost:3000/categories/add/${userInfo.id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json", },
@@ -35,14 +38,13 @@ const userInfo = useSelector((state) => state.user.value);
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setCategoryList(prev => [...prev, data.category]);
+          dispatch(addCategory(data.category));
           setCategoryName("");
         } else {
           alert("Error adding category" );
         }
       })    
 };
-
 
  const handleUpdateCat = () => {
     fetch(`http://localhost:3000/categories/update`, {
@@ -75,7 +77,7 @@ const userInfo = useSelector((state) => state.user.value);
     .then((response) => response.json())
     .then((data) => {
         //    console.log(data);            
-           setCategoryList(prev => prev.filter(cat => cat._id !== catId));}
+           dispatch(removeCategory(catId));}
         )}
 
   return (
@@ -107,7 +109,7 @@ const userInfo = useSelector((state) => state.user.value);
              <div className={styles.modalContent}>
                 <FaTimes size={20} className={styles.crossColor} onClick={() => props.setCatModalVisible(false)} />
                 <h1>Catégories</h1>
-                {categoryList.map((cat) => (
+                {categoryList?.map((cat) => (
                     <div key={cat._id} className={styles.catItem}>
                         <div key={cat._id} className={styles.catName}>
                         <span className={styles.catLabel}>{cat.name} </span>
@@ -127,9 +129,7 @@ const userInfo = useSelector((state) => state.user.value);
                 </Button>
 
                          </div> )}
-                         
-                        
-                        
+                       
                     </div>
                 ))}
 

@@ -3,9 +3,10 @@ import Head from 'next/head';
 import { Provider } from "react-redux";
 import { configureStore } from '@reduxjs/toolkit';
 import user from '../reducers/user';
+import categories from '../reducers/categories';
 
 const store = configureStore({
- reducer: { user },
+ reducer: { user , categories },
 });
 
 

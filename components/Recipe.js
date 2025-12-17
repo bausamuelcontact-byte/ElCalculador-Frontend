@@ -11,7 +11,7 @@ import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 function Recipe() {
-  const [categories, setCategories] = useState([]);
+  // const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
 
   const [catModalVisible, setCatModalVisible] = useState(false);
@@ -36,6 +36,7 @@ function Recipe() {
   });
 
   const user = useSelector((state) => state.user.value);
+  const categories = useSelector((state) => state.categories.value);
 
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
@@ -51,12 +52,12 @@ function Recipe() {
       });
 
     //recupération des catégories
-    fetch(`http://localhost:3000/categories/${user.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("categories", data);
-        setCategories(data.categories);
-      });
+    // fetch(`http://localhost:3000/categories/${user.id}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("categories", data);
+    //     setCategories(data.categories);
+    //   });
 
     //recupération des ingrédients dans la recette
     fetch(`http://localhost:3000/recipes/search/${user.id}`)

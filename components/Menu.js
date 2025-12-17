@@ -28,7 +28,7 @@ function Menu({}) {
     {
       title: "Recipes Cards",
       icon: <MdOutlineCardMembership />,
-      link: "/cards",
+      link: "/recipecard",
     },
     {
       title: "Price evolution",
