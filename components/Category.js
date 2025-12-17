@@ -112,17 +112,14 @@ function Category(props) {
         },
       }}
     >
-      <div className={styles.modalContent}>
-        <FaTimes
-          size={20}
-          className={styles.crossColor}
-          onClick={() => props.setCatModalVisible(false)}
-        />
-        <h1>Catégories</h1>
-        {categoryList?.map((cat) => (
-          <div key={cat._id} className={styles.catItem}>
-            <div key={cat._id} className={styles.catName}>
-              <span className={styles.catLabel}>{cat.name} </span>
+             <div className={styles.modalContent}>
+                <FaTimes size={20} className={styles.crossColor} onClick={() => props.setCatModalVisible(false)} />
+                <h1>Catégories</h1>
+                {categoryList?.map((cat) => (
+                    <div key={cat._id} className={styles.catItem}>
+                        <div key={cat._id} className={styles.catName}>
+                        <span className={styles.catLabel}>{cat.name} </span>
+
                         <div className={styles.catActions}>
                           <MdEdit style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => openUpdateCat(cat)} /> 
                              <MdDeleteOutline style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => handleRemoveCat(cat._id)}/>

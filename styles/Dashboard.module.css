@@ -5,13 +5,6 @@
   grid-template-columns: repeat(30, fr);
   grid-template-rows: repeat(30, fr);
   height: 100vh;
-<<<<<<< HEAD
-}
-
-.pageContainer.menuOpen {
-  margin-left: 300px; /* espace pour le menu */
-=======
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 }
 
 .dashboardTitle {
@@ -33,24 +26,9 @@
   grid-template-columns: 1fr 8px 2fr;
   gap: 20px;
   padding: 20px;
-<<<<<<< HEAD
-}
-.dashboardContent {
-  grid-row-start: 2;
-  grid-row-end: 30;
-  grid-column-start: 1;
-  grid-column-end: 30;
-}
-
-.recipesDisplay {
-  display: flex;
-}
-
-=======
 
 }
 
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 .dashboardLeft {
   display: flex;
   flex-direction: column;
@@ -59,13 +37,8 @@
   font-family: "Poiret One", cursive;
 }
 
-<<<<<<< HEAD
-.recipescroll {
-  height: 34%;
-=======
 .recipescroll{
   height: 80%;
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
   overflow-y: scroll;
 }
 
@@ -129,18 +102,9 @@
 .dashboardRight {
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
-  gap: 20px;
-}
-
-.overviewDisplay,
-.recipePrice {
-  display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   margin-top: 170px;
-=======
   align-items:center;
   width: 100%;
   gap: 50px;
@@ -178,7 +142,6 @@
   font-family: "Poiret One", cursive;
   color: #2f0801;
   margin: 100px 300px 0px 0px;
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 }
 
 .verticalSeparator {
@@ -188,8 +151,6 @@
   box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
   margin: 0 auto;
 }
-<<<<<<< HEAD
-=======
 
 
 .emptyTitle {
@@ -354,4 +315,4 @@
   color: #2f0801a8;
   text-align: left;
 }
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
+
