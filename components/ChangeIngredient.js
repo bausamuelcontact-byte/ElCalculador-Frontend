@@ -18,7 +18,6 @@ function ChangeIngredient(props) {
     unit: " ",
     tva: 0,
   });
-  console.log(props.info);
   //Création d'un ingrédient
   function handleAddIngredient() {
     fetch("http://localhost:3000/ingredients", {

@@ -2,30 +2,33 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Category.module.css";
 import ReactModal from "react-modal";
 import { FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { MdEdit, MdDeleteOutline  } from "react-icons/md";
 import { Button, Input } from 'antd';
+import {  setCategories, addCategory, removeCategory  } from '../reducers/categories';
 
 function Category(props) {
-const userInfo = useSelector((state) => state.user.value);
+  const userInfo = useSelector((state) => state.user.value);
+  const categoryList = useSelector((state) => state.categories.value);
 
-  const [categoryList, setCategoryList] = useState([]);
+  const dispatch = useDispatch();
+  // const [categoryList, setCategoryList] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
- 
+
      useEffect(() => {
        fetch(`http://localhost:3000/categories/${userInfo.id}`)
          .then((response) => response.json())
          .then((data) => {
-           console.log(data.categories);
-           setCategoryList(data.categories);
+           dispatch(setCategories(data.categories))
+          //  setCategoryList(data.categories);
          });}, [userInfo.id, categoryName, updatedCat]);
 
- const handleAddCategory = () => {
+  const handleAddCategory = () => {
     fetch(`http://localhost:3000/categories/add/${userInfo.id}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: categoryName,
         user: userInfo.id,
@@ -34,39 +37,47 @@ const userInfo = useSelector((state) => state.user.value);
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setCategoryList(prev => [...prev, data.category]);
+          dispatch(addCategory(data.category));
           setCategoryName("");
         } else {
-          alert("Error adding category" );
+          alert("Error adding category");
         }
-      })    
-};
-
+      });
+  };
 
  const handleUpdateCat = () => {
     fetch(`http://localhost:3000/categories/update`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-          categoryId: updatedCatId,
-          name: updatedCat,
-        }),
+        categoryId: updatedCatId,
+        name: updatedCat,
+      }),
     })
       .then((response) => response.json())
-        .then((data) => {
-            if (data.result) {
-                // Update local state
-                setCategoryList((prev) =>
-                     prev.map((cat) =>cat._id === updatedCatId ? { ...cat, name: updatedCat } : cat));
-                setUpdatedCatId(null);
-                setUpdatedCat("");
-            } else {
-                alert("Error updating category");
-            }
-        })
+      .then((data) => {
+        if (data.result) {
+          // Update local state
+          setCategoryList((prev) =>
+            prev.map((cat) =>
+              cat._id === updatedCatId ? { ...cat, name: updatedCat } : cat
+            )
+          );
+          setUpdatedCatId(null);
+          setUpdatedCat("");
+        } else {
+          alert("Error updating category");
+        }
+      });
   };
-  const openUpdateCat = (cat)=>{ setUpdatedCatId(cat._id); setUpdatedCat(cat.name);}
-  const cancelUpdateCat = () => { setUpdatedCatId(null); setUpdatedCat(""); }
+  const openUpdateCat = (cat) => {
+    setUpdatedCatId(cat._id);
+    setUpdatedCat(cat.name);
+  };
+  const cancelUpdateCat = () => {
+    setUpdatedCatId(null);
+    setUpdatedCat("");
+  };
 
   const handleRemoveCat = (catId)=>{
    fetch(`http://localhost:3000/categories/remove/${catId}`,
@@ -74,11 +85,11 @@ const userInfo = useSelector((state) => state.user.value);
     .then((response) => response.json())
     .then((data) => {
         //    console.log(data);            
-           setCategoryList(prev => prev.filter(cat => cat._id !== catId));}
+           dispatch(removeCategory(catId));}
         )}
 
   return (
-    <ReactModal 
+    <ReactModal
       isOpen={props.catModalVisible}
       closeTimeoutMS={250}
       style={{
@@ -90,7 +101,7 @@ const userInfo = useSelector((state) => state.user.value);
         },
         content: {
           position: "relative",
-          inset: "40px",  
+          inset: "40px",
           border: "none",
           overflow: "hidden",
           padding: "0",
@@ -98,7 +109,6 @@ const userInfo = useSelector((state) => state.user.value);
           background: "#fff",
           overflow: "auto",
           WebkitOverflowScrolling: "touch",
-          
         },
       }}
     >
@@ -125,9 +135,7 @@ const userInfo = useSelector((state) => state.user.value);
                 </Button>
 
                          </div> )}
-                         
-                        
-                        
+                       
                     </div>
                 ))}
 
@@ -142,9 +150,8 @@ const userInfo = useSelector((state) => state.user.value);
             Ajouter la catégorie
           </Button>
               </div>
-    
     </ReactModal>
-  )
-};
+  );
+}
 
 export default Category;

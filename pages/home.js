@@ -1,12 +1,13 @@
-import Home from '../components/Home';
+import { IoHomeSharp } from "react-icons/io5";
+import Home from "../components/Home";
+import styles from "../styles/Dashboard.module.css";
 
-function HomePage() {
+function Homes() {
   return (
-    <div >
+    <div>
       <Home />
     </div>
-   
   );
 }
 
-export default HomePage;    
+export default Homes;
