@@ -17,10 +17,10 @@ function RecipeCard() {
 
   // utilisation d'un userId fixe pour le moment
   // A modifier lorsque le store sera persistant
-  // const userInfo = {id: "6936ab0cee14c830750e2bea", token: "pt0oyg44CsVgLGck-74jVju5Ts2fxiRL"};
+  const userInfo = {id: "6936ab0cee14c830750e2bea", token: "pt0oyg44CsVgLGck-74jVju5Ts2fxiRL"};
 
   // user with more data 
-  const userInfo = {id : "6937f28fb4d4f0be72695c79", token: "DnRWUMfDOW7elz0y3gtAOrF1VBM9UcYw"};
+  //const userInfo = {id : "6937f28fb4d4f0be72695c79", token: "DnRWUMfDOW7elz0y3gtAOrF1VBM9UcYw"};
 
   // recherche de fiche recette via la barre de recherche
   const [searchRecipe, setSearchRecipe] = useState("");
@@ -127,7 +127,7 @@ const handleEditRecipeCard = (recipeFromCard) => {
 
   // synchroniser prix/TVA + recette (comme la dropdown)
   setRecipeSalePrice(fullRecipe.price);
-  setRecipeTVA(fullRecipe.price * (Number(fullRecipe.TVA) / 100));
+  setRecipeTVA((fullRecipe.price * (Number(fullRecipe.TVA) / 100)).toFixed(2));
 
   // récupérer la fiche recette (steps) depuis la liste gauche
   const recipeCard = recipeCardsUser.find(rc => rc.recipe._id === fullRecipe._id);
@@ -336,7 +336,7 @@ const handleExportPDF = () => {
                     const recipe = recipesUser.find(r => r._id === selectedId);
                     if (recipe) {
                       setRecipeSalePrice(recipe.price);
-                      setRecipeTVA(recipe.price * (Number(recipe.TVA) / 100));
+                      setRecipeTVA((recipe.price * (Number(recipe.TVA) / 100)).toFixed(2));
                       setSelectedRecipe(recipe);
                       setEditMode(false);
                     }
