@@ -13,7 +13,7 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 function Recipe() {
   const [name, setName] = useState("");
   //Liste des catégories dans le menu déroulant
-  const [categories, setCategories] = useState([]);
+  //const [categories, setCategories] = useState([]);
   //Catégorie de la recette qu'on est entrain d'etre modifié
   const [category, setCategory] = useState("");
   //Booléen d'affichage de la modale catégorie
@@ -46,6 +46,7 @@ function Recipe() {
 
   const user = useSelector((state) => state.user.value);
   const recipeReducer = useSelector((state) => state.recipe.value);
+  const categories = useSelector((state) => state.categories.value);
 
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
@@ -60,11 +61,12 @@ function Recipe() {
       });
 
     //recupération des catégories
-    fetch(`http://localhost:3000/categories/${user.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setCategories(data.categories);
-      });
+    // fetch(`http://localhost:3000/categories/${user.id}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log("categories", data);
+    //     setCategories(data.categories);
+    //   });
 
     if (!isBob) {
       setRecipe(recipeReducer);

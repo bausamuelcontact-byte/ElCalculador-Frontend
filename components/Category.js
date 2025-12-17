@@ -2,26 +2,28 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Category.module.css";
 import ReactModal from "react-modal";
 import { FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { MdEdit, MdDeleteOutline } from "react-icons/md";
-import { Button, Input } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+import { MdEdit, MdDeleteOutline  } from "react-icons/md";
+import { Button, Input } from 'antd';
+import {  setCategories, addCategory, removeCategory  } from '../reducers/categories';
 
 function Category(props) {
   const userInfo = useSelector((state) => state.user.value);
+  const categoryList = useSelector((state) => state.categories.value);
 
-  const [categoryList, setCategoryList] = useState([]);
+  const dispatch = useDispatch();
+  // const [categoryList, setCategoryList] = useState([]);
   const [categoryName, setCategoryName] = useState("");
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/categories/${userInfo.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.categories);
-        setCategoryList(data.categories);
-      });
-  }, [userInfo.id, categoryName, updatedCat]);
+     useEffect(() => {
+       fetch(`http://localhost:3000/categories/${userInfo.id}`)
+         .then((response) => response.json())
+         .then((data) => {
+           dispatch(setCategories(data.categories))
+          //  setCategoryList(data.categories);
+         });}, [userInfo.id, categoryName, updatedCat]);
 
   const handleAddCategory = () => {
     fetch(`http://localhost:3000/categories/add/${userInfo.id}`, {
@@ -35,7 +37,7 @@ function Category(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setCategoryList((prev) => [...prev, data.category]);
+          dispatch(addCategory(data.category));
           setCategoryName("");
         } else {
           alert("Error adding category");
@@ -43,7 +45,7 @@ function Category(props) {
       });
   };
 
-  const handleUpdateCat = () => {
+ const handleUpdateCat = () => {
     fetch(`http://localhost:3000/categories/update`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -77,16 +79,14 @@ function Category(props) {
     setUpdatedCat("");
   };
 
-  const handleRemoveCat = (catId) => {
-    fetch(`http://localhost:3000/categories/remove/${catId}`, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        //    console.log(data);
-        setCategoryList((prev) => prev.filter((cat) => cat._id !== catId));
-      });
-  };
+  const handleRemoveCat = (catId)=>{
+   fetch(`http://localhost:3000/categories/remove/${catId}`,
+    { method: "DELETE",})
+    .then((response) => response.json())
+    .then((data) => {
+        //    console.log(data);            
+           dispatch(removeCategory(catId));}
+        )}
 
   return (
     <ReactModal
@@ -123,51 +123,36 @@ function Category(props) {
           <div key={cat._id} className={styles.catItem}>
             <div key={cat._id} className={styles.catName}>
               <span className={styles.catLabel}>{cat.name} </span>
-
-              <div className={styles.catActions}>
-                <MdEdit
-                  style={{ cursor: "pointer", marginLeft: "10px" }}
-                  onClick={() => openUpdateCat(cat)}
-                />
-                <MdDeleteOutline
-                  style={{ cursor: "pointer", marginLeft: "10px" }}
-                  onClick={() => handleRemoveCat(cat._id)}
-                />
-              </div>
-            </div>
-            {updatedCatId === cat._id && (
-              <div>
-                <Input
-                  value={updatedCat}
-                  placeholder={cat.name}
-                  onChange={(e) => {
-                    setUpdatedCat(e.target.value);
-                  }}
-                />
-                <Button type="primary" onClick={handleUpdateCat}>
+                        <div className={styles.catActions}>
+                          <MdEdit style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => openUpdateCat(cat)} /> 
+                             <MdDeleteOutline style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => handleRemoveCat(cat._id)}/>
+                        </div>
+                        </div>
+                           {updatedCatId === cat._id && (<div >
+                          <Input value={updatedCat} placeholder={cat.name} onChange={(e) => {setUpdatedCat(e.target.value); }}/>
+                          <Button type="primary" onClick={handleUpdateCat}>
                   Modifier
                 </Button>
                 <Button style={{ marginLeft: "5px" }} onClick={cancelUpdateCat}>
                   Annuler
                 </Button>
-              </div>
-            )}
-          </div>
-        ))}
 
-        <Input
-          className={styles.inputs}
-          type="text"
-          placeholder="Créez une nouvelle catégorie"
-          value={categoryName}
-          onChange={(e) => {
-            setCategoryName(e.target.value);
-          }}
-        />
-        <Button type="primary" onClick={handleAddCategory}>
-          Ajouter la catégorie
-        </Button>
-      </div>
+                         </div> )}
+                       
+                    </div>
+                ))}
+
+                <Input
+                  className={styles.inputs}
+                  type="text"
+                  placeholder="Créez une nouvelle catégorie"
+                  value = {categoryName}
+                  onChange={(e) => { setCategoryName(e.target.value); }}
+                />
+                <Button type="primary" onClick={handleAddCategory}>
+            Ajouter la catégorie
+          </Button>
+              </div>
     </ReactModal>
   );
 }
