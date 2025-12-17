@@ -9,8 +9,9 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 import login from "../reducers/login";
 import singin from "../reducers/singin";
+import recipe from "../reducers/recipe";
 
-const reducers = combineReducers({ user, login, singin });
+const reducers = combineReducers({ user, login, singin, recipe });
 const persistConfig = { key: "ElCalculador", storage };
 
 const store = configureStore({

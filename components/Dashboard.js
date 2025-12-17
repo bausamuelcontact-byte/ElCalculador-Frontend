@@ -2,7 +2,7 @@ import styles from "../styles/Dashboard.module.css";
 import Header from "../components/Header";
 import Menu from "../components/Menu";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Cell, Pie, PieChart, PieLabelRenderProps } from "recharts";
 import {
   BarChart,
@@ -15,8 +15,12 @@ import {
 } from "recharts";
 import Category from "./Category";
 import { MdOutlineRestaurant } from "react-icons/md";
+import { addRecipe } from "../reducers/recipe";
+import { useRouter } from "next/router";
 
 function Dashboard() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [visibleMenu, setVisibleMenu] = useState(false);
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
@@ -48,7 +52,6 @@ function Dashboard() {
       .then((response) => response.json())
       .then((data) => {
         setCategoryList(data.categories);
-        console.log("Categories =>", data.categories);
       });
   }, [userInfo.id]);
 
@@ -86,6 +89,12 @@ function Dashboard() {
     }
   };
 
+  //Envoie la recette sur reducer et va dans le composant recette pour la modifier
+  const handleChangeRecipe = (recipe) => {
+    dispatch(addRecipe(recipe));
+    router.push("/recipe");
+  };
+
   const handleRecipeClick = (recipe) => {
     setSelectedRecipe(recipe);
     setSelectedRecipeName(recipe.name);
@@ -99,9 +108,7 @@ function Dashboard() {
         const allIngredients = data.ingredient; // console.log("IDs de la recette :", recipe.ingredients.map(i => i.ingredient)); // console.log("IDs des ingrédients récupérés :", allIngredients.map(i => i._id));
         // filtrage des ingrédients utilisés dans la recette
         const filteredIngredients = allIngredients.filter((ing) =>
-          recipe.ingredients.some(
-            (recIng) => recIng.ingredient.toString() === ing._id.toString()
-          )
+          recipe.ingredients.some((recIng) => recIng.ingredient === ing._id)
         );
         setIngredientList(filteredIngredients); // console.log("filteredIngredients", filteredIngredients);
         // calcul du prix des ingrédients pour la recette sélectionnée
@@ -257,7 +264,11 @@ function Dashboard() {
                 >
                   <span className={styles.listLabel}> {data.name}</span>
                   <div className={styles.listActions}>
-                    <MdOutlineRestaurant />
+                    <MdOutlineRestaurant
+                      onClick={() => {
+                        handleChangeRecipe(data);
+                      }}
+                    />
                   </div>
                 </div>
               ))}

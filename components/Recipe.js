@@ -11,14 +11,15 @@ import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 function Recipe() {
+  const [name, setName] = useState("");
   //Liste des catégories dans le menu déroulant
   const [categories, setCategories] = useState([]);
-  //Catégorie de la recette qu'on est entrain de créer
+  //Catégorie de la recette qu'on est entrain d'etre modifié
   const [category, setCategory] = useState("");
   //Booléen d'affichage de la modale catégorie
   const [catModalVisible, setCatModalVisible] = useState(false);
   //Booléen de Modification ou Création d'une recette
-  const [isBob, setIsBob] = useState(true);
+  const [isBob, setIsBob] = useState(false);
   //Booléen modal de création Ingrédient
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   //Entièreté des ingredients dans le menu deroulant
@@ -26,8 +27,6 @@ function Recipe() {
   //Liste des ingrédient qui vont etre dans la recette
   const [ingredientTotal, setIngredientTotal] = useState([]);
   const [visibleMenu, setVisibleMenu] = useState(false);
-  //Recuperation des ingrédients d'une recette si celle ci est modifié
-  const [ingredientRecipe, setIngredientRecipe] = useState([]);
   //Ingrédient qu'on ajoute 1 par 1 dans la recette
   const [ingredient, setIngredient] = useState({
     name: "",
@@ -36,23 +35,24 @@ function Recipe() {
     unit: "Kg",
     tva: 0,
   });
-  // Recette q'on est entrain de créer
+  // Recette qu'on est entrain de créer
   const [recipe, setRecipe] = useState({
     name: "",
-    allergen: [],
+    allergens: [],
     category: 0,
     price: 0,
-    tva: 0,
+    TVA: 0,
   });
 
   const user = useSelector((state) => state.user.value);
+  const recipeReducer = useSelector((state) => state.recipe.value);
 
   const toggleMenu = () => {
     setVisibleMenu(!visibleMenu);
   };
 
-  // recuperation des ingrédients pour le menu déroulant
   useEffect(() => {
+    // recuperation des ingrédients pour le menu déroulant
     fetch(`http://localhost:3000/ingredients/search/${user.id}`)
       .then((response) => response.json())
       .then((data) => {
@@ -66,12 +66,17 @@ function Recipe() {
         setCategories(data.categories);
       });
 
-    //recupération des ingrédients dans la recette
-    fetch(`http://localhost:3000/recipes/search/${user.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setIngredientRecipe(data.recipe);
-      });
+    if (!isBob) {
+      setRecipe(recipeReducer);
+      setIngredientTotal(recipeReducer.ingredients);
+
+      //Recuperation de la categorie grace a l'ID Recipe
+      fetch(`http://localhost:3000/categories/recipeId/${recipeReducer._id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setCategory(data.category[0]);
+        });
+    }
   }, []);
 
   //Affichage des ingrédients dans le menu déroulant
@@ -100,19 +105,14 @@ function Recipe() {
       body: JSON.stringify({
         name: recipe.name,
         price: recipe.price,
-        allergens: recipe.allergen,
+        allergens: recipe.allergens,
         ingredients: ingredientTotal,
         id: user.id,
-        tva: recipe.tva,
+        tva: recipe.TVA,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
-
-        console.log("categoryId:", category);
-        console.log("recipeId:", data.recipeId);
-
         return fetch("http://localhost:3000/categories/addRecipeToCategory", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -123,9 +123,7 @@ function Recipe() {
         });
       })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("cat", data);
-      });
+      .then((data) => {});
 
     //Remise à zéro des champs pour création d'une nouvelle recette
     setRecipe({
@@ -146,37 +144,45 @@ function Recipe() {
   }
 
   //Modification d'une recette
-  function handleModificationRecipe() {
+  function handleModifyRecipe() {
     fetch("http://localhost:3000/recipes", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: recipe.name,
         price: recipe.price,
-        allergens: recipe.allergen,
+        allergens: recipe.allergens,
         ingredients: ingredientTotal,
-        id: user.id,
-        tva: recipe.tva,
+        id: recipe._id,
+        tva: recipe.TVA,
       }),
     })
       .then((response) => response.json())
-      .then((data) => {});
+      .then((data) => {
+        console.log(recipe.TVA);
+      });
+    RecipeModifyCategory();
   }
   const handleRemoveRecipe = () => {
-    fetch(
-      `http://localhost:3000/categories/removeRecipeFromCategory`,
-      { method: "DELETE" }
-
-        .then((response) => response.json())
-        .then((data) => {
-          //    console.log(data);
-        })
-    );
+    fetch(`http://localhost:3000/categories/removeRecipeFromCategory`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        categoryId: recipe.category,
+        recipeId: recipe._id,
+      }),
+    });
+    fetch(`http://localhost:3000/recipes`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: recipe._id,
+      }),
+    });
   };
 
   function handleAddIngredient() {
     setIngredientTotal([...ingredientTotal, ingredient]);
-    console.log("total", ingredient);
     setIngredient({
       name: "",
       quantity: 0,
@@ -186,8 +192,9 @@ function Recipe() {
     });
   }
 
-  //Affichage des ingrédient de la recette à droite
-  const ingredientDisplay = ingredientTotal.map((data, i) => {
+  //Affichage des ingrédient liste de la recette à droite
+
+  const ingredientDisplay = recipeReducer.ingredients.map((data, i) => {
     return (
       <div className={styles.ingredient} key={i}>
         <div className={styles.NameIngredient}>
@@ -221,24 +228,33 @@ function Recipe() {
     setIngredient((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Change la valeur d'une propriété recettepour la Création
+  // Change la valeur d'une propriété recette pour la Création
   const handleChangeCreationRecipe = (field, value) => {
     setRecipe((prev) => ({ ...prev, [field]: value }));
   };
 
-  //Affichage du tableau bas gauche
-  const ingredientArray = ingredientTotal.map((data, i) => {
-    let priceUse = data.price / data.quantity;
-    console.log("ingredient array =>", data);
-    return (
-      <tr className={styles.ligne}>
-        <td className={styles.ligne}>{data.name}</td>
-        <td className={styles.ligne}>{priceUse}</td>
-        <td className={styles.ligne}>{data.name}</td>
-      </tr>
-    );
-  });
+  function RecipeModifyCategory() {
+    console.log("recipeID", recipe._id);
+    console.log("categoryID", recipe.category);
 
+    fetch("http://localhost:3000/categories/removeRecipeFromCategory", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        categoryId: recipe.category,
+        recipeId: recipe._id,
+      }),
+    });
+
+    fetch("http://localhost:3000/categories/addRecipeToCategory", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        categoryId: recipe.category,
+        recipeId: recipe._id,
+      }),
+    });
+  }
   return (
     <div className={styles.container}>
       <Header onToggleMenu={toggleMenu} />
@@ -383,9 +399,9 @@ function Recipe() {
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("tva", e.target.value);
+              handleChangeCreationRecipe("TVA", e.target.value);
             }}
-            value={recipe?.tva || ""}
+            value={recipe?.TVA || ""}
           ></input>
           <button
             onClick={() => {
@@ -413,6 +429,9 @@ function Recipe() {
                 handleChangeCreationRecipe("category", e.target.value);
               }}
             >
+              <option value={category?._id || ""}>
+                {category?.name || ""}
+              </option>
               <option value={null}>Categorie</option>
               {categ}
             </select>
@@ -536,31 +555,29 @@ function Recipe() {
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("tva", e.target.value);
+              handleChangeCreationRecipe("TVA", e.target.value);
             }}
-            value={recipe?.tva || ""}
+            value={recipe?.TVA || ""}
           ></input>
           <button
             onClick={() => {
-              handleAddRecipe();
+              handleModifyRecipe();
             }}
             className={styles.btn}
           >
-            Modifier la recette
+            Modifier une recette
+          </button>
+          <button
+            onClick={() => {
+              handleRemoveRecipe();
+            }}
+            className={styles.btn}
+          >
+            Suppression de la recette
           </button>
         </div>
       )}
       <div className={styles.ingredients}>{ingredientDisplay}</div>
-      <div className={styles.stat}>
-        <table className={styles.array}>
-          <tr className={styles.ligne}>
-            <td className={styles.ligne}>Nom de l'ingrédient</td>
-            <td className={styles.ligne}>Prix quantité utilisée</td>
-            <td className={styles.ligne}>Total</td>
-          </tr>
-          {ingredientArray}
-        </table>
-      </div>
     </div>
   );
 }
