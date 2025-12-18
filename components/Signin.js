@@ -55,7 +55,7 @@ function Signin(props) {
           left: "25%",
           right: "25%",
           bottom: "35%",
-          backgroundColor: "rgba(255, 255, 255, 0.75)",
+          backgroundColor: "#f3f2eada",
         },
         content: {
           position: "absolute",
@@ -63,8 +63,8 @@ function Signin(props) {
           left: "40px",
           right: "40px",
           bottom: "20px",
-          border: "1px solid #ccc",
-          background: "#fff",
+          border: "1px solid #eeeeeec3",
+          background: "#f3f2eaff",
           overflow: "auto",
           WebkitOverflowScrolling: "touch",
           borderRadius: "4px",
@@ -82,11 +82,11 @@ function Signin(props) {
         ​
       </div>
       <div className={styles.modalContent}>
-        <h1>Identification</h1>
+        <h1 style={{ color: "color-mix(in srgb, #341302 90%, white)" }}>Identification</h1>
         <input
           className={styles.inputs}
           type="text"
-          placeholder="adresse e-mail"
+          placeholder="Adresse e-mail"
           onChange={(e) => {
             setUserEmail(e.target.value);
           }}
