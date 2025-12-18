@@ -30,11 +30,7 @@ function Menu({}) {
       icon: <MdOutlineCardMembership />,
       link: "/recipecard",
     },
-    {
-      title: "Price evolution",
-      icon: <MdEuro />,
-      link: "",
-    },
+
   ];
   return (
     <div className={styles.Menu}>

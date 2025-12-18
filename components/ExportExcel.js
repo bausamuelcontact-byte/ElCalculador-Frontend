@@ -27,6 +27,8 @@ export default function ExportExcel({ recipeList, ingredientList, unitConvertion
         "Marge (€)": (recipe.price - totalCost).toFixed(2),
       };
     });
+
+    
     const ws = XLSX.utils.json_to_sheet(allRecipesData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Recettes");

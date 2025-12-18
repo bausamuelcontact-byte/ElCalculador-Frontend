@@ -41,7 +41,7 @@ function Dashboard() {
     // Récupération de l'ensemble des ingrédients d'un utilisateur (pour l'export Excel global)  
       fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
         .then(res => res.json())
-        .then(data => setIngredientList(data.ingredient));
+        .then((data) => {if(data){setIngredientList(data.ingredient)}});
   }, [userInfo.id]);
 
   // Options de la liste déroulante

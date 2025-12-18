@@ -1,9 +1,9 @@
 .Menu {
-  width: 300px;
+  width: 315px;
   height: 100vh; /* hauteur de la page sous le header */
   background-color: #f5f4e1;
   position: fixed;
-  top: 70px;
+  top: 81px;
   left: 0;
   z-index: 1000; /* passe au-dessus du contenu */
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -11,42 +11,29 @@
   flex-direction: column;
 }
 
+
 .pageName {
   font-family: "Poiret One", cursive;
   font-size: 1.5rem;
   text-align: left;
-  padding: 1rem 0;
-  margin-left: 30px;
-  margin-top: 20px;
+  padding: 1rem;
+  margin-bottom:20px;
+  margin-top: 40px;
   color: #2f0801;
   display: flex;
+}
+
+.pageName:hover {
+  background-color: #70643bb5;
+  color: white;
+  transition: 0.3s;
 }
 
 .icon {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 20px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.pageName {
-  font-family: "Poiret One", cursive;
-  font-size: 1.5rem;
-  text-align: left;
-  padding: 1rem 0;
-  margin-left: 30px;
-  margin-top: 20px;
-  color: #2f0801;
-  display: flex;
-}
-
-.icon {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
@@ -55,7 +42,6 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: 20px;
   padding: 0.5rem 1rem;
   cursor: grab;
 }
