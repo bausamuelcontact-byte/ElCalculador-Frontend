@@ -45,16 +45,6 @@ const unitConversion = (fromUnit, toUnit, qty) => {
   return inBase / toInfo.factor;
 };
 
-ingredients.forEach(item => {
-  console.log(
-    "INGR:",
-    item.ingredient.name, item.ingredient.price,
-    "| buy:", item.ingredient.quantity, item.ingredient.unit,
-    "| recipe:", item.quantity, item.unit,
-    "| TVA ingredient:", item.ingredient.TVA,
-  );
-});
-
 const totalPrice = ingredients.reduce((acc, item) => {
   const boughtQtyInRecipeUnit = unitConversion(
     item.ingredient.unit,
