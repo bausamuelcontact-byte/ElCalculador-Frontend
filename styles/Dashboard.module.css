@@ -36,7 +36,7 @@
   font-family: "Poiret One", cursive;
 }
 
-.recipescroll {
+.recipescroll{
   height: 80%;
   overflow-y: scroll;
 }
@@ -100,7 +100,8 @@
 .dashboardRight {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-top: 170px;
+  align-items:center;
   width: 100%;
   gap: 50px;
   justify-content: space-between;
@@ -146,6 +147,10 @@
   box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
   margin: 0 auto;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a8331246f961f72c7943c1568a0aeceb52aca65d
 
 .emptyTitle {
   font-size: 2.2rem;
@@ -308,3 +313,7 @@
   color: #2f0801a8;
   text-align: left;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> a8331246f961f72c7943c1568a0aeceb52aca65d

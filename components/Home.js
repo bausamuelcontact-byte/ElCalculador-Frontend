@@ -11,7 +11,7 @@ function Home() {
   return (
     <div className={styles.main} >
       <div className={styles.header}>
-        <span className={styles.elCalculador}>El Calculador</span>
+        <span style={{ color: "#f5eadfde", fontFamily: "Poiret One, cursive", fontWeight: "lighter"}} className={styles.elCalculador}>El Calculador</span>
       </div>
         <div className={styles.container}>
           <img className={styles.cover} src='cook.jpg'/>
@@ -21,7 +21,7 @@ function Home() {
             </div>
             <div className={styles.actions}>
               <span className={styles.titles}>Déjà membre?</span>
-              <button className={styles.signInButton} onClick={()=>(setSignInVisible(true))}>Connectez vous</button>
+              <button className={styles.signInButton} onClick={()=>(setSignInVisible(true))}>Connexion</button>
               <span className={styles.titles}>Première visite?</span>
               <button className={styles.signUpButton} onClick={()=>(setSignUpVisible(true))}>S'inscrire</button>
             </div>
