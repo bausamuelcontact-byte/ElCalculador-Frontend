@@ -63,11 +63,13 @@ function Dashboard() {
 
   // calcul des prix des recettes par catégorie (Overview)
   const categoryPrices = categoryList.map((cat) => {
+    console.log("recipeList", recipeList);
+    console.log("categoryList", categoryList);
     const recipesInCategory = recipeList.filter((rec) =>
       cat.recipes.some((catRecId) => catRecId === rec._id)
     );
     const totalPrices = recipesInCategory.reduce(
-      (sum, rec) => sum + rec.price + rec.TVA,
+      (sum, rec) => sum + rec.price + rec.tva,
       0
     );
     const averagePrice = totalPrices / recipesInCategory.length;
@@ -97,7 +99,7 @@ function Dashboard() {
     setSelectedRecipe(recipe);
     setSelectedRecipeName(recipe.name);
     setSelectedRecipePrice(recipe.price);
-    setSelectedRecipeTVA(recipe.TVA);
+    setSelectedRecipeTVA(recipe.tva);
     // fetch des ingrédients pour la recette sélectionnée
     fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
       .then((response) => response.json())
@@ -137,7 +139,7 @@ function Dashboard() {
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
       const price = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
       // calcul de la TVA pour cet ingrédient
-      const TVA = price * (ingrDetail.TVA / 100);
+      const TVA = price * (ingrDetail.tva / 100);
       const ingrCost = price + TVA;
       recipeCost.push({
         name: ingrDetail.name,
@@ -146,6 +148,7 @@ function Dashboard() {
         value: ingrCost,
       });
     });
+    console.log("recipeCost", recipeCost);
     return recipeCost;
   };
 
