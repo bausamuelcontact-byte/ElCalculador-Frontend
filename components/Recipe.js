@@ -14,7 +14,7 @@ function Recipe() {
   const [allergen, setAllergen] = useState([]);
   let ingredientDisplay = {};
   //Liste des catégories dans le menu déroulant
-  //const [categories, setCategories] = useState([]);
+  const [oldCategory, setOldCategory] = useState([]);
   //Catégorie de la recette qu'on est entrain d'etre modifié
   const [category, setCategory] = useState("");
   //Booléen d'affichage de la modale catégorie
@@ -73,6 +73,8 @@ function Recipe() {
     if (!isBob) {
       setRecipe(recipeReducer);
       setIngredientTotal(recipeReducer.ingredients);
+      console.log("changement", recipe.category);
+      setOldCategory(recipe.category);
 
       //Recuperation de la categorie grace a l'ID Recipe
       fetch(`http://localhost:3000/categories/recipeId/${recipeReducer._id}`)
@@ -103,7 +105,7 @@ function Recipe() {
 
   //Création de la recette
   function handleAddRecipe() {
-    console.log("test", ingredientTotal);
+    console.log("test", recipe.tva);
     fetch("http://localhost:3000/recipes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -118,17 +120,18 @@ function Recipe() {
     })
       .then((response) => response.json())
       .then((data) => {
-        return fetch("http://localhost:3000/categories/addRecipeToCategory", {
+        console.log("categ", data);
+        fetch("http://localhost:3000/categories/addRecipeToCategory", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             categoryId: recipe.category,
-            recipeId: data.recipeId,
+            recipeId: data.recipe._id,
           }),
-        });
-      })
-      .then((response) => response.json())
-      .then((data) => {});
+        })
+          .then((response) => response.json())
+          .then((data) => {});
+      });
 
     //Remise à zéro des champs pour création d'une nouvelle recette
     setRecipe({
@@ -205,8 +208,7 @@ function Recipe() {
 
   //Affichage des ingrédient liste de la recette à droite
   if (isBob) {
-    ingredientDisplay = ingredientTotal.map( (data, i) => {
-
+    ingredientDisplay = ingredientTotal.map((data, i) => {
       return (
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
@@ -277,18 +279,9 @@ function Recipe() {
 
   function RecipeModifyCategory() {
     console.log("recipeID", recipe._id);
-    console.log("categoryID", recipe.category);
+    console.log("categoryID", oldCategory);
 
-    fetch("http://localhost:3000/categories/removeRecipeFromCategory", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        categoryId: recipe.category,
-        recipeId: recipe._id,
-      }),
-    });
-
-    fetch("http://localhost:3000/categories/addRecipeToCategory", {
+    fetch("http://localhost:3000/categories/changecategory", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

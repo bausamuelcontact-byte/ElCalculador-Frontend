@@ -63,6 +63,8 @@ function Dashboard() {
 
   // calcul des prix des recettes par catégorie (Overview)
   const categoryPrices = categoryList.map((cat) => {
+    console.log("recipeList", recipeList);
+    console.log("categoryList", categoryList);
     const recipesInCategory = recipeList.filter((rec) =>
       cat.recipes.some((catRecId) => catRecId === rec._id)
     );
@@ -97,7 +99,7 @@ function Dashboard() {
     setSelectedRecipe(recipe);
     setSelectedRecipeName(recipe.name);
     setSelectedRecipePrice(recipe.price);
-    setSelectedRecipeTVA(recipe.TVA);
+    setSelectedRecipeTVA(recipe.tva);
     // fetch des ingrédients pour la recette sélectionnée
     fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
       .then((response) => response.json())
@@ -149,6 +151,7 @@ function Dashboard() {
         value: ingrCost,
       });
     });
+    console.log("recipeCost", recipeCost);
     return recipeCost;
   };
 

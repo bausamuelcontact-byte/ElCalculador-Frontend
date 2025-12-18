@@ -10,10 +10,12 @@ export const recipeSlice = createSlice({
   reducers: {
     addRecipe: (state, action) => {
       state.value = action.payload;
-      console.log("Action =>", action.payload);
+    },
+    removeRecipe: (state, action) => {
+      state.value = {};
     },
   },
 });
 
-export const { addRecipe } = recipeSlice.actions;
+export const { addRecipe, removeRecipe } = recipeSlice.actions;
 export default recipeSlice.reducer;
