@@ -13,8 +13,6 @@ import { BiSolidMessageSquareEdit } from "react-icons/bi";
 function Recipe() {
   const [allergen, setAllergen] = useState([]);
   let ingredientDisplay = {};
-  //Liste des catégories dans le menu déroulant
-  const [oldCategory, setOldCategory] = useState([]);
   //Catégorie de la recette qu'on est entrain d'etre modifié
   const [category, setCategory] = useState("");
   //Booléen d'affichage de la modale catégorie
@@ -30,7 +28,6 @@ function Recipe() {
   const [visibleMenu, setVisibleMenu] = useState(false);
   //Ingrédient qu'on ajoute 1 par 1 dans la recette ( name, quantity, unit)
   const [ingredient, setIngredient] = useState({
-    id: null,
     name: "",
     quantity: 0,
     price: 0,
@@ -74,7 +71,6 @@ function Recipe() {
       setRecipe(recipeReducer);
       setIngredientTotal(recipeReducer.ingredients);
       console.log("changement", recipe.category);
-      setOldCategory(recipe.category);
 
       //Recuperation de la categorie grace a l'ID Recipe
       fetch(`http://localhost:3000/categories/recipeId/${recipeReducer._id}`)
@@ -279,7 +275,6 @@ function Recipe() {
 
   function RecipeModifyCategory() {
     console.log("recipeID", recipe._id);
-    console.log("categoryID", oldCategory);
 
     fetch("http://localhost:3000/categories/changecategory", {
       method: "PUT",
@@ -328,18 +323,9 @@ function Recipe() {
             <select
               className={styles.inputs}
               onChange={(e) => {
-              const selectedIngredient = ingredients.find(
-                (ing) => ing._id === e.target.value
-              );
-
-              setIngredient({
-                ...ingredient,
-                id: selectedIngredient._id,
-                name: selectedIngredient.name,
-                price: selectedIngredient.price,
-              });
-            }}
-            value={ingredient?.id || ""}
+                handleChangeCreation("name", e.target.value);
+              }}
+              value={ingredient?.name || ""}
             >
               <option value={null}>Ingrédient</option>
               {ingr}
@@ -359,26 +345,25 @@ function Recipe() {
               onRequestClose={() => setIsVisibleModal(false)}
               style={{
                 overlay: {
-                  position: "fixed",
+                  backgroundColor: "rgba(0,0,0,0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 },
                 content: {
-                  position: "absolute",
-                  top: "17%",
-                  left: "35%",
-                  right: "35%",
-                  bottom: "17%",
-                  border: "1px solid #ccc",
+                  position: "relative",
+                  inset: "40px",
+                  border: "none",
+                  overflow: "hidden",
+                  padding: "5",
+                  border: "3px solid #ccc",
                   background: "#fff",
                   overflow: "auto",
                   WebkitOverflowScrolling: "touch",
-                  borderRadius: "4px",
-                  outline: "none",
-                  padding: "20px",
                 },
               }}
             >
               <ChangeIngredient Creation={isVisibleModal} />
-              <button onClick={() => setIsVisibleModal(false)}>Close</button>
             </ReactModal>
           </div>
 
@@ -492,15 +477,18 @@ function Recipe() {
           <div>
             <select
               className={styles.inputs}
-              onChange={(e) => { const selectedIngredient = ingredients.find( (ing) => ing._id === e.target.value);
-               setIngredient({
-                      ...ingredient,
-                      id: selectedIngredient._id,
-                      name: selectedIngredient.name,
-                      price: selectedIngredient.price,
-                    });
-                  }}
-                  value={ingredient?.id || ""}
+              onChange={(e) => {
+                const selectedIngredient = ingredients.find(
+                  (ing) => ing._id === e.target.value
+                );
+                setIngredient({
+                  ...ingredient,
+                  id: selectedIngredient._id,
+                  name: selectedIngredient.name,
+                  price: selectedIngredient.price,
+                });
+              }}
+              value={ingredient?.id || ""}
             >
               <option value={""}>Ingrédient</option>
               {ingr}
