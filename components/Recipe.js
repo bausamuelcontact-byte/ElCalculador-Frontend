@@ -30,6 +30,7 @@ function Recipe() {
   const [visibleMenu, setVisibleMenu] = useState(false);
   //Ingrédient qu'on ajoute 1 par 1 dans la recette ( name, quantity, unit)
   const [ingredient, setIngredient] = useState({
+    id: null,
     name: "",
     quantity: 0,
     price: 0,
@@ -185,6 +186,7 @@ function Recipe() {
 
   function handleAddIngredient() {
     const newIngredient = {
+      id: ingredient.id,
       ingredient: ingredient.name,
       quantity: ingredient.quantity,
       unit: ingredient.unit,
@@ -192,6 +194,7 @@ function Recipe() {
     console.log("ingr", ingredient);
     setIngredientTotal([...ingredientTotal, newIngredient]);
     setIngredient({
+      id: null,
       name: "",
       quantity: 0,
       price: 0,
@@ -202,12 +205,8 @@ function Recipe() {
 
   //Affichage des ingrédient liste de la recette à droite
   if (isBob) {
-    ingredientDisplay = ingredientTotal.map(async (data, i) => {
-      const fetchedData = await fetch(
-        `http://localhost:3000/ingredients/search/${data._id}`
-      );
-      const ingredientAff = await fetchedData.json();
-      console.log("aff", ingredientAff);
+    ingredientDisplay = ingredientTotal.map( (data, i) => {
+
       return (
         <div className={styles.ingredient} key={i}>
           <div className={styles.NameIngredient}>
@@ -336,9 +335,18 @@ function Recipe() {
             <select
               className={styles.inputs}
               onChange={(e) => {
-                handleChangeCreation("name", e.target.value);
-              }}
-              value={ingredient?.name || ""}
+              const selectedIngredient = ingredients.find(
+                (ing) => ing._id === e.target.value
+              );
+
+              setIngredient({
+                ...ingredient,
+                id: selectedIngredient._id,
+                name: selectedIngredient.name,
+                price: selectedIngredient.price,
+              });
+            }}
+            value={ingredient?.id || ""}
             >
               <option value={null}>Ingrédient</option>
               {ingr}
@@ -491,12 +499,17 @@ function Recipe() {
           <div>
             <select
               className={styles.inputs}
-              onChange={(e) => {
-                handleChangeCreation("name", e.target.value);
-              }}
-              value={ingredient?.name || ""}
+              onChange={(e) => { const selectedIngredient = ingredients.find( (ing) => ing._id === e.target.value);
+               setIngredient({
+                      ...ingredient,
+                      id: selectedIngredient._id,
+                      name: selectedIngredient.name,
+                      price: selectedIngredient.price,
+                    });
+                  }}
+                  value={ingredient?.id || ""}
             >
-              <option value={null}>Ingrédient</option>
+              <option value={""}>Ingrédient</option>
               {ingr}
             </select>
             <BiSolidMessageSquareEdit

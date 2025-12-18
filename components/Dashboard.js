@@ -53,9 +53,9 @@ function Dashboard() {
       .then((response) => response.json())
       .then((data) => setCategoryList(data.categories));
     // Récupération de l'ensemble des ingrédients d'un utilisateur (pour l'export Excel global)
-    /*fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
-        .then(res => res.json())
-        .then(data => setIngredientList(data.ingredient));*/
+    // fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
+    //     .then(res => res.json())
+    //     .then(data => setIngredientList(data.ingredient));
   }, [userInfo.id]);
 
   // Options de la liste déroulante
@@ -67,7 +67,7 @@ function Dashboard() {
       cat.recipes.some((catRecId) => catRecId === rec._id)
     );
     const totalPrices = recipesInCategory.reduce(
-      (sum, rec) => sum + rec.price + rec.TVA,
+      (sum, rec) => sum + rec.price + rec.tva,
       0
     );
     const averagePrice = totalPrices / recipesInCategory.length;
@@ -103,6 +103,7 @@ function Dashboard() {
       .then((response) => response.json())
       .then((data) => {
         const allIngredients = data.ingredient;
+
         // filtrage des ingrédients utilisés dans la recette
         const filteredIngredients = allIngredients.filter((ing) =>
           recipe.ingredients.some((recIng) => recIng.ingredient === ing._id)
@@ -113,6 +114,7 @@ function Dashboard() {
           recipe.ingredients,
           filteredIngredients
         );
+        console.log(cost)
         setRecipeCostData(cost);
         const totalCost = cost.reduce((sum, i) => sum + i.value, 0);
         setSelectedRecipeCost(totalCost.toFixed(2));
@@ -126,7 +128,7 @@ function Dashboard() {
       if (!recIng || !recIng.ingredient) return;
       const ingrDetail = ingredientList.find(
         (ing) => ing._id.toString() === recIng.ingredient.toString()
-      );
+      );console.log("ing",ingrDetail)
       if (!ingrDetail) return;
       // Conversion de l'unité de mesure de l'ingrédient si nécessaire
       const adjustedQuantity = unitConvertion(
@@ -135,10 +137,11 @@ function Dashboard() {
         recIng.quantity
       );
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
-      const price = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
+      const ingrCost = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
+      console.log("price", ingrCost)
       // calcul de la TVA pour cet ingrédient
-      const TVA = price * (ingrDetail.TVA / 100);
-      const ingrCost = price + TVA;
+      // const TVA = price * (ingrDetail.tva / 100);
+      // const ingrCost = price;
       recipeCost.push({
         name: ingrDetail.name,
         quantity: recIng.quantity,

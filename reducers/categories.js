@@ -13,12 +13,12 @@ export const categoriesSlice = createSlice({
           state.value = action.payload; 
         },
         addCategory: (state, action) => {
-          state.value.push(action.payload); 
+        state.value.push(action.payload); 
         },
         updateCategory:  (state, action) => {
-          
+        state.value = state.value.map(cat => cat._id === action.payload._id ? action.payload : cat) 
         },
-		removeCategory: (state, action) => {
+		    removeCategory: (state, action) => {
           state.value = state.value.filter(cat => cat._id !== action.payload); 
         },
 	}	
