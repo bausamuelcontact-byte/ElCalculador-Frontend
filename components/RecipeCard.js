@@ -13,10 +13,10 @@ import { useEffect } from "react";
 
 function RecipeCard() {
   //  Le store n'est pas encore persistant
-  // const userInfo = useSelector((state) => state.user.value);
+  const userInfo = useSelector((state) => state.user.value);
 
   // utilisation d'un userId fixe pour le moment
-  const userInfo = { id: "6936ab0cee14c830750e2bea", token: null };
+  // const userInfo = { id: "6936ab0cee14c830750e2bea", token: null };
 
   // A modifier lorsque le store sera persistant
 
@@ -435,7 +435,7 @@ return (
             </div>
             {/* ÉTAPES */}
             <div className={styles.stepsFrame}>
-              <h3 style={{marginLeft:"4%"}}>Étapes de préparation</h3>
+              <h3 style={{marginLeft:"4%", color:"color-mix(in srgb, #341302 90%, white)"}}>Étapes de préparation</h3>
               <RecipeSteps steps={recipeCardSteps} editMode={editMode} newSteps={newSteps} setNewSteps={setNewSteps}/>
               <div className={styles.adaptableButtonContainer}>
                 <button className={styles.adaptableButton} onClick={handleRecipeCard}>
@@ -447,7 +447,7 @@ return (
             </div>
             {/* INGREDIENTS */}
               <div className={styles.ingredientsFrame}>
-              <h3 style={{marginLeft:"4%"}}>Ingrédients</h3>
+              <h3 style={{marginLeft:"4%", color:"color-mix(in srgb, #341302 90%, white)"}}>Ingrédients</h3>
               {selectedRecipe && (
                 <RecipeTable ingredients={selectedRecipe.ingredients} setRecipeCostPrice={setRecipeCostPrice} setTotalTVA={setTotalTVA}/>)}
             </div>

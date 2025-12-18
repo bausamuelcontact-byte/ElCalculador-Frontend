@@ -88,7 +88,7 @@ function Signup(props) {
       left: '25%',
       right: '25%',
       bottom: '5%',
-      backgroundColor: 'rgba(255, 255, 255, 0.75)'
+      backgroundColor: '#f3f2eada',
     },
     content: {
       position: 'absolute',
@@ -97,7 +97,7 @@ function Signup(props) {
       right: '40px',
       bottom: '20px',
       border: '1px solid #ccc',
-      background: '#fff',
+      background: '#f3f2eaff',
       overflow: 'auto',
       WebkitOverflowScrolling: 'touch',
       borderRadius: '4px',
@@ -109,7 +109,7 @@ function Signup(props) {
         <FaTimes size={20} className={styles.crossColor} onClick={()=>(props.setSignUpVisible(false))}/>
     ​</div>
     <div className={styles.modalContent}>
-        <h1>Bienvenue</h1>
+        <h1 style={{ color: "color-mix(in srgb, #341302 90%, white)" }}>Bienvenue</h1>
         <input className={styles.inputs} type="text" placeholder="Nom" onChange={(e)=>{setUserNom(e.target.value)}}/> 
         <input className={styles.inputs} type="text" placeholder="Prénom" onChange={(e)=>{setUserPrenom(e.target.value)}}/> 
         <input className={styles.inputs} type="text" placeholder="Adresse e-mail" onChange={(e)=>{setUserEmail(e.target.value)}}/>
