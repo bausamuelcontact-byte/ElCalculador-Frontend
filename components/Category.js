@@ -16,7 +16,6 @@ function Category(props) {
   const [categoryName, setCategoryName] = useState("");
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
- 
 
      useEffect(() => {
        fetch(`http://localhost:3000/categories/${userInfo.id}`)
@@ -29,7 +28,7 @@ function Category(props) {
   const handleAddCategory = () => {
     fetch(`http://localhost:3000/categories/add/${userInfo.id}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json", },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: categoryName,
         user: userInfo.id,
@@ -41,35 +40,44 @@ function Category(props) {
           dispatch(addCategory(data.category));
           setCategoryName("");
         } else {
-          alert("Error adding category" );
+          alert("Error adding category");
         }
-      })    
-};
+      });
+  };
 
  const handleUpdateCat = () => {
     fetch(`http://localhost:3000/categories/update`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json", },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-          categoryId: updatedCatId,
-          name: updatedCat,
-        }),
+        categoryId: updatedCatId,
+        name: updatedCat,
+      }),
     })
       .then((response) => response.json())
-        .then((data) => {
-            if (data.result) {
-                // Update local state
-                setCategoryList((prev) =>
-                     prev.map((cat) =>cat._id === updatedCatId ? { ...cat, name: updatedCat } : cat));
-                setUpdatedCatId(null);
-                setUpdatedCat("");
-            } else {
-                alert("Error updating category");
-            }
-        })
+      .then((data) => {
+        if (data.result) {
+          // Update local state
+          setCategoryList((prev) =>
+            prev.map((cat) =>
+              cat._id === updatedCatId ? { ...cat, name: updatedCat } : cat
+            )
+          );
+          setUpdatedCatId(null);
+          setUpdatedCat("");
+        } else {
+          alert("Error updating category");
+        }
+      });
   };
-  const openUpdateCat = (cat)=>{ setUpdatedCatId(cat._id); setUpdatedCat(cat.name);}
-  const cancelUpdateCat = () => { setUpdatedCatId(null); setUpdatedCat(""); }
+  const openUpdateCat = (cat) => {
+    setUpdatedCatId(cat._id);
+    setUpdatedCat(cat.name);
+  };
+  const cancelUpdateCat = () => {
+    setUpdatedCatId(null);
+    setUpdatedCat("");
+  };
 
   const handleRemoveCat = (catId)=>{
    fetch(`http://localhost:3000/categories/remove/${catId}`,
@@ -81,7 +89,7 @@ function Category(props) {
         )}
 
   return (
-    <ReactModal 
+    <ReactModal
       isOpen={props.catModalVisible}
       closeTimeoutMS={250}
       style={{
@@ -93,7 +101,7 @@ function Category(props) {
         },
         content: {
           position: "relative",
-          inset: "40px",  
+          inset: "40px",
           border: "none",
           overflow: "hidden",
           padding: "0",
@@ -101,11 +109,9 @@ function Category(props) {
           background: "#fff",
           overflow: "auto",
           WebkitOverflowScrolling: "touch",
-          
         },
       }}
     >
-
              <div className={styles.modalContent}>
                 <FaTimes size={20} className={styles.crossColor} onClick={() => props.setCatModalVisible(false)} />
                 <h1>Catégories</h1>
@@ -144,9 +150,8 @@ function Category(props) {
             Ajouter la catégorie
           </Button>
               </div>
-    
     </ReactModal>
-  )
-};
+  );
+}
 
 export default Category;

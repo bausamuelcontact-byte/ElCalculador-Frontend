@@ -18,9 +18,10 @@ function ChangeIngredient(props) {
     unit: " ",
     tva: 0,
   });
-  console.log(props.info);
+
   //Création d'un ingrédient
   function handleAddIngredient() {
+    console.log("fetch", ingredient);
     fetch("http://localhost:3000/ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,6 +39,7 @@ function ChangeIngredient(props) {
 
   //modification d'un ingredient
   function handleModifIngredient() {
+    console.log("fetchModif", ingredient);
     fetch("http://localhost:3000/ingredients", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -196,8 +198,8 @@ function ChangeIngredient(props) {
             <input
               placeholder="TVA"
               className={styles.inputs}
-              onChange={(e) => handleChange("TVA", e.target.value)}
-              value={ingredient?.TVA || ""}
+              onChange={(e) => handleChange("tva", e.target.value)}
+              value={ingredient?.tva || ""}
             ></input>
             <button
               className={styles.btnAdd}

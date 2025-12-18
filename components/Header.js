@@ -5,16 +5,15 @@ import { RxAvatar } from "react-icons/rx";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Popover, Button } from 'antd';
+import { Popover, Button } from "antd";
 import { logout } from "../reducers/user";
 
-
-function Header(props){
+function Header(props) {
   const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.user.value);
 
-  // récupérer les infos utilisateur pour la session en cours 
+  // récupérer les infos utilisateur pour la session en cours
   const [fistNameDisplay, setFirstNameDisplay] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -42,7 +41,7 @@ function Header(props){
   // fonction de déconnexion
   const LogOutBtn = () => {
     dispatch(logout());
-    router.push("/Signin");
+    router.push("/home");
   };
 
   // contenu du popover
@@ -54,44 +53,55 @@ function Header(props){
 
   // gestion de l'affichage du popover
   const handlePopoverChange = () => {
-    setVisiblePopover(prev => !prev);
-  }
+    setVisiblePopover((prev) => !prev);
+  };
 
   const handleMenuChange = () => {
     props.onToggleMenu();
-  }
+  };
 
   return (
     <div className={styles.headerContainer}>
-       <div className={styles.headerSection}>
-          <IoMenuOutline className={styles.headerIcons} size={50} onClick={handleMenuChange}/>
-                    <h1 className={styles.headerText}>El Calculador</h1>
-       </div>
-       <div className={styles.headerSection}>
-          <PiChefHatThin className={styles.headerIcons} size={50}/>
-          <h1 className={styles.headerText}>{restaurantName}</h1>
-       </div>    
-       <div className={styles.headerSection}>
-          <h4 className={styles.headerText}>{fistNameDisplay}</h4>
-          
-          <Popover 
-             content={popoverContent} 
-             className={styles.popover} 
-             placement="bottomRight" 
-             open={visiblePopover} 
-             onOpenChange={(open) => setVisiblePopover(open)} >
-            {!avatarUrl ? (<RxAvatar className={styles.headerIcons} size={50} onClick={handlePopoverChange} />) : (
-              <img 
-                src={avatarUrl} 
-                alt="User Avatar" 
-                className={styles.avatarImage} 
-                onClick={handlePopoverChange}
-              />
-             )}
-          </Popover>
-       </div>    
+      <div className={styles.headerSection}>
+        <IoMenuOutline
+          className={styles.headerIcons}
+          size={50}
+          onClick={handleMenuChange}
+        />
+        <h1 className={styles.headerText}>El Calculador</h1>
+      </div>
+      <div className={styles.headerSection}>
+        <PiChefHatThin className={styles.headerIcons} size={50} />
+        <h1 className={styles.headerText}>{restaurantName}</h1>
+      </div>
+      <div className={styles.headerSection}>
+        <h4 className={styles.headerText}>{fistNameDisplay}</h4>
+
+        <Popover
+          content={popoverContent}
+          className={styles.popover}
+          placement="bottomRight"
+          open={visiblePopover}
+          onOpenChange={(open) => setVisiblePopover(open)}
+        >
+          {!avatarUrl ? (
+            <RxAvatar
+              className={styles.headerIcons}
+              size={50}
+              onClick={handlePopoverChange}
+            />
+          ) : (
+            <img
+              src={avatarUrl}
+              alt="User Avatar"
+              className={styles.avatarImage}
+              onClick={handlePopoverChange}
+            />
+          )}
+        </Popover>
+      </div>
     </div>
   );
 }
- 
+
 export default Header;
