@@ -28,12 +28,8 @@
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.5",
     "styled-components": "^6.1.19",
-<<<<<<< HEAD
-    "uniqid": "^5.4.0"
-=======
     "uniqid": "^5.4.0",
     "xlsx": "^0.18.5"
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

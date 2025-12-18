@@ -5,13 +5,6 @@
   grid-template-columns: repeat(30, fr);
   grid-template-rows: repeat(30, fr);
   height: 100vh;
-<<<<<<< HEAD
-}
-
-.pageContainer.menuOpen {
-  margin-left: 300px; /* espace pour le menu */
-=======
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 }
 
 .dashboardTitle {
@@ -33,24 +26,8 @@
   grid-template-columns: 1fr 8px 2fr;
   gap: 20px;
   padding: 20px;
-<<<<<<< HEAD
-}
-.dashboardContent {
-  grid-row-start: 2;
-  grid-row-end: 30;
-  grid-column-start: 1;
-  grid-column-end: 30;
 }
 
-.recipesDisplay {
-  display: flex;
-}
-
-=======
-
-}
-
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 .dashboardLeft {
   display: flex;
   flex-direction: column;
@@ -59,13 +36,8 @@
   font-family: "Poiret One", cursive;
 }
 
-<<<<<<< HEAD
 .recipescroll {
-  height: 34%;
-=======
-.recipescroll{
   height: 80%;
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
   overflow-y: scroll;
 }
 
@@ -75,7 +47,6 @@
   font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  
 }
 
 .listItem {
@@ -129,31 +100,19 @@
 .dashboardRight {
   display: flex;
   flex-direction: column;
-<<<<<<< HEAD
-  gap: 20px;
-}
-
-.overviewDisplay,
-.recipePrice {
-  display: flex;
-  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  margin-top: 170px;
-=======
-  align-items:center;
   width: 100%;
   gap: 50px;
   justify-content: space-between;
   margin-left: 130;
 }
 
- .overviewDisplay {
+.overviewDisplay {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction:column;
-  margin-top:100px;
+  flex-direction: column;
+  margin-top: 100px;
   font-family: "Poiret One", cursive;
   color: #2f0801;
   width: 100%;
@@ -172,13 +131,12 @@
   
 } */
 
-.pieTitle{
+.pieTitle {
   font-size: 1.5rem;
-  display:flex;
+  display: flex;
   font-family: "Poiret One", cursive;
   color: #2f0801;
   margin: 100px 300px 0px 0px;
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9
 }
 
 .verticalSeparator {
@@ -188,13 +146,10 @@
   box-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
   margin: 0 auto;
 }
-<<<<<<< HEAD
-=======
-
 
 .emptyTitle {
   font-size: 2.2rem;
-  display:flex;
+  display: flex;
   font-family: "Poiret One", cursive;
   color: #2f0801;
   margin: 100px 300px 10px 300px;
@@ -203,7 +158,7 @@
 .emptySubtitle {
   font-size: 1rem;
   color: #666;
- 
+
   max-width: 1000px;
   margin: 0px 250px;
 }
@@ -220,7 +175,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin:50px;
+  margin: 50px;
 }
 
 .stepNumber {
@@ -252,37 +207,36 @@
   opacity: 0.9;
 }
 
-.emptyDescription{
-  margin: 100px
+.emptyDescription {
+  margin: 100px;
 }
 
-.tables{
+.tables {
   margin-top: 50px;
   gap: 2%;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   width: 500px;
   gap: 20px;
   flex-wrap: wrap;
   /* display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, 1fr); */
-  
 }
 
 .costTableContainer {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   flex-direction: column;
-  align-items:center;
-  width:100%
+  align-items: center;
+  width: 100%;
 }
 .priceTableContainer {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   flex-direction: column;
-  align-items:center;
-  width:100%
+  align-items: center;
+  width: 100%;
 }
 
 .table {
@@ -290,7 +244,7 @@
   border-collapse: collapse;
   font-size: 14px;
   color: #222;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   overflow: hidden;
   background-color: #fff;
@@ -301,7 +255,7 @@
   background: linear-gradient(90deg, #4b1107f6, rgba(224, 204, 168, 0.76));
   color: white;
   text-align: left;
-} 
+}
 
 .theadTR {
   height: 40px;
@@ -318,7 +272,7 @@
   height: 30px;
   border-bottom: 1px solid #2f0801;
   padding: 10px;
-} 
+}
 
 .tableRow:hover {
   background-color: #70643bb5;
@@ -326,7 +280,7 @@
   transition: 0.3s;
 }
 
-.tableColumn{
+.tableColumn {
   border-right: 1px solid #2f0801;
   padding: 10px;
 }
@@ -347,11 +301,10 @@
   text-align: right;
 }
 
-.priceTableTitle{
+.priceTableTitle {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 12px;
   color: #2f0801a8;
   text-align: left;
 }
->>>>>>> ceafc0b48dc21b8c1319de47bef64cd2b7fb32a9

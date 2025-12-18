@@ -11,7 +11,8 @@ import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
 
 function Recipe() {
-  const [name, setName] = useState("");
+  const [allergen, setAllergen] = useState([]);
+  let ingredientDisplay = {};
   //Liste des catégories dans le menu déroulant
   //const [categories, setCategories] = useState([]);
   //Catégorie de la recette qu'on est entrain d'etre modifié
@@ -19,7 +20,7 @@ function Recipe() {
   //Booléen d'affichage de la modale catégorie
   const [catModalVisible, setCatModalVisible] = useState(false);
   //Booléen de Modification ou Création d'une recette
-  const [isBob, setIsBob] = useState(false);
+  const [isBob, setIsBob] = useState(true);
   //Booléen modal de création Ingrédient
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   //Entièreté des ingredients dans le menu deroulant
@@ -27,7 +28,7 @@ function Recipe() {
   //Liste des ingrédient qui vont etre dans la recette
   const [ingredientTotal, setIngredientTotal] = useState([]);
   const [visibleMenu, setVisibleMenu] = useState(false);
-  //Ingrédient qu'on ajoute 1 par 1 dans la recette
+  //Ingrédient qu'on ajoute 1 par 1 dans la recette ( name, quantity, unit)
   const [ingredient, setIngredient] = useState({
     name: "",
     quantity: 0,
@@ -41,7 +42,7 @@ function Recipe() {
     allergens: [],
     category: 0,
     price: 0,
-    TVA: 0,
+    tva: 0,
   });
 
   const user = useSelector((state) => state.user.value);
@@ -84,14 +85,14 @@ function Recipe() {
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
     return (
-      <option key={i} value={data.name} price={data.price}>
+      <option key={i} value={data._id} price={data.price}>
         {data.name}
       </option>
     );
   });
 
   //Affichage des categorie dans le menu deroulant
-  const categ = categories.map((data, i) => {
+  const categ = categories?.map((data, i) => {
     return (
       <option key={i} value={data._id}>
         {data.name}
@@ -101,16 +102,17 @@ function Recipe() {
 
   //Création de la recette
   function handleAddRecipe() {
+    console.log("test", ingredientTotal);
     fetch("http://localhost:3000/recipes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: recipe.name,
         price: recipe.price,
-        allergens: recipe.allergens,
+        allergens: allergen,
         ingredients: ingredientTotal,
         id: user.id,
-        tva: recipe.TVA,
+        tva: recipe.tva,
       }),
     })
       .then((response) => response.json())
@@ -136,11 +138,9 @@ function Recipe() {
       tva: 0,
     });
     setIngredient({
-      name: "",
+      ingredient: "",
       quantity: 0,
-      price: 0,
       unit: "Kg",
-      tva: 0,
     });
     setIngredientTotal([]);
   }
@@ -153,15 +153,15 @@ function Recipe() {
       body: JSON.stringify({
         name: recipe.name,
         price: recipe.price,
-        allergens: recipe.allergens,
+        allergens: allergen,
         ingredients: ingredientTotal,
         id: recipe._id,
-        tva: recipe.TVA,
+        tva: recipe.tva,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(recipe.TVA);
+        console.log(recipe.tva);
       });
     RecipeModifyCategory();
   }
@@ -184,7 +184,13 @@ function Recipe() {
   };
 
   function handleAddIngredient() {
-    setIngredientTotal([...ingredientTotal, ingredient]);
+    const newIngredient = {
+      ingredient: ingredient.name,
+      quantity: ingredient.quantity,
+      unit: ingredient.unit,
+    };
+    console.log("ingr", ingredient);
+    setIngredientTotal([...ingredientTotal, newIngredient]);
     setIngredient({
       name: "",
       quantity: 0,
@@ -195,35 +201,70 @@ function Recipe() {
   }
 
   //Affichage des ingrédient liste de la recette à droite
-
-  const ingredientDisplay = recipeReducer.ingredients.map((data, i) => {
-    return (
-      <div className={styles.ingredient} key={i}>
-        <div className={styles.NameIngredient}>
-          <div className={styles.name}>
-            <span className={styles.description}>Ingrédient : </span>
-            {data.name}
+  if (isBob) {
+    ingredientDisplay = ingredientTotal.map(async (data, i) => {
+      const fetchedData = await fetch(
+        `http://localhost:3000/ingredients/search/${data._id}`
+      );
+      const ingredientAff = await fetchedData.json();
+      console.log("aff", ingredientAff);
+      return (
+        <div className={styles.ingredient} key={i}>
+          <div className={styles.NameIngredient}>
+            <div className={styles.name}>
+              <span className={styles.description}>Ingrédient : </span>
+              {data.name}
+            </div>
+          </div>
+          <div className={styles.bottom}>
+            <div>
+              <span className={styles.description}>Quantité : </span>
+              {data.quantity}
+              <span> </span>
+              {data.unit}
+            </div>
+            <div>
+              <FaRegEdit
+                className={styles.modify}
+                onClick={() => {
+                  setIsVisibleModal(!isVisibleModal);
+                }}
+              />
+            </div>
           </div>
         </div>
-        <div className={styles.bottom}>
-          <div>
-            <span className={styles.description}>Quantité : </span>
-            {data.quantity}
-            <span> </span>
-            {data.unit}
+      );
+    });
+  } else {
+    ingredientDisplay = recipeReducer.ingredients.map((data, i) => {
+      return (
+        <div className={styles.ingredient} key={i}>
+          <div className={styles.NameIngredient}>
+            <div className={styles.name}>
+              <span className={styles.description}>Ingrédient : </span>
+              {data.name}
+            </div>
           </div>
-          <div>
-            <FaRegEdit
-              className={styles.modify}
-              onClick={() => {
-                setIsVisibleModal(!isVisibleModal);
-              }}
-            />
+          <div className={styles.bottom}>
+            <div>
+              <span className={styles.description}>Quantité : </span>
+              {data.quantity}
+              <span> </span>
+              {data.unit}
+            </div>
+            <div>
+              <FaRegEdit
+                className={styles.modify}
+                onClick={() => {
+                  setIsVisibleModal(!isVisibleModal);
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    );
-  });
+      );
+    });
+  }
 
   // Change la valeur d'une propriété ingredient pour la Création
   const handleChangeCreation = (field, value) => {
@@ -257,6 +298,7 @@ function Recipe() {
       }),
     });
   }
+
   return (
     <div className={styles.container}>
       <Header onToggleMenu={toggleMenu} />
@@ -370,7 +412,7 @@ function Recipe() {
           <select
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("allergen", e.target.value);
+              setAllergen(e.target.value);
             }}
           >
             <option value={null}>Allergènes</option>
@@ -401,9 +443,9 @@ function Recipe() {
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("TVA", e.target.value);
+              handleChangeCreationRecipe("tva", e.target.value);
             }}
-            value={recipe?.TVA || ""}
+            value={recipe?.tva || ""}
           ></input>
           <button
             onClick={() => {
@@ -526,7 +568,7 @@ function Recipe() {
           <select
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("allergen", e.target.value);
+              setAllergen(e.target.value);
             }}
           >
             <option value={null}>Allergènes</option>
@@ -557,9 +599,9 @@ function Recipe() {
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
-              handleChangeCreationRecipe("TVA", e.target.value);
+              handleChangeCreationRecipe("tva", e.target.value);
             }}
-            value={recipe?.TVA || ""}
+            value={recipe?.tva || ""}
           ></input>
           <button
             onClick={() => {

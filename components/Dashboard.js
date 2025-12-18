@@ -4,7 +4,15 @@ import Menu from "../components/Menu";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Cell, Pie, PieChart, PieLabelRenderProps } from "recharts";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 import Category from "./Category";
 import { MdOutlineRestaurant } from "react-icons/md";
 import { addRecipe } from "../reducers/recipe";
@@ -18,7 +26,9 @@ function Dashboard() {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.value);
   const [visibleMenu, setVisibleMenu] = useState(false);
-  const toggleMenu = () => { setVisibleMenu(!visibleMenu) };
+  const toggleMenu = () => {
+    setVisibleMenu(!visibleMenu);
+  };
   const [catModalVisible, setCatModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const [recipeList, setRecipeList] = useState([]);
@@ -37,15 +47,15 @@ function Dashboard() {
     // Récupération de l'ensemble des recettes d'un utilisateur
     fetch(`http://localhost:3000/recipes/search/${userInfo.id}`)
       .then((response) => response.json())
-      .then(data => setRecipeList(data.recipe)); 
+      .then((data) => setRecipeList(data.recipe));
     // Récupération de l'ensemble des catégories de recettes d'un utilisateur
     fetch(`http://localhost:3000/categories/${userInfo.id}`)
       .then((response) => response.json())
-      .then(data => setCategoryList(data.categories));
-    // Récupération de l'ensemble des ingrédients d'un utilisateur (pour l'export Excel global)  
-      fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
+      .then((data) => setCategoryList(data.categories));
+    // Récupération de l'ensemble des ingrédients d'un utilisateur (pour l'export Excel global)
+    /*fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
         .then(res => res.json())
-        .then(data => setIngredientList(data.ingredient));
+        .then(data => setIngredientList(data.ingredient));*/
   }, [userInfo.id]);
 
   // Options de la liste déroulante
@@ -56,14 +66,25 @@ function Dashboard() {
     const recipesInCategory = recipeList.filter((rec) =>
       cat.recipes.some((catRecId) => catRecId === rec._id)
     );
-    const totalPrices = recipesInCategory.reduce((sum, rec) => sum + rec.price + rec.TVA,0);
+    const totalPrices = recipesInCategory.reduce(
+      (sum, rec) => sum + rec.price + rec.TVA,
+      0
+    );
     const averagePrice = totalPrices / recipesInCategory.length;
-    return { category: cat.name, averagePrice: averagePrice.toFixed(2), TVA: (averagePrice * 0.2).toFixed(2),};
+    return {
+      category: cat.name,
+      averagePrice: averagePrice.toFixed(2),
+      TVA: (averagePrice * 0.2).toFixed(2),
+    };
   });
-  
-  const handleOptionChange = (e) => { setSelectedOption(e.target.value);
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
     // Eviter l'affichage d'un pieChart à la sélection d'un autre champ
-    if (e.target.value !== "Recipes") { setSelectedRecipe(null); setSelectedRecipeName("")}
+    if (e.target.value !== "Recipes") {
+      setSelectedRecipe(null);
+      setSelectedRecipeName("");
+    }
   };
 
   //Envoie la recette sur reducer et va dans le composant recette pour la modifier
@@ -81,14 +102,17 @@ function Dashboard() {
     fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
       .then((response) => response.json())
       .then((data) => {
-        const allIngredients = data.ingredient; 
+        const allIngredients = data.ingredient;
         // filtrage des ingrédients utilisés dans la recette
         const filteredIngredients = allIngredients.filter((ing) =>
           recipe.ingredients.some((recIng) => recIng.ingredient === ing._id)
         );
         setIngredientList(filteredIngredients);
         // calcul du prix des ingrédients pour la recette sélectionnée
-        const cost = ingredientPriceCalcul( recipe.ingredients, filteredIngredients );
+        const cost = ingredientPriceCalcul(
+          recipe.ingredients,
+          filteredIngredients
+        );
         setRecipeCostData(cost);
         const totalCost = cost.reduce((sum, i) => sum + i.value, 0);
         setSelectedRecipeCost(totalCost.toFixed(2));
@@ -98,17 +122,29 @@ function Dashboard() {
   // Calcul du prix des ingrédients pour la recette sélectionnée
   const ingredientPriceCalcul = (recipeIngredients, ingredientList) => {
     const recipeCost = [];
-    recipeIngredients.forEach((recIng) => { if (!recIng || !recIng.ingredient) return;
-      const ingrDetail = ingredientList.find((ing) => ing._id.toString() === recIng.ingredient.toString());
-      if (!ingrDetail) return ;
+    recipeIngredients.forEach((recIng) => {
+      if (!recIng || !recIng.ingredient) return;
+      const ingrDetail = ingredientList.find(
+        (ing) => ing._id.toString() === recIng.ingredient.toString()
+      );
+      if (!ingrDetail) return;
       // Conversion de l'unité de mesure de l'ingrédient si nécessaire
-      const adjustedQuantity = unitConvertion(ingrDetail.unit, recIng.unit, recIng.quantity);
+      const adjustedQuantity = unitConvertion(
+        ingrDetail.unit,
+        recIng.unit,
+        recIng.quantity
+      );
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
       const price = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
       // calcul de la TVA pour cet ingrédient
-      const TVA = price * (ingrDetail.TVA /100) ;
+      const TVA = price * (ingrDetail.TVA / 100);
       const ingrCost = price + TVA;
-      recipeCost.push({ name: ingrDetail.name, quantity: recIng.quantity, unit: recIng.unit, value: ingrCost });
+      recipeCost.push({
+        name: ingrDetail.name,
+        quantity: recIng.quantity,
+        unit: recIng.unit,
+        value: ingrCost,
+      });
     });
     return recipeCost;
   };
@@ -117,12 +153,13 @@ function Dashboard() {
   const averagePriceLabel = "Prix moyen";
 
   // Données pour le PieChart
-   const pieData = recipeCostData.map((e) => ({ name: e.name, value: e.value }));
+  const pieData = recipeCostData.map((e) => ({ name: e.name, value: e.value }));
   const RADIAN = Math.PI / 180;
   const COLORS = ["#f9d27eff", "#58190ebf", "#e2d6adb5", "#70643bb5"];
   const renderCustomizedLabel = (props) => {
     const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
-    if ( cx == null || cy == null || innerRadius == null || outerRadius == null)  return null;
+    if (cx == null || cy == null || innerRadius == null || outerRadius == null)
+      return null;
     const radius = outerRadius + 20;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
@@ -135,7 +172,7 @@ function Dashboard() {
         dominantBaseline="central"
         style={{ fontSize: "13px", fontWeight: "500" }}
       >
-  {/*  Afficher les labels personnalisés pour le BarChart      */}
+        {/*  Afficher les labels personnalisés pour le BarChart      */}
         {`${name} —${(percent * 100).toFixed(2)}%`}
       </text>
     );
@@ -155,19 +192,32 @@ function Dashboard() {
             style={{ fontStyle: selectedOption === "" ? "italic" : "normal" }}
           >
             <option value="">Select an option</option>
-            {Object.keys(dropOptions).map((n) => { return (<option key={n} value={n}>{n}</option>); })}
+            {Object.keys(dropOptions).map((n) => {
+              return (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              );
+            })}
           </select>
-          {recipeList.length===0 && 
+          {recipeList.length === 0 && (
             <p className={styles.emptyDescription}>
-              Cette zone vous permettra de naviguer entre les statistiques globales et celles de vos recettes, dès qu’elles seront créées.
-             </p>
-          }
+              Cette zone vous permettra de naviguer entre les statistiques
+              globales et celles de vos recettes, dès qu’elles seront créées.
+            </p>
+          )}
           {selectedOption === "Overview" && (
             <>
-              <h4 className={styles.h4} onClick={() => setCatModalVisible(true)}>
+              <h4
+                className={styles.h4}
+                onClick={() => setCatModalVisible(true)}
+              >
                 Modifier ou ajouter une catégorie
               </h4>
-              <Category catModalVisible={catModalVisible} setCatModalVisible={setCatModalVisible}/>
+              <Category
+                catModalVisible={catModalVisible}
+                setCatModalVisible={setCatModalVisible}
+              />
             </>
           )}
           <div className={styles.recipescroll}>
@@ -193,12 +243,17 @@ function Dashboard() {
         </div>
         <div className={styles.verticalSeparator}></div>
         <div className={styles.dashboardRight}>
-          {recipeList.length===0 && <EmptyDashboard/>}
-          {selectedOption !== "Recipes" && recipeList.length>0 &&(
+          {recipeList.length === 0 && <EmptyDashboard />}
+          {selectedOption !== "Recipes" && recipeList.length > 0 && (
             <div className={styles.overviewDisplay}>
               <h3> Moyenne des prix par catégorie </h3>
               <BarChart
-                style={{ width: "100%", maxWidth: "600px", maxHeight: "100vh", aspectRatio: 1.618, }}
+                style={{
+                  width: "100%",
+                  maxWidth: "600px",
+                  maxHeight: "100vh",
+                  aspectRatio: 1.618,
+                }}
                 data={categoryPrices}
                 margin={{ top: 20, right: 0, left: 0, bottom: 5 }}
                 barSize={70}
@@ -210,90 +265,135 @@ function Dashboard() {
                 <YAxis width="auto" />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="averagePrice" name={averagePriceLabel} stackId="a" fill="#60190cc4" background/>
+                <Bar
+                  dataKey="averagePrice"
+                  name={averagePriceLabel}
+                  stackId="a"
+                  fill="#60190cc4"
+                  background
+                />
                 <Bar dataKey="TVA" stackId="a" fill="#fada7180" background />
               </BarChart>
             </div>
           )}
           {selectedOption === "Recipes" && selectedRecipe && (
             <div className={styles.recipePrice}>
-                <h3 className={styles.pieTitle}> Composition du coût de {selectedRecipeName} </h3>
-                <PieChart
-                  style={{ width: "100%",  maxWidth: "720px", maxHeight: "40vh", aspectRatio: 1, marginTop:"50px", marginLeft:"-150px", }}
-                 responsive
+              <h3 className={styles.pieTitle}>
+                {" "}
+                Composition du coût de {selectedRecipeName}{" "}
+              </h3>
+              <PieChart
+                style={{
+                  width: "100%",
+                  maxWidth: "720px",
+                  maxHeight: "40vh",
+                  aspectRatio: 1,
+                  marginTop: "50px",
+                  marginLeft: "-150px",
+                }}
+                responsive
+              >
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={120}
+                  fill="#8884d8"
+                  label={renderCustomizedLabel}
+                  labelLine={{ stroke: "#999", strokeWidth: 1 }}
                 >
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={120}
-                    fill="#8884d8"
-                    label={renderCustomizedLabel}
-                    labelLine={{ stroke: "#999", strokeWidth: 1  }}
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                </PieChart>
-                <div className={styles.tables}>
-                  <div className={styles.costTableContainer}>
-                    <h3 className={styles.costTableTitle}> Détail du coût par ingrédient </h3>
-                    <table className={styles.table}>
-                      <thead className={styles.tableHead}>
-                        <tr className={styles.theadTR}>
-                          <td className={styles.theadTD}>Ingrédient</td>
-                          <td className={styles.theadTD}>Quantité</td>
-                          <td className={styles.theadTD}>Prix</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        { recipeCostData.map((data, i) => (
-                        <tr key={i} >
+                  {pieData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${entry.name}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+              </PieChart>
+              <div className={styles.tables}>
+                <div className={styles.costTableContainer}>
+                  <h3 className={styles.costTableTitle}>
+                    {" "}
+                    Détail du coût par ingrédient{" "}
+                  </h3>
+                  <table className={styles.table}>
+                    <thead className={styles.tableHead}>
+                      <tr className={styles.theadTR}>
+                        <td className={styles.theadTD}>Ingrédient</td>
+                        <td className={styles.theadTD}>Quantité</td>
+                        <td className={styles.theadTD}>Prix</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {recipeCostData.map((data, i) => (
+                        <tr key={i}>
                           <td className={styles.tableRow}>{data.name}</td>
-                          <td className={styles.tableRow}>{data.quantity} {data.unit}</td>
-                          <td className={styles.tableRow}>{data.value.toFixed(2)} €</td>
+                          <td className={styles.tableRow}>
+                            {data.quantity} {data.unit}
+                          </td>
+                          <td className={styles.tableRow}>
+                            {data.value.toFixed(2)} €
+                          </td>
                         </tr>
-                        ))}
-                        <tr>
-                          <td className={styles.totalRow}>Coût Total</td>
-                          <td></td>
-                          <td > {selectedRecipeCost} €</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className={styles.priceTableContainer}>
-                    <h3 className={styles.priceTableTitle}> Prix de vente & Marge </h3>
-                    <table className={styles.table}>
-                      <tr >
-                        <td className={styles.tableColumn}>Prix HT</td>
-                        <td>{selectedRecipePrice}€</td>
-                      </tr>
-                      <tr> 
-                        <td className={styles.tableColumn}>TVA</td>
-                        <td > {selectedRecipeTVA} %</td>
-                      </tr>
+                      ))}
                       <tr>
-                        <td className={styles.tableColumn}>Marge brute</td>
-                        <td className={styles.totalRow}>  {(selectedRecipePrice - selectedRecipeCost).toFixed(2)} €</td>
+                        <td className={styles.totalRow}>Coût Total</td>
+                        <td></td>
+                        <td> {selectedRecipeCost} €</td>
                       </tr>
-                      <tr>
-                        <td className={styles.tableColumn}>Taux de la marge </td>
-                        <td className={styles.totalRow}>  {(selectedRecipeCost/selectedRecipePrice *100).toFixed(2)} %</td>
-                      </tr>
-                    </table>
+                    </tbody>
+                  </table>
+                </div>
+                <div className={styles.priceTableContainer}>
+                  <h3 className={styles.priceTableTitle}>
+                    {" "}
+                    Prix de vente & Marge{" "}
+                  </h3>
+                  <table className={styles.table}>
+                    <tr>
+                      <td className={styles.tableColumn}>Prix HT</td>
+                      <td>{selectedRecipePrice}€</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.tableColumn}>TVA</td>
+                      <td> {selectedRecipeTVA} %</td>
+                    </tr>
+                    <tr>
+                      <td className={styles.tableColumn}>Marge brute</td>
+                      <td className={styles.totalRow}>
+                        {" "}
+                        {(selectedRecipePrice - selectedRecipeCost).toFixed(
+                          2
+                        )}{" "}
+                        €
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className={styles.tableColumn}>Taux de la marge </td>
+                      <td className={styles.totalRow}>
+                        {" "}
+                        {(
+                          (selectedRecipeCost / selectedRecipePrice) *
+                          100
+                        ).toFixed(2)}{" "}
+                        %
+                      </td>
+                    </tr>
+                  </table>
                 </div>
               </div>
-              <ExportExcel recipeList={recipeList} ingredientList={ingredientList} unitConvertion={unitConvertion}/>
-              </div>
-            )}
-          </div>
+              <ExportExcel
+                recipeList={recipeList}
+                ingredientList={ingredientList}
+                unitConvertion={unitConvertion}
+              />
+            </div>
+          )}
         </div>
       </div>
-   
+    </div>
   );
 }
 
