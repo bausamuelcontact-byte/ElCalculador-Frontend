@@ -1,9 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap");
+
 .container {
   height: 100vh;
   display: grid;
   grid-template-columns: repeat(30, 1fr);
   grid-template-rows: repeat(30, 1fr);
   background-color: #fffffb;
+  /* height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: #fffffb;
+  font-family: "Libre Baskerville", serif; */
 }
 
 .left {
@@ -15,24 +22,43 @@
   flex-direction: column;
   align-items: center;
   border-right: 2px solid #d4af37;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 🔥 CENTRAGE VERTICAL */
+  /* gap: 14px;
+  padding: 40px;
+  border-right: 1px solid #e6d9a2; */ 
 }
 
 .inputs {
-  margin-top: 3vh;
+  width: 320px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #341302;
+  font-size: 0.95rem;
+  background-color: #e4dbba8f;
+  color: #341302;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 1px 2px rgb(0 0 0 / 20%);
+  margin-top: 25px
+}
+.inputs:focus {
+ border-color: #b39530e9;
+box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
 }
 
 .ingredients {
   display: flex;
   flex-direction: column;
-  grid-row-start: 2;
-  grid-row-end: 31;
-  grid-column-start: 16;
-  grid-column-end: 31;
-  width: 100%;
-  overflow-y: scroll;
+  align-items: center;
+  padding: 40px;
+  gap: 12px;
+  overflow-y: auto;
 }
 
-.inputs {
+/* .inputs {
   margin-top: 3vh;
   border-radius: 7px;
   height: 3vh;
@@ -41,31 +67,27 @@
   background-color: rgba(225, 213, 173, 26);
   color: #341302;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
-}
+} */
 
 .btn {
-  margin-top: 4vh;
-  border-radius: 7px;
-  min-height: 3vh;
-  min-width: 8vw;
-  border: 1px solid #341302;
-  background-color: #341302;
-  color: #fff;
-  box-shadow: 1px 2px rgb(0 0 0 / 20%);
+  background-color: #2f0801;
+  border-color: #b39530e9;
+  color: #f5eadfde;
+  font-weight: 300;
+  border-radius: 8px;
+  margin-top: 5px;
+  height: 40px;
 }
 
 .ingredient {
-  border: 1px solid black;
-  height: 8vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: space-around;
-  padding: 10px;
-  margin: 5px 15px 5px 15px;
+  width: 100%;
+  max-width: 420px;
+  background-color: #f5f4e1;
   border-radius: 10px;
-  box-shadow: 2px 4px rgba(0 0 0 / 20%);
-  background-color: #fffffb;
+  padding: 14px 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-left: 3px solid #b39530e9;
+  
 }
 
 .NameIngredient {
@@ -73,6 +95,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  font-weight: 700;
+  font-size: 0.9 rem;
 }
 .description {
   font-size: 12;
@@ -85,18 +109,18 @@
 
 .category {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  /* flex-direction: row;
+  justify-content: space-between; */
   align-items: center;
   /* border: 2px solid red;  */
   padding: 5px 10px;
-  border-radius: 5px;
-  gap: 10px;
+  /* border-radius: 5px;
+  gap: 10px; */
+  margin-left: 30px;
 }
 
 .category select {
-  height: 20px;
-  margin-top: 12px;
+  width: 320px;
 }
 
 .category svg {
@@ -110,4 +134,8 @@
   cursor: pointer;
   color: #b39530e9;
   margin-left: 10px;
+}
+.crossColor{
+  margin-left: 450px;
+  color: #70643bb5;
 }
