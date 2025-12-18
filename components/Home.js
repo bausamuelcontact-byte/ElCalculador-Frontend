@@ -17,7 +17,9 @@ function Home() {
           <img className={styles.cover} src='cook.jpg'/>
           <div className={styles.sign}>
             <div className={styles.slogan}>
-              <h1>Calculez. Cuisinez. Vendez.</h1>
+              <div className={styles.sloganText}>
+                <div>Calculez. Cuisinez. Vendez.</div>
+              </div>
             </div>
             <div className={styles.actions}>
               <span className={styles.titles}>Déjà membre?</span>
@@ -29,7 +31,6 @@ function Home() {
         </div>
         <Signin signInVisible={signInVisible} setSignInVisible={setSignInVisible} />
         <Signup signUpVisible={signUpVisible} setSignUpVisible={setSignUpVisible}/>
-
     </div>
 
   );
