@@ -27,7 +27,7 @@ function Ingredient() {
       .then((data) => {
         setIngredients(data.ingredient);
       });
-  }, [ingredients]);
+  }, []);
 
   //Permet de changer ChangeIngredient.js en modification
   function handleCreationFalse(data) {

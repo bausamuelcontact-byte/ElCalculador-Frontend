@@ -72,7 +72,7 @@ function Recipe() {
           setCategory(data.category[0]);
         });
     }
-  }, [ingredients]);
+  }, []);
 
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
