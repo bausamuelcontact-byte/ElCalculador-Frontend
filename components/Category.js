@@ -3,9 +3,13 @@ import styles from "../styles/Category.module.css";
 import ReactModal from "react-modal";
 import { FaTimes } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { MdEdit, MdDeleteOutline  } from "react-icons/md";
-import { Button, Input } from 'antd';
-import {  setCategories, addCategory, removeCategory  } from '../reducers/categories';
+import { MdEdit, MdDeleteOutline } from "react-icons/md";
+import { Button, Input } from "antd";
+import {
+  setCategories,
+  addCategory,
+  removeCategory,
+} from "../reducers/categories";
 
 function Category(props) {
   const userInfo = useSelector((state) => state.user.value);
@@ -17,23 +21,27 @@ function Category(props) {
   const [updatedCat, setUpdatedCat] = useState("");
   const [updatedCatId, setUpdatedCatId] = useState(null);
 
-     useEffect(() => {
-       fetch(`http://localhost:3000/categories/${userInfo.id}`)
-         .then((response) => response.json())
-         .then((data) => {
-           dispatch(setCategories(data.categories))
-          //  setCategoryList(data.categories);
-         });}, [userInfo.id, categoryName, updatedCat]);
+  useEffect(() => {
+    fetch(`https://el-calculador-backend.vercel.app/categories/${userInfo.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(setCategories(data.categories));
+        //  setCategoryList(data.categories);
+      });
+  }, [userInfo.id, categoryName, updatedCat]);
 
   const handleAddCategory = () => {
-    fetch(`http://localhost:3000/categories/add/${userInfo.id}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: categoryName,
-        user: userInfo.id,
-      }),
-    })
+    fetch(
+      `https://el-calculador-backend.vercel.app/categories/add/${userInfo.id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: categoryName,
+          user: userInfo.id,
+        }),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -45,8 +53,8 @@ function Category(props) {
       });
   };
 
- const handleUpdateCat = () => {
-    fetch(`http://localhost:3000/categories/update`, {
+  const handleUpdateCat = () => {
+    fetch(`https://el-calculador-backend.vercel.app/categories/update`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -79,14 +87,17 @@ function Category(props) {
     setUpdatedCat("");
   };
 
-  const handleRemoveCat = (catId)=>{
-   fetch(`http://localhost:3000/categories/remove/${catId}`,
-    { method: "DELETE",})
-    .then((response) => response.json())
-    .then((data) => {
-        //    console.log(data);            
-           dispatch(removeCategory(catId));}
-        )}
+  const handleRemoveCat = (catId) => {
+    fetch(
+      `https://el-calculador-backend.vercel.app/categories/remove/${catId}`,
+      { method: "DELETE" }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        //    console.log(data);
+        dispatch(removeCategory(catId));
+      });
+  };
 
   return (
     <ReactModal
@@ -112,44 +123,62 @@ function Category(props) {
         },
       }}
     >
-             <div className={styles.modalContent}>
-                <FaTimes size={20} className={styles.crossColor} onClick={() => props.setCatModalVisible(false)} />
-                <h1>Catégories</h1>
-                {categoryList?.map((cat) => (
-                    <div key={cat._id} className={styles.catItem}>
-                        <div key={cat._id} className={styles.catName}>
-                        <span className={styles.catLabel}>{cat.name} </span>
+      <div className={styles.modalContent}>
+        <FaTimes
+          size={20}
+          className={styles.crossColor}
+          onClick={() => props.setCatModalVisible(false)}
+        />
+        <h1>Catégories</h1>
+        {categoryList?.map((cat) => (
+          <div key={cat._id} className={styles.catItem}>
+            <div key={cat._id} className={styles.catName}>
+              <span className={styles.catLabel}>{cat.name} </span>
 
-                        <div className={styles.catActions}>
-                          <MdEdit style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => openUpdateCat(cat)} /> 
-                             <MdDeleteOutline style={{ cursor: "pointer", marginLeft: "10px" }} onClick={() => handleRemoveCat(cat._id)}/>
-                        </div>
-                        </div>
-                           {updatedCatId === cat._id && (<div >
-                          <Input value={updatedCat} placeholder={cat.name} onChange={(e) => {setUpdatedCat(e.target.value); }}/>
-                          <Button type="primary" onClick={handleUpdateCat}>
+              <div className={styles.catActions}>
+                <MdEdit
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  onClick={() => openUpdateCat(cat)}
+                />
+                <MdDeleteOutline
+                  style={{ cursor: "pointer", marginLeft: "10px" }}
+                  onClick={() => handleRemoveCat(cat._id)}
+                />
+              </div>
+            </div>
+            {updatedCatId === cat._id && (
+              <div>
+                <Input
+                  value={updatedCat}
+                  placeholder={cat.name}
+                  onChange={(e) => {
+                    setUpdatedCat(e.target.value);
+                  }}
+                />
+                <Button type="primary" onClick={handleUpdateCat}>
                   Modifier
                 </Button>
                 <Button style={{ marginLeft: "5px" }} onClick={cancelUpdateCat}>
                   Annuler
                 </Button>
-
-                         </div> )}
-                       
-                    </div>
-                ))}
-
-                <Input
-                  className={styles.inputs}
-                  type="text"
-                  placeholder="Créez une nouvelle catégorie"
-                  value = {categoryName}
-                  onChange={(e) => { setCategoryName(e.target.value); }}
-                />
-                <Button type="primary" onClick={handleAddCategory}>
-            Ajouter la catégorie
-          </Button>
               </div>
+            )}
+          </div>
+        ))}
+
+        <Input
+          className={styles.inputs}
+          type="text"
+          placeholder="Créez une nouvelle catégorie"
+          value={categoryName}
+          onChange={(e) => {
+            setCategoryName(e.target.value);
+          }}
+        />
+        <Button type="primary" onClick={handleAddCategory}>
+          Ajouter la catégorie
+        </Button>
+      </div>
     </ReactModal>
   );
 }

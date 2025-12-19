@@ -22,7 +22,7 @@ function ChangeIngredient(props) {
   //Création d'un ingrédient
   function handleAddIngredient() {
     console.log("fetch", ingredient);
-    fetch("http://localhost:3000/ingredients", {
+    fetch("https://el-calculador-backend.vercel.app/ingredients", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -40,7 +40,7 @@ function ChangeIngredient(props) {
   //modification d'un ingredient
   function handleModifIngredient() {
     console.log("fetchModif", ingredient);
-    fetch("http://localhost:3000/ingredients", {
+    fetch("https://el-calculador-backend.vercel.app/ingredients", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,7 +57,7 @@ function ChangeIngredient(props) {
 
   //Suppression d'un ingrédient
   function handleDeleteIngredient() {
-    fetch("http://localhost:3000/ingredients", {
+    fetch("https://el-calculador-backend.vercel.app/ingredients", {
       method: "Delete",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

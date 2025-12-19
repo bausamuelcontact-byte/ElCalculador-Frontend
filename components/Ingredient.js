@@ -22,7 +22,9 @@ function Ingredient() {
 
   // recuperation des ingrédients
   useEffect(() => {
-    fetch(`http://localhost:3000/ingredients/search/${user.id}`)
+    fetch(
+      `https://el-calculador-backend.vercel.app/ingredients/search/${user.id}`
+    )
       .then((response) => response.json())
       .then((data) => {
         setIngredients(data.ingredient);

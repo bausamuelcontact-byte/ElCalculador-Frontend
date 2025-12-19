@@ -16,7 +16,7 @@
 .left {
   display: flex;
   grid-row-start: 2;
-  grid-row-end: 31;
+  grid-row-end: 30;
   grid-column-start: 1;
   grid-column-end: 16;
   flex-direction: column;
@@ -28,7 +28,7 @@
   justify-content: center; /* 🔥 CENTRAGE VERTICAL */
   /* gap: 14px;
   padding: 40px;
-  border-right: 1px solid #e6d9a2; */ 
+  border-right: 1px solid #e6d9a2; */
 }
 
 .inputs {
@@ -42,11 +42,11 @@
   outline: none;
   transition: border 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
-  margin-top: 25px
+  margin-top: 25px;
 }
 .inputs:focus {
- border-color: #b39530e9;
-box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
+  border-color: #b39530e9;
+  box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
 }
 
 .ingredients {
@@ -91,7 +91,6 @@ box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
   padding: 14px 18px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   border-left: 3px solid #b39530e9;
-  
 }
 
 .NameIngredient {
@@ -139,7 +138,7 @@ box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
   color: #b39530e9;
   margin-left: 10px;
 }
-.crossColor{
+.crossColor {
   margin-left: 450px;
   color: #70643bb5;
 }

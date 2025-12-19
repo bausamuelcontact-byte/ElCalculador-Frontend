@@ -28,7 +28,9 @@ function Header(props) {
   useEffect(() => {
     if (!userInfo.token) return;
 
-    fetch(`http://localhost:3000/users/isConnected/${userInfo.token}`)
+    fetch(
+      `https://el-calculador-backend.vercel.app/users/isConnected/${userInfo.token}`
+    )
       .then((response) => response.json())
       .then((data) => {
         // console.log("data user info", data.userInfo);

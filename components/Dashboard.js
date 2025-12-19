@@ -45,11 +45,13 @@ function Dashboard() {
 
   useEffect(() => {
     // Récupération de l'ensemble des recettes d'un utilisateur
-    fetch(`http://localhost:3000/recipes/search/${userInfo.id}`)
+    fetch(
+      `https://el-calculador-backend.vercel.app/recipes/search/${userInfo.id}`
+    )
       .then((response) => response.json())
       .then((data) => setRecipeList(data.recipe));
     // Récupération de l'ensemble des catégories de recettes d'un utilisateur
-    fetch(`http://localhost:3000/categories/${userInfo.id}`)
+    fetch(`https://el-calculador-backend.vercel.app/categories/${userInfo.id}`)
       .then((response) => response.json())
       .then((data) => setCategoryList(data.categories));
   }, [userInfo.id]);
@@ -97,7 +99,9 @@ function Dashboard() {
     setSelectedRecipePrice(recipe.price);
     setSelectedRecipeTVA(recipe.tva);
     // fetch des ingrédients pour la recette sélectionnée
-    fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
+    fetch(
+      `https://el-calculador-backend.vercel.app/ingredients/search/${userInfo.id}`
+    )
       .then((response) => response.json())
       .then((data) => {
         const allIngredients = data.ingredient;
@@ -136,8 +140,9 @@ function Dashboard() {
         recIng.quantity
       );
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
-      const ingrCost = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
-      console.log("price", ingrCost)
+      const ingrCost =
+        (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
+      console.log("price", ingrCost);
       recipeCost.push({
         name: ingrDetail.name,
         quantity: recIng.quantity,

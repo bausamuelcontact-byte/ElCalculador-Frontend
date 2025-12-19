@@ -39,7 +39,7 @@ function Signup(props) {
       return;
     }
     console.log("avatarFile", avatarFile);
-    fetch("http://localhost:3000/users/signup", {
+    fetch("https://el-calculador-backend.vercel.app/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,10 +60,13 @@ function Signup(props) {
           if (avatarFile) {
             const formData = new FormData();
             formData.append("avatar", avatarFile);
-            await fetch(`http://localhost:3000/users/avatar/${data.id}`, {
-              method: "PUT",
-              body: formData,
-            });
+            await fetch(
+              `https://el-calculador-backend.vercel.app/users/avatar/${data.id}`,
+              {
+                method: "PUT",
+                body: formData,
+              }
+            );
           }
 
           dispatch(

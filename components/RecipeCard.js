@@ -81,7 +81,7 @@ function RecipeCard() {
     setRecipeCardSteps(cleanedSteps);
     setEditMode(false);
     const method = existingRecipeCard ? "PUT" : "POST"; // si fiche recette existe, on modifie (PUT), sinon on crée (POST)
-    fetch(`http://localhost:3000/recipeCards`, {
+    fetch(`https://el-calculador-backend.vercel.app/recipeCards`, {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -104,14 +104,19 @@ function RecipeCard() {
         if (recipeImageFile && recipeCardId) {
           const formData = new FormData();
           formData.append("image", recipeImageFile);
-          fetch(`http://localhost:3000/recipeCards/${recipeCardId}/image`, {
-            method: "PUT",
-            body: formData,
-          });
+          fetch(
+            `https://el-calculador-backend.vercel.app/recipeCards/${recipeCardId}/image`,
+            {
+              method: "PUT",
+              body: formData,
+            }
+          );
         }
 
         // re-render liste gauche
-        fetch(`http://localhost:3000/recipeCards/${userInfo.id}`)
+        fetch(
+          `https://el-calculador-backend.vercel.app/recipeCards/${userInfo.id}`
+        )
           .then((res) => res.json())
           .then((data) => {
             if (data.result) setRecipeCardsUser(data.recipeCards);
@@ -161,10 +166,13 @@ function RecipeCard() {
   };
 
   const handleDeleteRecipeCard = (recipeCardId, recipeId) => {
-    fetch(`http://localhost:3000/recipeCards/${recipeCardId}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(
+      `https://el-calculador-backend.vercel.app/recipeCards/${recipeCardId}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
         if (!data.result) {
@@ -181,7 +189,9 @@ function RecipeCard() {
         }
 
         // ACTUALISATION LISTE GAUCHE : TOUJOURS
-        fetch(`http://localhost:3000/recipeCards/${userInfo.id}`)
+        fetch(
+          `https://el-calculador-backend.vercel.app/recipeCards/${userInfo.id}`
+        )
           .then((res) => res.json())
           .then((data) => {
             if (data.result) setRecipeCardsUser(data.recipeCards);
@@ -228,10 +238,13 @@ function RecipeCard() {
 
   // Récupération des fiches recettes de l'utilisateur connecté (affichage dans la liste des fiches recettes à gauche)
   useEffect(() => {
-    fetch(`http://localhost:3000/recipeCards/${userInfo.id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(
+      `https://el-calculador-backend.vercel.app/recipeCards/${userInfo.id}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -244,10 +257,13 @@ function RecipeCard() {
 
   // Récupération des recettes de l'utilisateur connecté (affichage dans le menu déroulant)
   useEffect(() => {
-    fetch(`http://localhost:3000/recipes/withIngredients/user/${userInfo.id}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(
+      `https://el-calculador-backend.vercel.app/recipes/withIngredients/user/${userInfo.id}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -308,7 +324,7 @@ function RecipeCard() {
 
     try {
       const res = await fetch(
-        `http://localhost:3000/recipeCards/${currentRecipeCard._id}/image`,
+        `https://el-calculador-backend.vercel.app/recipeCards/${currentRecipeCard._id}/image`,
         {
           method: "PUT",
           body: formData,

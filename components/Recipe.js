@@ -9,7 +9,7 @@ import { IconBase } from "react-icons/lib";
 import ReactModal from "react-modal";
 import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
-import { Button, Input } from 'antd';
+import { Button, Input } from "antd";
 import { FaTimes } from "react-icons/fa";
 
 function Recipe() {
@@ -55,7 +55,9 @@ function Recipe() {
 
   useEffect(() => {
     // recuperation des ingrédients pour le menu déroulant
-    fetch(`http://localhost:3000/ingredients/search/${user.id}`)
+    fetch(
+      `https://el-calculador-backend.vercel.app/ingredients/search/${user.id}`
+    )
       .then((response) => response.json())
       .then((data) => {
         setIngredients(data.ingredient);
@@ -68,7 +70,9 @@ function Recipe() {
       console.log("changement", recipe.category);
 
       //Recuperation de la categorie grace a l'ID Recipe
-      fetch(`http://localhost:3000/categories/recipeId/${recipeReducer._id}`)
+      fetch(
+        `https://el-calculador-backend.vercel.app/categories/recipeId/${recipeReducer._id}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setCategory(data.category[0]);
@@ -97,7 +101,7 @@ function Recipe() {
   //Création de la recette
   function handleAddRecipe() {
     console.log("test", recipe.tva);
-    fetch("http://localhost:3000/recipes", {
+    fetch("https://el-calculador-backend.vercel.app/recipes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -112,14 +116,17 @@ function Recipe() {
       .then((response) => response.json())
       .then((data) => {
         console.log("categ", data);
-        fetch("http://localhost:3000/categories/addRecipeToCategory", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            categoryId: recipe.category,
-            recipeId: data.recipe._id,
-          }),
-        })
+        fetch(
+          "https://el-calculador-backend.vercel.app/categories/addRecipeToCategory",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              categoryId: recipe.category,
+              recipeId: data.recipe._id,
+            }),
+          }
+        )
           .then((response) => response.json())
           .then((data) => {});
       });
@@ -142,7 +149,7 @@ function Recipe() {
 
   //Modification d'une recette
   function handleModifyRecipe() {
-    fetch("http://localhost:3000/recipes", {
+    fetch("https://el-calculador-backend.vercel.app/recipes", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -163,15 +170,18 @@ function Recipe() {
 
   //Suppression d'une recette
   const handleRemoveRecipe = () => {
-    fetch(`http://localhost:3000/categories/removeRecipeFromCategory`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        categoryId: recipe.category,
-        recipeId: recipe._id,
-      }),
-    });
-    fetch(`http://localhost:3000/recipes`, {
+    fetch(
+      `https://el-calculador-backend.vercel.app/categories/removeRecipeFromCategory`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoryId: recipe.category,
+          recipeId: recipe._id,
+        }),
+      }
+    );
+    fetch(`https://el-calculador-backend.vercel.app/recipes`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -274,14 +284,17 @@ function Recipe() {
   function RecipeModifyCategory() {
     console.log("recipeID", recipe._id);
 
-    fetch("http://localhost:3000/categories/changecategory", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        categoryId: recipe.category,
-        recipeId: recipe._id,
-      }),
-    });
+    fetch(
+      "https://el-calculador-backend.vercel.app/categories/changecategory",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          categoryId: recipe.category,
+          recipeId: recipe._id,
+        }),
+      }
+    );
   }
 
   return (
@@ -308,7 +321,8 @@ function Recipe() {
               <option value={null}>Categorie</option>
               {categ}
             </select>
-            <BiSolidMessageSquareEdit className={styles.modify}
+            <BiSolidMessageSquareEdit
+              className={styles.modify}
               size={25}
               onClick={() => setCatModalVisible(true)}
             />
@@ -361,9 +375,12 @@ function Recipe() {
                 },
               }}
             >
-              <FaTimes size={20} className={styles.crossColor} onClick={() => setIsVisibleModal(false)}/>
+              <FaTimes
+                size={20}
+                className={styles.crossColor}
+                onClick={() => setIsVisibleModal(false)}
+              />
               <ChangeIngredient Creation={isVisibleModal} />
-              
             </ReactModal>
           </div>
 
