@@ -1,8 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap");
+
 .pageContainer {
   display: grid;
   grid-template-rows: auto 1fr; 
   height: 100vh; 
-  overflow: hidden
+  overflow: hidden;
+  font-family: "Poiret One", cursive;
 }
 
 .recipeCardWrapper{
@@ -15,7 +18,7 @@
 .recipeCardPageFull{
     width: 100vw;
     height : 100vh;
-    font-family: "Baskerville", sans-serif;
+    /* font-family: "Baskerville", sans-serif; */
 }
 
 .recipeCardPageMenu{ 

@@ -57,8 +57,7 @@ function Signup(props) {
     .then(response => response.json())
     .then(async (data) => {
       if (data.result) {
-      alert("Votre compte a été créé avec succès !");
-
+     
       // Si un avatar a été sélectionné, l'uploader sur Cloudinary 
         if (avatarFile) {
           const formData = new FormData();

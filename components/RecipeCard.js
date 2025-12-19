@@ -405,12 +405,10 @@ return (
             {/*  PRIX */}
             <div className={styles.priceFrame}>
               <div className={styles.priceRecipe}>
-                Prix de vente total : <span>{recipeSalePrice}€</span> dont TVA : 
-                <span>{recipeTVA} €</span>
+                Prix de vente total : <span>{recipeSalePrice}€</span> 
               </div>
               <div className={styles.priceSale}>
-                Prix de revient total : <span>{recipeCostPrice}€</span> dont TVA : 
-                <span>{totalTVA} €</span>
+                Prix de revient total : <span>{recipeCostPrice}€</span>
               </div>
             </div>
             {/* PHOTO */}
