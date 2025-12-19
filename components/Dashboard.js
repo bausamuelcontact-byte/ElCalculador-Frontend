@@ -116,7 +116,7 @@ function Dashboard() {
           recipe.ingredients,
           filteredIngredients
         );
-        console.log(cost)
+        console.log(cost);
         setRecipeCostData(cost);
         const totalCost = cost.reduce((sum, i) => sum + i.value, 0);
         setSelectedRecipeCost(totalCost.toFixed(2));
@@ -130,7 +130,8 @@ function Dashboard() {
       if (!recIng || !recIng.ingredient) return;
       const ingrDetail = ingredientList.find(
         (ing) => ing._id.toString() === recIng.ingredient.toString()
-      );console.log("ing",ingrDetail)
+      );
+      console.log("ing", ingrDetail);
       if (!ingrDetail) return;
       // Conversion de l'unité de mesure de l'ingrédient si nécessaire
       const adjustedQuantity = unitConvertion(
@@ -139,8 +140,9 @@ function Dashboard() {
         recIng.quantity
       );
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
-      const ingrCost = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
-      console.log("price", ingrCost)
+      const ingrCost =
+        (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
+      console.log("price", ingrCost);
       // calcul de la TVA pour cet ingrédient
       // const TVA = price * (ingrDetail.tva / 100);
       // const ingrCost = price;
@@ -295,7 +297,7 @@ function Dashboard() {
                   maxHeight: "40vh",
                   aspectRatio: 1,
                   marginTop: "50px",
-                  marginLeft: "-150px",
+                  marginLeft: "-75px",
                 }}
                 responsive
               >

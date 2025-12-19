@@ -11,14 +11,21 @@
 }
 
 .inputs {
-  margin-top: 4vh;
-  border-radius: 7px;
-  height: 3vh;
-  width: 12vw;
+  width: 320px;
+  padding: 10px 14px;
+  margin: 15px;
+  border-radius: 10px;
   border: 1px solid #341302;
-  background-color: rgba(225, 213, 173, 26);
+  font-size: 0.95rem;
+  background-color: #e4dbba8f;
   color: #341302;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
+}
+.inputs:focus {
+  border-color: #b39530e9;
+  box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
 }
 
 .btnAdd {
@@ -33,5 +40,5 @@
 }
 
 input::placeholder {
-  color: #000;
+  color: #4537318d;
 }

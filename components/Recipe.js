@@ -59,14 +59,7 @@ function Recipe() {
         setIngredients(data.ingredient);
       });
 
-    //recupération des catégories
-    // fetch(`http://localhost:3000/categories/${user.id}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("categories", data);
-    //     setCategories(data.categories);
-    //   });
-
+    // si Modification d'une recette
     if (!isBob) {
       setRecipe(recipeReducer);
       setIngredientTotal(recipeReducer.ingredients);
@@ -79,7 +72,7 @@ function Recipe() {
           setCategory(data.category[0]);
         });
     }
-  }, []);
+  }, [ingredients]);
 
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
@@ -165,6 +158,8 @@ function Recipe() {
       });
     RecipeModifyCategory();
   }
+
+  //Suppression d'une recette
   const handleRemoveRecipe = () => {
     fetch(`http://localhost:3000/categories/removeRecipeFromCategory`, {
       method: "DELETE",
@@ -183,6 +178,7 @@ function Recipe() {
     });
   };
 
+  //Ajout des ingrédients dans IngredientTotal pour affichage liste a droite
   function handleAddIngredient() {
     const newIngredient = {
       id: ingredient.id,
@@ -319,7 +315,7 @@ function Recipe() {
               setCatModalVisible={setCatModalVisible}
             />
           </div>
-          <div>
+          <div className={styles.category}>
             <select
               className={styles.inputs}
               onChange={(e) => {
