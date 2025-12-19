@@ -4,7 +4,7 @@
 .main {
   height: 100vh;
   width: 100vw;
-  background-color: #F1F1F1;
+  background-color: #f1f1f1;
   padding: 0px;
   margin: 0px;
   overflow-y: hidden;
@@ -21,7 +21,7 @@
 }
 
 .elCalculador {
-  color: #FFFDFB;
+  color: #fffdfb;
   font-family: sans-serif;
   font-size: 40;
   font-weight: 600;
@@ -29,18 +29,18 @@
 }
 
 .container {
-  font-family:"Poiret One", cursive;
+  font-family: "Poiret One", cursive;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 90%
+  height: 90%;
 }
 
 .cover {
-  width:50%;
-  height:100%
+  width: 50%;
+  height: 100%;
 }
 
 .sign {
@@ -61,11 +61,11 @@
 
 .slogan {
   width: 100%;
-  height:10%;
+  height: 10%;
   font-size: larger;
   font-weight: 1000;
   margin-top: 35%;
-  color : color-mix(in srgb, #341302 90%, white);
+  color: color-mix(in srgb, #341302 90%, white);
 }
 
 .actions {
@@ -73,19 +73,19 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  width:100%;
-  height:90%;
+  width: 100%;
+  height: 90%;
 }
 
 .titles {
   font-size: 25;
   margin-bottom: 0.9%;
-  margin-top:1.25%;
+  margin-top: 1.25%;
 }
 
 .signInButton {
   font-size: 16;
-  background-color: #D4AF37;
+  background-color: #d4af37;
   color: white;
   border: 0;
   width: 12%;
@@ -99,7 +99,7 @@
 
 .signInButton:hover {
   font-size: 16;
-  background-color: #D4AF37;
+  background-color: #d4af37;
   color: white;
   border: 0;
   width: 12%;
@@ -114,12 +114,12 @@
 
 .signInButton:active {
   transform: translateY(2px);
-  box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .signUpButton {
   font-size: 16;
-  background-color: #D4AF37;
+  background-color: #d4af37;
   color: white;
   border: 0;
   width: 12%;
@@ -132,7 +132,7 @@
 
 .signUpButton:hover {
   font-size: 16;
-  background-color: #D4AF37;
+  background-color: #d4af37;
   color: white;
   border: 0;
   width: 12%;
@@ -146,5 +146,5 @@
 
 .signUpButton:active {
   transform: translateY(2px);
-  box-shadow: 0 0px 0px rgba(0,0,0,0.2) inset;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2) inset;
 }

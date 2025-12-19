@@ -15,8 +15,6 @@ import { FaTimes } from "react-icons/fa";
 function Recipe() {
   const [allergen, setAllergen] = useState([]);
   let ingredientDisplay = {};
-  //Liste des catégories dans le menu déroulant
-  const [oldCategory, setOldCategory] = useState([]);
   //Catégorie de la recette qu'on est entrain d'etre modifié
   const [category, setCategory] = useState("");
   //Booléen d'affichage de la modale catégorie
@@ -32,7 +30,6 @@ function Recipe() {
   const [visibleMenu, setVisibleMenu] = useState(false);
   //Ingrédient qu'on ajoute 1 par 1 dans la recette ( name, quantity, unit)
   const [ingredient, setIngredient] = useState({
-    id: null,
     name: "",
     quantity: 0,
     price: 0,
@@ -64,19 +61,11 @@ function Recipe() {
         setIngredients(data.ingredient);
       });
 
-    //recupération des catégories
-    // fetch(`http://localhost:3000/categories/${user.id}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log("categories", data);
-    //     setCategories(data.categories);
-    //   });
-
+    // si Modification d'une recette
     if (!isBob) {
       setRecipe(recipeReducer);
       setIngredientTotal(recipeReducer.ingredients);
       console.log("changement", recipe.category);
-      setOldCategory(recipe.category);
 
       //Recuperation de la categorie grace a l'ID Recipe
       fetch(`http://localhost:3000/categories/recipeId/${recipeReducer._id}`)
@@ -85,7 +74,7 @@ function Recipe() {
           setCategory(data.category[0]);
         });
     }
-  }, []);
+  }, [ingredients]);
 
   //Affichage des ingrédients dans le menu déroulant
   const ingr = ingredients.map((data, i) => {
@@ -171,6 +160,8 @@ function Recipe() {
       });
     RecipeModifyCategory();
   }
+
+  //Suppression d'une recette
   const handleRemoveRecipe = () => {
     fetch(`http://localhost:3000/categories/removeRecipeFromCategory`, {
       method: "DELETE",
@@ -189,6 +180,7 @@ function Recipe() {
     });
   };
 
+  //Ajout des ingrédients dans IngredientTotal pour affichage liste a droite
   function handleAddIngredient() {
     const newIngredient = {
       id: ingredient.id,
@@ -281,7 +273,6 @@ function Recipe() {
 
   function RecipeModifyCategory() {
     console.log("recipeID", recipe._id);
-    console.log("categoryID", oldCategory);
 
     fetch("http://localhost:3000/categories/changecategory", {
       method: "PUT",
@@ -352,22 +343,21 @@ function Recipe() {
               onRequestClose={() => setIsVisibleModal(false)}
               style={{
                 overlay: {
-                  position: "fixed",
-                  background: "rgba(0,0,0,0.3)",
+                  backgroundColor: "rgba(0,0,0,0.3)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 },
                 content: {
-                  position: "absolute",
-                  top: "17%",
-                  left: "35%",
-                  right: "35%",
-                  bottom: "17%",
-                  border: "1px solid #ccc",
+                  position: "relative",
+                  inset: "40px",
+                  border: "none",
+                  overflow: "hidden",
+                  padding: "5",
+                  border: "3px solid #ccc",
                   background: "#fff",
                   overflow: "auto",
                   WebkitOverflowScrolling: "touch",
-                  borderRadius: "4px",
-                  outline: "none",
-                  padding: "20px",
                 },
               }}
             >

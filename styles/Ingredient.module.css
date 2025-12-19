@@ -26,7 +26,7 @@
   grid-row-start: 3;
   grid-row-end: 31;
   grid-column-start: 1;
-  grid-column-end: 10;
+  grid-column-end: 15;
   width: 100%;
   overflow-y: scroll;
   border-right: 2px solid #d4af37;
@@ -35,7 +35,7 @@
 .add {
   grid-row-start: 3;
   grid-row-end: 31;
-  grid-column-start: 10;
+  grid-column-start: 15;
   grid-column-end: 31;
 }
 

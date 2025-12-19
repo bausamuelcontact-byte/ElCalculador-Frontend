@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Aboreto&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Aboreto&display=swap");
 
 .modalContent {
   display: flex;
@@ -36,12 +35,12 @@
 .catName {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   background-color: #fff;
   padding: 12px 16px;
   border-radius: 10px;
   border: 1px solid #e6dcc3;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 .catLabel {
   color: #2f0801;
@@ -52,7 +51,7 @@
 .catActions {
   display: flex;
   align-items: center;
-  gap: 12px; 
+  gap: 12px;
 }
 
 .catActions svg {
@@ -125,4 +124,3 @@
   color: #d0aa43;
   transform: scale(1.1);
 }
-

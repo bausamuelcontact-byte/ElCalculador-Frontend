@@ -53,9 +53,13 @@ box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
+  grid-row-start: 2;
+  grid-row-end: 31;
+  grid-column-start: 16;
+  grid-column-end: 31;
   padding: 40px;
   gap: 12px;
-  overflow-y: auto;
+  width: 100%;
 }
 
 /* .inputs {

@@ -13,7 +13,7 @@
 .inputs {
   width: 320px;
   padding: 10px 14px;
-  margin:15px;
+  margin: 15px;
   border-radius: 10px;
   border: 1px solid #341302;
   font-size: 0.95rem;
@@ -27,6 +27,10 @@
 .inputs:focus {
  border-color: #b39530e9;
  box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
+}
+.inputs:focus {
+  border-color: #b39530e9;
+  box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
 }
 
 .btnAdd {

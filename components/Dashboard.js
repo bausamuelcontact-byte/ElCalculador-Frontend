@@ -112,7 +112,7 @@ function Dashboard() {
           recipe.ingredients,
           filteredIngredients
         );
-        console.log(cost)
+        console.log(cost);
         setRecipeCostData(cost);
         const totalCost = cost.reduce((sum, i) => sum + i.value, 0);
         setSelectedRecipeCost(totalCost.toFixed(2));
@@ -126,7 +126,8 @@ function Dashboard() {
       if (!recIng || !recIng.ingredient) return;
       const ingrDetail = ingredientList.find(
         (ing) => ing._id.toString() === recIng.ingredient.toString()
-      );console.log("ing",ingrDetail)
+      );
+      console.log("ing", ingrDetail);
       if (!ingrDetail) return;
       // Conversion de l'unité de mesure de l'ingrédient si nécessaire
       const adjustedQuantity = unitConvertion(
