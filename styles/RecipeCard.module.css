@@ -15,10 +15,10 @@
   height: 100%;
 }
 
-.recipeCardPageFull {
-  width: 100vw;
-  height: 100vh;
-  font-family: "Baskerville", sans-serif;
+.recipeCardPageFull{
+    width: 100vw;
+    height : 100vh;
+    /* font-family: "Baskerville", sans-serif; */
 }
 
 .recipeCardPageMenu {

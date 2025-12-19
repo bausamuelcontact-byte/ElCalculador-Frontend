@@ -9,6 +9,8 @@ import { IconBase } from "react-icons/lib";
 import ReactModal from "react-modal";
 import Category from "./Category";
 import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { Button, Input } from 'antd';
+import { FaTimes } from "react-icons/fa";
 
 function Recipe() {
   const [allergen, setAllergen] = useState([]);
@@ -288,14 +290,14 @@ function Recipe() {
       {visibleMenu && <Menu />}
       {isBob ? (
         <div className={styles.left}>
-          <input
+          <Input
             placeholder="Nom de la recette"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("name", e.target.value);
             }}
             value={recipe?.name || ""}
-          ></input>
+          ></Input>
           <div className={styles.category}>
             <select
               className={styles.inputs}
@@ -306,7 +308,7 @@ function Recipe() {
               <option value={null}>Categorie</option>
               {categ}
             </select>
-            <BiSolidMessageSquareEdit
+            <BiSolidMessageSquareEdit className={styles.modify}
               size={25}
               onClick={() => setCatModalVisible(true)}
             />
@@ -359,16 +361,18 @@ function Recipe() {
                 },
               }}
             >
+              <FaTimes size={20} className={styles.crossColor} onClick={() => setIsVisibleModal(false)}/>
               <ChangeIngredient Creation={isVisibleModal} />
+              
             </ReactModal>
           </div>
 
-          <input
+          <Input
             placeholder="Quantité"
             className={styles.inputs}
             onChange={(e) => handleChangeCreation("quantity", e.target.value)}
             value={ingredient?.quantity || ""}
-          ></input>
+          ></Input>
           <select
             className={styles.inputs}
             onChange={(e) => handleChangeCreation("unit", e.target.value)}
@@ -398,7 +402,7 @@ function Recipe() {
             }}
           >
             <option value={null}>Allergènes</option>
-            <input value={"Gluten"} type="checkbox" title="Gluten" />
+            <Input value={"Gluten"} type="checkbox" title="Gluten" />
             <option value={"Crustacé"}>Crustacé</option>
             <option value={"Oeuf"}>Oeuf</option>
             <option value={"Poisson"}>Poisson</option>
@@ -413,22 +417,22 @@ function Recipe() {
             <option value={"Lupin"}>Lupin</option>
             <option value={"Mollusques"}>Mollusques</option>
           </select>
-          <input
+          <Input
             placeholder="Prix"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("price", e.target.value);
             }}
             value={recipe?.price || ""}
-          ></input>
-          <input
+          ></Input>
+          <Input
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("tva", e.target.value);
             }}
             value={recipe?.tva || ""}
-          ></input>
+          ></Input>
           <button
             onClick={() => {
               handleAddRecipe();
@@ -440,14 +444,14 @@ function Recipe() {
         </div>
       ) : (
         <div className={styles.left}>
-          <input
+          <Input
             placeholder="Nom de la recette"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("name", e.target.value);
             }}
             value={recipe?.name || ""}
-          ></input>
+          ></Input>
           <div className={styles.category}>
             <select
               className={styles.inputs}
@@ -527,12 +531,12 @@ function Recipe() {
             </ReactModal>
           </div>
 
-          <input
+          <Input
             placeholder="Quantité"
             className={styles.inputs}
             onChange={(e) => handleChangeCreation("quantity", e.target.value)}
             value={ingredient?.quantity || ""}
-          ></input>
+          ></Input>
           <select
             className={styles.inputs}
             onChange={(e) => handleChangeCreation("unit", e.target.value)}
@@ -562,7 +566,7 @@ function Recipe() {
             }}
           >
             <option value={null}>Allergènes</option>
-            <input value={"Gluten"} type="checkbox" title="Gluten" />
+            <Input value={"Gluten"} type="checkbox" title="Gluten" />
             <option value={"Crustacé"}>Crustacé</option>
             <option value={"Oeuf"}>Oeuf</option>
             <option value={"Poisson"}>Poisson</option>
@@ -577,22 +581,22 @@ function Recipe() {
             <option value={"Lupin"}>Lupin</option>
             <option value={"Mollusques"}>Mollusques</option>
           </select>
-          <input
+          <Input
             placeholder="Prix"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("price", e.target.value);
             }}
             value={recipe?.price || ""}
-          ></input>
-          <input
+          ></Input>
+          <Input
             placeholder="TVA"
             className={styles.inputs}
             onChange={(e) => {
               handleChangeCreationRecipe("tva", e.target.value);
             }}
             value={recipe?.tva || ""}
-          ></input>
+          ></Input>
           <button
             onClick={() => {
               handleModifyRecipe();

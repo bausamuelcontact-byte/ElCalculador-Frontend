@@ -52,10 +52,6 @@ function Dashboard() {
     fetch(`http://localhost:3000/categories/${userInfo.id}`)
       .then((response) => response.json())
       .then((data) => setCategoryList(data.categories));
-    // Récupération de l'ensemble des ingrédients d'un utilisateur (pour l'export Excel global)
-    // fetch(`http://localhost:3000/ingredients/search/${userInfo.id}`)
-    //     .then(res => res.json())
-    //     .then(data => setIngredientList(data.ingredient));
   }, [userInfo.id]);
 
   // Options de la liste déroulante
@@ -140,12 +136,8 @@ function Dashboard() {
         recIng.quantity
       );
       // calcul du prix de l'ingrédient pour la quantité utilisée dans la recette
-      const ingrCost =
-        (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
-      console.log("price", ingrCost);
-      // calcul de la TVA pour cet ingrédient
-      // const TVA = price * (ingrDetail.tva / 100);
-      // const ingrCost = price;
+      const ingrCost = (ingrDetail.price * adjustedQuantity) / ingrDetail.quantity;
+      console.log("price", ingrCost)
       recipeCost.push({
         name: ingrDetail.name,
         quantity: recIng.quantity,
@@ -297,7 +289,7 @@ function Dashboard() {
                   maxHeight: "40vh",
                   aspectRatio: 1,
                   marginTop: "50px",
-                  marginLeft: "-75px",
+                  marginLeft: "-80px",
                 }}
                 responsive
               >

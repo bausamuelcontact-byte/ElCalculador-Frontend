@@ -22,6 +22,11 @@
   outline: none;
   transition: border 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 1px 2px rgb(0 0 0 / 20%);
+  
+}
+.inputs:focus {
+ border-color: #b39530e9;
+ box-shadow: 0 0 0 2px rgba(179, 149, 48, 0.2);
 }
 .inputs:focus {
   border-color: #b39530e9;
