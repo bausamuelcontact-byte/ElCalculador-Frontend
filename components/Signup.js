@@ -93,7 +93,7 @@ function Signup(props) {
           left: "25%",
           right: "25%",
           bottom: "5%",
-          backgroundColor: "rgba(255, 255, 255, 0.75)",
+          backgroundColor: "#f3f2eada",
         },
         content: {
           position: "absolute",
@@ -102,7 +102,7 @@ function Signup(props) {
           right: "40px",
           bottom: "20px",
           border: "1px solid #ccc",
-          background: "#fff",
+          background: "#f3f2eaff",
           overflow: "auto",
           WebkitOverflowScrolling: "touch",
           borderRadius: "4px",
@@ -120,7 +120,9 @@ function Signup(props) {
         ​
       </div>
       <div className={styles.modalContent}>
-        <h1>Bienvenue</h1>
+        <h1 style={{ color: "color-mix(in srgb, #341302 90%, white)" }}>
+          Bienvenue
+        </h1>
         <input
           className={styles.inputs}
           type="text"
@@ -246,14 +248,6 @@ function Signup(props) {
             </div>
           )}
         </div>
-        <button
-          className={styles.buttonSignin}
-          onClick={() => {
-            handleSignup();
-          }}
-        >
-          Créer un compte
-        </button>
       </div>
     </ReactModal>
   );

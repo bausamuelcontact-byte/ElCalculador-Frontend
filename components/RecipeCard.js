@@ -435,9 +435,13 @@ function RecipeCard() {
               <div className={styles.priceFrame}>
                 <div className={styles.priceRecipe}>
                   Prix de vente total : <span>{recipeSalePrice}€</span>
+                  {/*</span> dont TVA : 
+                <span>{recipeTVA} €</span>*/}
                 </div>
                 <div className={styles.priceSale}>
                   Prix de revient total : <span>{recipeCostPrice}€</span>
+                  {/*</span> {dont TVA : 
+                <span>{totalTVA} €</span>*/}
                 </div>
               </div>
               {/* PHOTO */}

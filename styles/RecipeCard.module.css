@@ -18,11 +18,13 @@
 .recipeCardPageFull {
   width: 100vw;
   height: 100vh;
+  font-family: "Baskerville", sans-serif;
 }
 
 .recipeCardPageMenu {
   width: 100vw;
   height: 100vh;
+  font-family: "Baskerville", sans-serif;
 }
 
 .recipeCardContainer {
@@ -36,11 +38,11 @@
 .searchBar {
   grid-row: 1 / 2;
   grid-column: 1 / 13;
-  border-bottom: 1px solid #463f32;
+  border-bottom: 1px solid #d4af37;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff9ef;
+  background-color: #fffffb;
   width: 100%;
   height: 100%;
 }
@@ -49,8 +51,7 @@
   width: 70%;
   height: 70%;
   border-radius: 20px;
-  background-color: #ffffff;
-  border: 1px solid #463f32;
+  border: 1px solid #341302;
   font-size: 16;
   padding-left: 1%;
   padding-right: 1%;
@@ -58,6 +59,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-color: rgba(225, 213, 173, 0.26);
 }
 
 .searchInput {
@@ -65,6 +67,8 @@
   width: 95%;
   height: 98%;
   font-size: 16;
+  background-color: transparent;
+  font-family: "Baskerville", sans-serif;
 }
 
 .searchInput:focus {
@@ -74,8 +78,8 @@
 .recipeCardDisplayer {
   grid-row: 2 / 12;
   grid-column: 1 / 5;
-  border-right: #463f32 2px solid;
-  background-color: #fff9ef;
+  border-right: #d4af37 2px solid;
+  background-color: #fffffb;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,6 +101,11 @@
   justify-content: space-between;
   padding-left: 2%;
   padding-right: 2%;
+  box-shadow: 1px 2px rgba(0 0 0 / 20%);
+}
+
+.recipeCardDisplayed:hover {
+  transform: scale(1.01);
 }
 
 .editIcons {
@@ -127,7 +136,7 @@
 .recipeCardEditor {
   grid-row: 2 / 12;
   grid-column: 5 / 13;
-  background-color: #fff9ef;
+  background-color: #fffffb;
   display: grid;
   grid-template-rows: repeat(15, 1fr);
   grid-template-columns: repeat(16, 1fr);
@@ -145,8 +154,11 @@
   width: 100%;
   height: 100%;
   font-size: 16;
-  border: 0px;
   padding-left: 1%;
+  border: #341302;
+  background-color: rgba(225, 213, 173, 0.26);
+  color: #341302;
+  font-family: "Baskerville", sans-serif;
 }
 
 .selectRecipeDropdown:focus {
@@ -205,10 +217,10 @@
 }
 
 .stepsFrame {
-  grid-row: 4/15;
+  grid-row: 4/14;
   grid-column: 1/9;
   background-color: #ffffff;
-  box-shadow: 0 0 10px #d3d3d3;
+  border: 1px solid #463f32;
   margin-top: 3%;
   display: flex;
   flex-direction: column;
@@ -246,10 +258,10 @@
 }
 
 .ingredientsFrame {
-  grid-row: 4/15;
+  grid-row: 4/14;
   grid-column: 9/17;
   background-color: #ffffff;
-  box-shadow: 0 0 10px #d3d3d3;
+  border: 1px solid #463f32;
   margin-top: 3%;
   width: 100%;
   height: 100%;

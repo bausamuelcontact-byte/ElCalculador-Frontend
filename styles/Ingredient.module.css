@@ -16,6 +16,8 @@
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px solid #d4af37;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
 }
 
 .list {
