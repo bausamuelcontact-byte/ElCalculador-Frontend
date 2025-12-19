@@ -250,6 +250,14 @@ function Signup(props) {
               Photo chargée ! ✅
             </div>
           )}
+          <button
+            className={styles.buttonSignin}
+            onClick={() => {
+              handleSignup();
+            }}
+          >
+            Se connecter
+          </button>
         </div>
       </div>
     </ReactModal>
