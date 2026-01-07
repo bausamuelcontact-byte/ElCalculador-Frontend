@@ -22,7 +22,7 @@ function Home() {
         </span>
       </div>
       <div className={styles.container}>
-        <img className={styles.cover} src="cook.jpg" />
+        <img className={styles.cover} src="cook.jpg" alt="Photo d'accueil" />
         <div className={styles.sign}>
           <div className={styles.slogan}>
             <div className={styles.sloganText}>
